@@ -10,7 +10,7 @@ var express           = require('express'),
     bcrypt            = require('bcrypt');
 
 // server setup
-var PORT    = process.env.PORT || 3788,
+var PORT    = process.env.PORT || 1111,
     server  = express();
 
 // setting up mongoose stuff
@@ -46,7 +46,6 @@ server.use(methodOverride('_method'));
 
 // SUPER LOGGER
 server.use(function(req, res, next){
-  res.locals.marked = marked;
   res.locals.userLoggedIn = req.session.username;
 
   console.log("*************** [ REQ START ] ***************");
