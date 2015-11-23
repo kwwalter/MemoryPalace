@@ -3,13 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title>MemoryPalace</title>
-    <script src="./Users/kevinwalter/src/unit_04_projects/memory_palace/bower_components/angular/angular.min.js"></script>
-    <script src="./Users/kevinwalter/src/unit_04_projects/memory_palace/bower_components/angular-route/angular-route.min.js"></script>
-    <script src="./Users/kevinwalter/src/unit_04_projects/memory_palace/js/app.js"></script>
+    <!-- <script src="/bower_components/angular/angular.js"></script> -->
+    <!-- <script src="/bower_components/angular-route/angular-route.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.js"></script>
+    <script src="/js/app.js"></script>
+    <base href="/"></base>
   </head>
-  <body>
-    hello!
-    <div ng-view>
-    </div>
+  <body ng-app="fuckthis">
+    <header>HEADER</header>
+    <div ng-view></div>
+    <footer>FOOTER</footer>
   </body>
 </html>

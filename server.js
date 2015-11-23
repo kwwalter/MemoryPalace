@@ -35,6 +35,7 @@ server.use(session({
 server.use(morgan('dev'));
 
 server.use(express.static('./public'));
+server.use('/bower_components',  express.static('./bower_components'));
 
 // server.use(expressEjsLayouts);
 
@@ -63,7 +64,10 @@ server.get('/wicked-secret-test', function(req, res){
 });
 
 server.get('/', function(req, res){
-  res.json
+  res.json({
+    you: "suck",
+    go: "home"
+  });
 });
 
 // MORE ROUTES TO COME
