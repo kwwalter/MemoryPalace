@@ -2,8 +2,8 @@
 var express           = require('express'),
     morgan            = require('morgan'),
     bodyParser        = require('body-parser'),
-    ejs               = require('ejs'),
-    expressEjsLayouts = require('express-ejs-layouts'),
+    // ejs               = require('ejs'),
+    // expressEjsLayouts = require('express-ejs-layouts'),
     methodOverride    = require('method-override'),
     session           = require('express-session'),
     less              = require('less'),
@@ -15,19 +15,19 @@ var PORT    = process.env.PORT || 1111,
 
 // setting up mongoose stuff
 var MONGOURI = process.env.MONGOLAB_URI || "mongodb://localhost:27017",
-    dbname   = "collaboetry",
+    dbname   = "memory_palace",
     mongoose = require('mongoose'),
     Schema   = mongoose.Schema;
 
 // SET
 mongoose.set('debug', true);
 
-server.set('views', './views');
-server.set('view engine', 'ejs');
+// server.set('views', './views');
+// server.set('view engine', 'ejs');
 
 // USE
 server.use(session({
-  secret: "bilpoDingus",
+  secret: "biLpoD1ngus",
   resave: true,
   saveUninitialized: false
 }));
@@ -36,7 +36,7 @@ server.use(morgan('dev'));
 
 server.use(express.static('./public'));
 
-server.use(expressEjsLayouts);
+// server.use(expressEjsLayouts);
 
 server.use(bodyParser.urlencoded({
   extended: true
@@ -62,7 +62,11 @@ server.get('/wicked-secret-test', function(req, res){
   res.end();
 });
 
-// MORE ROUTES TO COME HERE
+server.get('/', function(req, res){
+  res.json
+});
+
+// MORE ROUTES TO COME
 
 // server listen and mongoose connect
 mongoose.connect(MONGOURI + "/" + dbname, function(){
