@@ -1,41 +1,52 @@
 var app = angular.module('MemoryPalace', ['ngRoute']);
 
+
+// *** MAIN CONTROLLER ***
 app.controller('MainController', ['$http', '$location', function($http, $location){
   var controller = this;
 
   this.signup = function() {
     // alert('singup!');
-    // console.log("controller.email: ", controller.userEmail);
-    // console.log("controller.password: ", controller.password);
-    $http.post('/signup', {
-      userEmail: controller.userEmail,
-      password: controller.password
-    }).then(function(data){
-      console.log(data);
-      if (data.data._id) {
-        // $window.location.href = '/' + data.data._id + '/loggedin';
-        $location.path('/' + data.data.currentUser + '/loggedin');
-        console.log("data.data.currentUser: ", data.data.currentUser);
-      } else {
-        $('body').append('<h2>Sorry, there was an error signing you up--try again!</h2>');
-      }
-    }, function(error){
-      console.log("there was an error: ", error);
-    });
+    // clear the flash message every time this is clicked, so it doesn't persist.. maybe use angular-flash for this?
+    $('#flashMessage').empty();
+
+    if (controller.password === controller.passwordConfirm) {
+      $http.post('/signup', {
+        username: controller.username,
+        userEmail: controller.userEmail,
+        password: controller.password
+      }).then(function(data){
+        console.log(data);
+        if (data.data.currentUser) {
+          $location.path('/' + data.data.currentUsername + '/loggedin');
+          // console.log("data.data.currentUser: ", data.data.currentUser);
+        } else {
+        $('#flashMessage').append('<h2>Sorry, there was an error logging you in: ' + data.data.error + '</h2>');
+        }
+      }, function(error){
+        console.log("there was an error: ", error);
+      });
+    } else {
+      $('#flashMessage').append('<h2>Your passwords don\'t match, ya dummy. Try again.</h2>');
+      controller.password = '';
+      controller.passwordConfirm = '';
+    }
   };
 
   this.login = function() {
     // alert('loggin!');
+    // clear the flash message every time this is clicked, so it doesn't persist.. maybe use angular-flash for this?
+    $('#flashMessage').empty();
+
     $http.post('/login', {
-      userEmail: controller.userEmail,
+      username: controller.username,
       password: controller.password
     }).then(function(data){
       console.log(data);
       if (data.data.currentUser) {
-        // $window.location.href = '/' + data.data._id + '/loggedin';
-        $location.path('/' + data.data._id + '/loggedin');
+        $location.path('/' + data.data.currentUsername + '/loggedin');
       } else {
-        $('body').append('<h2>Sorry, there was an error logging you in--try again!</h2>');
+        $('#flashMessage').append('<h2>Sorry, there was an error logging you in: ' + data.data.error + '</h2>');
       }
     }, function(error){
       console.log("there was an error: ", error);
@@ -43,10 +54,14 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
   };
 }]);
 
-app.controller('LoggedInController', ['$http', '$window', '$routeParams', function($http, $window, $routeParams){
+
+// *** LOGGED IN CONTROLLER ***
+app.controller('LoggedInController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams){
   var controller = this;
 
-  this.userId = $routeParams.id;
+  this.currentUsername = $routeParams.username;
+
+  console.log("$routeParams: ", this.currentUsername);
 }]);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
@@ -67,7 +82,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'MainController',
       controllerAs: 'mainCtrl'
     }).
-    when('/:id/loggedin', {
+    when('/:username/loggedin', {
       templateUrl: 'partials/loggedin.html',
       controller: 'LoggedInController',
       controllerAs: 'loggedinCtrl'
