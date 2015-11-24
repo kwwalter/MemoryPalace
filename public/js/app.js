@@ -4,13 +4,29 @@ app.controller('MainController', ['$http', function($http){
   var controller = this;
 
   this.signup = function() {
-    alert('singup!');
-    // to do
+    // alert('singup!');
+    $http.post('/signup', {
+      req.body.email: controller.email,
+      req.body.password: controller.password
+      // console.log("posting to signup..");
+      // controller.userEmail = req.body.email;
+      // controller.password = req.body.password;
+      // console.log("controller.userEmail is: ", controller.userEmail);
+      // console.log("controller.password is: ", controller.password);
+    });
   };
 
   this.login = function() {
-    alert('loggin!');
-    // to do
+    // alert('loggin!');
+    $http.post('/login', {
+      req.body.email: controller.email,
+      req.body.password: controller.password
+      // console.log("posting to login..");
+      // controller.userEmail = req.body.email;
+      // controller.password = req.body.password;
+      // console.log("controller.userEmail is: ", controller.userEmail);
+      // console.log("controller.password is: ", controller.password);
+    });
   };
 
 }]);
