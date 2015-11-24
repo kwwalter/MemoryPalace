@@ -5,31 +5,27 @@ app.controller('MainController', ['$http', function($http){
 
   this.signup = function() {
     // alert('singup!');
-    console.log("controller.email: ", controller.userEmail);
-    console.log("controller.password: ", controller.password);
+    // console.log("controller.email: ", controller.userEmail);
+    // console.log("controller.password: ", controller.password);
     $http.post('/signup', {
       userEmail: controller.userEmail,
       password: controller.password
-      // console.log("posting to signup..");
-      // controller.userEmail = req.body.email;
-      // controller.password = req.body.password;
-      // console.log("controller.userEmail is: ", controller.userEmail);
-      // console.log("controller.password is: ", controller.password);
-    }).success(function(data){
+    }).then(function(data){
       console.log(data);
+    }, function(error){
+      console.log("there was an error: ", error);
     });
   };
 
   this.login = function() {
-    // alert('loggin!');
+    alert('loggin!');
     $http.post('/login', {
-      email: controller.email,
+      userEmail: controller.userEmail,
       password: controller.password
-      // console.log("posting to login..");
-      // controller.userEmail = req.body.email;
-      // controller.password = req.body.password;
-      // console.log("controller.userEmail is: ", controller.userEmail);
-      // console.log("controller.password is: ", controller.password);
+    }).then(function(data){
+      console.log(data);
+    }, function(error){
+      console.log("there was an error: ", error);
     });
   };
 
