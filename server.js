@@ -84,7 +84,7 @@ server.post('/signup', function(req, res) {
   console.log("newUser in server.post('/signup') is: ", newUser);
 
   User.findOne( {
-    userEmail: req.body.email
+    userEmail: req.body.userEmail
   }, function(err, foundUser) {
     if (err) {
       console.log("there was an error creating this user: \n", err);
@@ -96,7 +96,7 @@ server.post('/signup', function(req, res) {
       newUser.save(function(err2, user) {
         if (err2) {
           console.log("There was an error saving this user to the database: \n", err2);
-          res.json({ error: "There was an error saving this user to the database."});
+          res.json({ error: "There was an error saving this user to the database: " + err2 });
         } else {
           console.log(user.userName, " successfully saved!");
           req.session.currentUser = user._id;
