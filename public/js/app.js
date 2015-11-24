@@ -16,9 +16,9 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
         userEmail: controller.userEmail,
         password: controller.password
       }).then(function(data){
-        console.log(data);
+        console.log("data is: ", data);
         if (data.data.currentUser) {
-          $location.path('/' + data.data.currentUsername + '/loggedin');
+          $location.path('/' + data.data.currentUser + '/loggedin');
           // console.log("data.data.currentUser: ", data.data.currentUser);
         } else {
         $('#flashMessage').append('<h2>Sorry, there was an error logging you in: ' + data.data.error + '</h2>');
@@ -44,7 +44,7 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
     }).then(function(data){
       console.log(data);
       if (data.data.currentUser) {
-        $location.path('/' + data.data.currentUsername + '/loggedin');
+        $location.path('/' + data.data.currentUser + '/loggedin');
       } else {
         $('#flashMessage').append('<h2>Sorry, there was an error logging you in: ' + data.data.error + '</h2>');
       }
@@ -59,9 +59,21 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
 app.controller('LoggedInController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams){
   var controller = this;
 
-  this.currentUsername = $routeParams.username;
+  // create a service to store the req.session info?
+  // this.currentUsername = req.session.currentUsername;
+  this.currentUsername = 'test';
+  this.allPalaceUrl = '/' + $routeParams.id + '/palaces';
+  this.newPalaceUrl = '/' + $routeParams.id + '/palaces/new';
+  // console.log("$routeParams: ", this.currentUsername);
 
-  console.log("$routeParams: ", this.currentUsername);
+  this.showPalaces = function() {
+    $http.get(this.allPalaceUrl).then(function(data){
+      console.log("data after /:id/palaces get request: ", data);
+      controller.palaces = data;
+    }, function(error) {
+      console.log("there was an error retrieving the data: ", error);
+    });
+  }
 }]);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
@@ -82,8 +94,18 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'MainController',
       controllerAs: 'mainCtrl'
     }).
-    when('/:username/loggedin', {
+    when('/:id/loggedin', {
       templateUrl: 'partials/loggedin.html',
+      controller: 'LoggedInController',
+      controllerAs: 'loggedinCtrl'
+    }).
+    when('/:id/palaces', {
+      templateUrl: 'partials/palaces.html',
+      controller: 'LoggedInController',
+      controllerAs: 'loggedinCtrl'
+    }).
+    when('/:id/palaces/new', {
+      templateUrl: 'partials/new-palace.html',
       controller: 'LoggedInController',
       controllerAs: 'loggedinCtrl'
     }).

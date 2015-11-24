@@ -23,13 +23,30 @@ var MONGOURI = process.env.MONGOLAB_URI || "mongodb://localhost:27017",
 mongoose.set('debug', true);
 
 // creating the User schema..
-var userSchema  = new Schema({
+var userSchema = new Schema({
   username: { type: String, required: true, unique: true },
   userEmail: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   created: { type: Date, default: Date.now }
 });
 var User = mongoose.model('User', userSchema);
+
+// creating the Palace schema..
+var palaceSchema = new Schema({
+  name: { type: String, required: true },
+  facts: [ { type: Schema.ObjectId, ref: 'Fact' } ],
+  owner: { type: Schema.ObjectId, ref: 'User', required: true },
+  created: { type: Date, default: Date.now }
+});
+var Palace = mongoose.model('Palace', palaceSchema);
+
+// now creating the Fact schema..
+var factSchema = new Schema({
+  question: { type: String, required: true },
+  answer: { type: String, required: true },
+  created: { type: Date, default: Date.now }
+});
+var Fact = mongoose.model('Fact', factSchema);
 
 // server.set('views', './views');
 // server.set('view engine', 'ejs');
@@ -129,6 +146,19 @@ server.post('/login', function(req, res){
         res.json({ error: "Invalid username or password!" });
       }
   });
+});
+
+// to show all of a user's memory palaces (and the facts)
+server.get('/:id/palaces', function(req, res){
+  var id = req.params.id;
+  console.log("in /:id/palaces, id is: ", id);
+
+  Palace.find({ owner: id })
+        .populate('facts')
+        .exec(function(err, foundPalaces){
+          console.log("inside of findById, foundPalaces is: ", foundPalaces);
+          res.json(foundPalaces);
+        });
 });
 
 // END ROUTES
