@@ -100,7 +100,10 @@ server.post('/signup', function(req, res) {
           console.log(user.userName, " successfully saved!");
           req.session.currentUser = user._id;
           req.session.currentUserEmail = user.userEmail;
-          res.json({ currentUser: req.session.currentUser });
+          res.json({
+            currentUser: req.session.currentUser,
+            currentUserEmail: req.session.currentUserEmail
+          });
         }
       });
     }

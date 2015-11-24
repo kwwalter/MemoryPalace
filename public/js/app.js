@@ -1,6 +1,6 @@
 var app = angular.module('MemoryPalace', ['ngRoute']);
 
-app.controller('MainController', ['$http', '$window', function($http, $window){
+app.controller('MainController', ['$http', '$location', function($http, $location){
   var controller = this;
 
   this.signup = function() {
@@ -13,7 +13,9 @@ app.controller('MainController', ['$http', '$window', function($http, $window){
     }).then(function(data){
       console.log(data);
       if (data.data._id) {
-        $window.location.href = '/' + data.data._id + '/loggedin';
+        // $window.location.href = '/' + data.data._id + '/loggedin';
+        $location.path('/' + data.data.currentUser + '/loggedin');
+        console.log("data.data.currentUser: ", data.data.currentUser);
       } else {
         $('body').append('<h2>Sorry, there was an error signing you up--try again!</h2>');
       }
@@ -30,7 +32,8 @@ app.controller('MainController', ['$http', '$window', function($http, $window){
     }).then(function(data){
       console.log(data);
       if (data.data._id) {
-        $window.location.href = '/' + data.data._id + '/loggedin';
+        // $window.location.href = '/' + data.data._id + '/loggedin';
+        $location.path('/' + data.data._id + '/loggedin');
       } else {
         $('body').append('<h2>Sorry, there was an error logging you in--try again!</h2>');
       }
@@ -43,7 +46,7 @@ app.controller('MainController', ['$http', '$window', function($http, $window){
 app.controller('LoggedInController', ['$http', '$window', '$routeParams', function($http, $window, $routeParams){
   var controller = this;
 
-  this.userEmail = $routeParams.userEmail;
+  this.userId = $routeParams.id;
 }]);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
