@@ -79,7 +79,35 @@ server.get('/wicked-secret-test', function(req, res){
 
 // to sign up
 server.post('/signup', function(req, res) {
-  // NOT working, going to try something else..
+  // second try..
+  var newUser = User(req.body);
+  console.log("newUser in server.post('/signup') is: ", newUser);
+
+  User.findOne( {
+    userEmail: req.body.email
+  }, function(err, foundUser) {
+    if (err) {
+      console.log("there was an error creating this user: \n", err);
+      res.json({ error: "there was an error creating this user." })
+    } else if (foundUser) {
+      console.log("Someone has already signed up with that username or email");
+      res.json({ error: "Someone has already signed up with that email address."});
+    } else {
+      newUser.save(function(err2, user) {
+        if (err2) {
+          console.log("There was an error saving this user to the database: \n", err2);
+          res.json({ error: "There was an error saving this user to the database."});
+        } else {
+          console.log(user.userName, " successfully saved!");
+          req.session.currentUser = user._id;
+          req.session.currentUserEmail = user.email;
+          res.json({ currentUser: req.session.currentUser });
+        }
+      });
+    }
+  });
+
+  // NOT working, going to try something else, but keeping this around just in case..
 
   // var attemptedSignup = req.body.user;
   // var newUser = User(req.body.user);
@@ -106,34 +134,6 @@ server.post('/signup', function(req, res) {
   //     });
   //   }
   // })
-
-  // second try..
-    var newUser = User({ req.body.email, req.body.password });
-
-    User.findOne( {
-      userEmail: req.body.email
-    }, function(err, foundUser) {
-      if (err) {
-        console.log("there was an error finding this user: \n", err);
-        res.json({ error: "there was an error finding this user." })
-      } else if (foundUser) {
-        console.log("Someone has already signed up with that username or email");
-        res.json({ error: "Someone has already signed up with that email address."});
-      } else {
-        newUser.save(function(err2, user) {
-          if (err2) {
-            console.log("There was an error saving this user to the database: \n", err2);
-            res.json({ error: "There was an error saving this user to the database."});
-          } else {
-            console.log(user.userName, " successfully saved!");
-            req.session.currentUser = user._id;
-            req.session.currentUserEmail = user.email;
-            res.json({ currentUser: req.session.currentUser });
-          }
-        });
-      }
-    });
-  });
 });
 
 // to check for user login
