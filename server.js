@@ -101,8 +101,8 @@ server.post('/signup', function(req, res) {
           req.session.currentUser = user._id;
           req.session.currentUserEmail = user.userEmail;
           res.json({
-            currentUser: req.session.currentUser,
-            currentUserEmail: req.session.currentUserEmail
+            currentUser: user._id,
+            currentUserEmail: user.userEmail
           });
         }
       });
@@ -121,9 +121,12 @@ server.post('/login', function(req, res){
         console.log(foundUser, "user found in database, and passwords match..");
 
         req.session.currentUser = foundUser._id;
-        req.session.currentUserEmail = foundUser.email;
+        req.session.currentUserEmail = foundUser.userEmail;
 
-        res.json(foundUser);
+        res.json({
+          currentUser: foundUser._id,
+          currentUserEmail: foundUser.userEmail
+        });
       } else {
         console.log("Error locating this user in the database OR password didn't match: ", err);
         res.json({ error: "Error locating this user in the database OR password didn't match: " + err });

@@ -31,7 +31,7 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
       password: controller.password
     }).then(function(data){
       console.log(data);
-      if (data.data._id) {
+      if (data.data.currentUser) {
         // $window.location.href = '/' + data.data._id + '/loggedin';
         $location.path('/' + data.data._id + '/loggedin');
       } else {
