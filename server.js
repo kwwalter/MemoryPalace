@@ -169,6 +169,21 @@ server.get('/:id/palaces', function(req, res){
   });
 });
 
+// create a new palace
+server.post('/:id/palaces/new', function(req, res){
+  var newPalace = Palace(req.body);
+  console.log("newPalace in server.post('/:id/palaces/new') is: ", newPalace);
+
+  newPalace.save(function(err){
+    if (err) {
+      console.log("there was an error saving the new palace: ", err);
+      res.json({ error: err });
+    } else {
+      res.json(newPalace);
+    }
+  })
+});
+
 // END ROUTES
 
 // server listen and mongoose connect

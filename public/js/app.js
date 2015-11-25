@@ -7,6 +7,7 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
 
   this.signup = function() {
     // alert('singup!');
+
     // clear the flash message every time this is clicked, so it doesn't persist.. maybe use angular-flash for this?
     $('#flashMessage').empty();
 
@@ -35,6 +36,7 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
 
   this.login = function() {
     // alert('loggin!');
+
     // clear the flash message every time this is clicked, so it doesn't persist.. maybe use angular-flash for this?
     $('#flashMessage').empty();
 
@@ -42,7 +44,7 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
       username: controller.username,
       password: controller.password
     }).then(function(data){
-      console.log(data);
+      // console.log(data);
       if (data.data.currentUser) {
         $location.path('/' + data.data.currentUser + '/loggedin');
       } else {
@@ -59,21 +61,48 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
 app.controller('LoggedInController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams){
   var controller = this;
 
-  this.currentUsername = 'test';
   this.allPalaceUrl = '/' + $routeParams.id + '/palaces';
   this.newPalaceUrl = '/' + $routeParams.id + '/palaces/new';
-  // console.log("$routeParams: ", this.currentUsername);
+  this.userID = $routeParams.id;
 
-  // this.showPalaces = function() {
-    $http.get(this.allPalaceUrl).then(function(data){
-      // console.log("data after /:id/palaces get request: ", data);
-      controller.palaces = data.data;
-      // console.log("controller.palaces: ", controller.palaces);
-    }, function(error) {
-      console.log("there was an error retrieving the data: ", error);
-    });
-  // }
+  $http.get(this.allPalaceUrl).then(function(data){
+    // console.log("data after /:id/palaces get request: ", data);
+    controller.palaces = data.data;
+    // console.log("controller.palaces: ", controller.palaces);
+  }, function(error) {
+    console.log("there was an error retrieving the data: ", error);
+  });
+
+  this.createPalace = function() {
+    $http.post(this.newPalaceUrl, {
+      name: controller.name,
+      _owner: controller.userID
+    }).then(function(data){
+        console.log(data);
+        if (data.data._id) {
+          $location.path('/' + data.data._owner + '/palaces/' + data.data._id);
+        } else {
+          $('#flashMessage').append('<h2>Sorry, there was an error creating this palace: ' + data.data.error + '</h2>');
+          }
+        }, function(error){
+            console.log("there was an error creating this palace: ", error);
+           }
+      );
+  };
 }]);
+
+// *** PALACE CONTROLLER ***
+app.controller('PalaceController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams){
+  var controller = this;
+
+  var singlePalaceUrl = '/' + $routeParams.id + '/' + $routeParams.palaceID;
+
+  $http.get(singlePalaceUrl).then(function(data){
+
+  }, function(error){
+
+  }); 
+});
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
   $locationProvider.html5Mode({ enabled: true });
@@ -107,6 +136,11 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       templateUrl: 'partials/new-palace.html',
       controller: 'LoggedInController',
       controllerAs: 'loggedinCtrl'
+    }).
+    when('/:id/palaces/:palaceID', {
+      templateUrl: 'partials/one-palace.html',
+      controller: 'PalaceController',
+      controllerAs: 'palaceCtrl'
     }).
     otherwise({
       redirectTo: '/'
