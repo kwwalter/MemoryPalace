@@ -17,7 +17,7 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
         userEmail: controller.userEmail,
         password: controller.password
       }).then(function(data){
-        console.log("data is: ", data);
+        // console.log("data is: ", data);
         if (data.data.currentUser) {
           $location.path('/' + data.data.currentUser + '/loggedin');
           // console.log("data.data.currentUser: ", data.data.currentUser);
@@ -78,7 +78,7 @@ app.controller('LoggedInController', ['$http', '$location', '$routeParams', func
       name: controller.name,
       _owner: controller.userID
     }).then(function(data){
-        console.log(data);
+        // console.log(data);
         if (data.data._id) {
           $location.path('/' + data.data._owner + '/palaces/' + data.data._id);
         } else {
@@ -95,14 +95,15 @@ app.controller('LoggedInController', ['$http', '$location', '$routeParams', func
 app.controller('PalaceController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams){
   var controller = this;
 
-  var singlePalaceUrl = '/' + $routeParams.id + '/' + $routeParams.palaceID;
+  this.singlePalaceUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID;
 
-  $http.get(singlePalaceUrl).then(function(data){
-
+  $http.get(this.singlePalaceUrl).then(function(data){
+    // console.log('data from singlePalaceUrl get: ', data);
+    controller.palace = data.data[0];
   }, function(error){
-
-  }); 
-});
+    console.log("there was an error retrieving the data: ", error);
+  });
+}]);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
   $locationProvider.html5Mode({ enabled: true });

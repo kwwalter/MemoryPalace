@@ -1,2 +1,11 @@
 <h1>Your Palace: </h1>
-<h2>{{palaceCtrl}}
+<h2>{{palaceCtrl.palace.name}}</h2>
+<h4>Created at: {{palaceCtrl.palace.created}}</h4>
+<h4>By: {{palaceCtrl.palace._owner.username}}</h4>
+<p ng-if="!palaceCtrl.palace.facts">Facts: </p>
+<ul ng-repeat="fact in palaceCtrl.palace.facts">
+  <li>
+    <p>Question: {{fact.question}}</p>
+    <p>Answer: {{fact.answer}}</p>
+  </li>
+</ul>

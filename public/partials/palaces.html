@@ -1,11 +1,10 @@
 <h2>Here are all the palaces: </h2>
 <ul ng-repeat="palace in loggedinCtrl.palaces">
   <li>
-    <p>Name: {{palace.name}}</p>
+    <p><a href="{{loggedinCtrl.allPalaceUrl + '/' + palace._id}}">Name: {{palace.name}}</a></p>
     <p>Created at: {{palace.created}}</p>
     <p>Author: {{palace._owner.username}}</p>
-    <ul ng-if="!palace.facts">
-      Facts:
+    <p ng-if="!palace.facts">Facts: </p>
     <ul ng-repeat="fact in palace.facts">
       <li>
         <p>Question: {{fact.question}}</p>

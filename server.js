@@ -184,6 +184,25 @@ server.post('/:id/palaces/new', function(req, res){
   })
 });
 
+// retrieve a single palace from the database
+server.get('/:id/palaces/:palaceID', function(req, res){
+  // var id = req.params.id;
+  var palaceID = req.params.palaceID;
+
+  Palace
+  .find({ _id: palaceID })
+  .populate('_owner')
+  .exec(function(err, foundPalace){
+    if (err) {
+      console.log("inside of Palace.find, error: ", err);
+      res.json( { error: err });
+    } else {
+        console.log("inside of Palace.find, foundPalace is: ", foundPalace);
+        res.json(foundPalace);
+      }
+  });
+});
+
 // END ROUTES
 
 // server listen and mongoose connect
