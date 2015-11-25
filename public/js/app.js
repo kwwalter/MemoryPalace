@@ -59,21 +59,20 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
 app.controller('LoggedInController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams){
   var controller = this;
 
-  // create a service to store the req.session info?
-  // this.currentUsername = req.session.currentUsername;
   this.currentUsername = 'test';
   this.allPalaceUrl = '/' + $routeParams.id + '/palaces';
   this.newPalaceUrl = '/' + $routeParams.id + '/palaces/new';
   // console.log("$routeParams: ", this.currentUsername);
 
-  this.showPalaces = function() {
+  // this.showPalaces = function() {
     $http.get(this.allPalaceUrl).then(function(data){
-      console.log("data after /:id/palaces get request: ", data);
-      controller.palaces = data;
+      // console.log("data after /:id/palaces get request: ", data);
+      controller.palaces = data.data;
+      // console.log("controller.palaces: ", controller.palaces);
     }, function(error) {
       console.log("there was an error retrieving the data: ", error);
     });
-  }
+  // }
 }]);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){

@@ -1,2 +1,16 @@
 <h2>Here are all the palaces: </h2>
-{{loggedinCtrl.palaces}}
+<ul ng-repeat="palace in loggedinCtrl.palaces">
+  <li>
+    <p>Name: {{palace.name}}</p>
+    <p>Created at: {{palace.created}}</p>
+    <p>Author: {{palace._owner.username}}</p>
+    <ul ng-if="!palace.facts">
+      Facts:
+    <ul ng-repeat="fact in palace.facts">
+      <li>
+        <p>Question: {{fact.question}}</p>
+        <p>Answer: {{fact.answer}}</p>
+      </li>
+    </ul>
+  </li>
+</ul>
