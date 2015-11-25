@@ -4,8 +4,8 @@
     <p><a href="{{loggedinCtrl.allPalaceUrl + '/' + palace._id}}">Name: {{palace.name}}</a></p>
     <p>Created at: {{palace.created}}</p>
     <p>Author: {{palace._owner.username}}</p>
-    <p ng-if="!palace.facts">Facts: </p>
-    <ul ng-repeat="fact in palace.facts">
+    <!-- <p ng-if="palace.facts.question">Facts: </p> -->
+    <ul ng-repeat="fact in palace.facts">Facts:
       <li>
         <p>Question: {{fact.question}}</p>
         <p>Answer: {{fact.answer}}</p>

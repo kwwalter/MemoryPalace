@@ -35,7 +35,8 @@ var User = mongoose.model('User', userSchema);
 // creating the Palace schema..
 var palaceSchema = new Schema({
   name: { type: String, required: true },
-  facts: [ { type: Schema.Types.ObjectId, ref: 'Fact' } ],
+  // facts: [ { type: Schema.Types.ObjectId, ref: 'Fact' } ],
+  facts: [ { question: String, answer: String } ],
   _owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   created: { type: Date, default: Date.now }
 });
@@ -200,6 +201,27 @@ server.get('/:id/palaces/:palaceID', function(req, res){
         console.log("inside of Palace.find, foundPalace is: ", foundPalace);
         res.json(foundPalace);
       }
+  });
+});
+
+// edit a palace
+
+server.put('/:id/palaces/:palaceID/edit', function(req, res){
+  console.log("in server.js server.put, req.body is: ", req.body);
+  Palace.findOneAndUpdate( {
+    _id: req.params.palaceID
+  }, {
+      name: req.body.name,
+      $push: { facts: { question: req.body.question, answer: req.body.answer } }
+     },
+     function(err, palace){
+       if (err) {
+        console.log("Could not update this palace: ", err);
+        res.json( { error: err });
+       } else {
+         console.log("successfully updated palace!");
+         res.json(palace);
+       }
   });
 });
 

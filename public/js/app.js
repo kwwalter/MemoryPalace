@@ -101,13 +101,28 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', functi
   var controller = this;
 
   this.singlePalaceUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID;
+  this.editPalaceUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/edit';
+  this.name;
 
   $http.get(this.singlePalaceUrl).then(function(data){
     // console.log('data from singlePalaceUrl get: ', data);
     controller.palace = data.data[0];
+    controller.name = data.data[0].name;
   }, function(error){
     console.log("there was an error retrieving the data: ", error);
   });
+
+  this.editPalace = function() {
+    $http.put(controller.editPalaceUrl, {
+      name: controller.name,
+      question: controller.question,
+      answer: controller.answer
+    }).then(function(data){
+      console.log('data from editPalaceUrl put: ', data);
+    }, function(error){
+      console.log("there was an error retrieving the data: ", error);
+    });
+  };
 }]);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
@@ -145,6 +160,11 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     }).
     when('/:id/palaces/:palaceID', {
       templateUrl: 'partials/one-palace.html',
+      controller: 'PalaceController',
+      controllerAs: 'palaceCtrl'
+    }).
+    when('/:id/palaces/:palaceID/edit', {
+      templateUrl: 'partials/edit-palace.html',
       controller: 'PalaceController',
       controllerAs: 'palaceCtrl'
     }).
