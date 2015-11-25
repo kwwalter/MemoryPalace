@@ -27,6 +27,7 @@ var userSchema = new Schema({
   username: { type: String, required: true, unique: true },
   userEmail: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  palaces: [{ type: Schema.Types.ObjectId, ref: 'Palace' }],
   created: { type: Date, default: Date.now }
 });
 var User = mongoose.model('User', userSchema);
@@ -34,14 +35,15 @@ var User = mongoose.model('User', userSchema);
 // creating the Palace schema..
 var palaceSchema = new Schema({
   name: { type: String, required: true },
-  facts: [ { type: Schema.ObjectId, ref: 'Fact' } ],
-  owner: { type: Schema.ObjectId, ref: 'User', required: true },
+  facts: [ { type: Schema.Types.ObjectId, ref: 'Fact' } ],
+  _owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   created: { type: Date, default: Date.now }
 });
 var Palace = mongoose.model('Palace', palaceSchema);
 
 // now creating the Fact schema..
 var factSchema = new Schema({
+  _livesIn: { type: Schema.Types.ObjectId, ref: 'Palace', required: true },
   question: { type: String, required: true },
   answer: { type: String, required: true },
   created: { type: Date, default: Date.now }
@@ -153,12 +155,30 @@ server.get('/:id/palaces', function(req, res){
   var id = req.params.id;
   console.log("in /:id/palaces, id is: ", id);
 
-  Palace.find({ owner: id })
-        .populate('facts')
-        .exec(function(err, foundPalaces){
-          console.log("inside of findById, foundPalaces is: ", foundPalaces);
-          res.json(foundPalaces);
-        });
+  // first try
+  // Palace.find({ owner: id })
+  //       .populate('facts')
+  //       .exec(function(err, foundPalaces){
+  //         console.log("inside of findById, foundPalaces is: ", foundPalaces);
+  //         res.json(foundPalaces);
+  //       });
+
+  // attempt #2
+  // Palace.find({ _owner: ken._id }, function(err, foundPalaces){
+  //   if (err){
+  //     console.log("inside of Palace.find, error: ", err);
+  //     res.json( { error: err } );
+  //   } else {
+  //     console.log("inside of Palace.find, foundPalaces is: ", foundPalaces);
+  //     res.json(foundPalaces);
+  //   }
+  // }).populate('facts')
+  // .exec(function(err2){
+  //   if (err2) {
+  //     console.log("inside of Palace.find, error2: ", err2);
+  //     res.json( { error: err2 });
+  //   }
+  // });
 });
 
 // END ROUTES
