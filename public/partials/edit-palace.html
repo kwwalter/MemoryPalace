@@ -5,3 +5,11 @@
   Answer: <input type="text" ng-model="palaceCtrl.answer"></br>
   <input type="submit" value="Submit!">
 </form>
+
+<!-- form for image upload -->
+<form ng-app="fileUpload" ng-submit="palaceCtrl.submitImage()">
+  <div class="button" ngf-select ng-model="palaceCtrl.image" name="file" ngf-pattern="'image/*'"
+    accept="image/*" ngf-max-size="20MB" ngf-min-height="100"
+    ngf-resize="{width: 100, height: 100}">Select</div>
+  <input type="submit" value="Submit image!">
+</form>

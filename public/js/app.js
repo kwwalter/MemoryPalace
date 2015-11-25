@@ -120,6 +120,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', functi
       answer: controller.answer
     }).then(function(data){
       console.log('data from editPalaceUrl put: ', data);
+      // maybe instead of redirecting, can just display the palace information below the forms, so the user can see when their questions have been saved..
       $location.path('/' + data.data._owner + '/palaces/' + data.data._id);
     }, function(error){
       console.log("there was an error retrieving the data: ", error);
