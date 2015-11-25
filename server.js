@@ -155,30 +155,18 @@ server.get('/:id/palaces', function(req, res){
   var id = req.params.id;
   console.log("in /:id/palaces, id is: ", id);
 
-  // first try
-  // Palace.find({ owner: id })
-  //       .populate('facts')
-  //       .exec(function(err, foundPalaces){
-  //         console.log("inside of findById, foundPalaces is: ", foundPalaces);
-  //         res.json(foundPalaces);
-  //       });
-
-  // attempt #2
-  // Palace.find({ _owner: ken._id }, function(err, foundPalaces){
-  //   if (err){
-  //     console.log("inside of Palace.find, error: ", err);
-  //     res.json( { error: err } );
-  //   } else {
-  //     console.log("inside of Palace.find, foundPalaces is: ", foundPalaces);
-  //     res.json(foundPalaces);
-  //   }
-  // }).populate('facts')
-  // .exec(function(err2){
-  //   if (err2) {
-  //     console.log("inside of Palace.find, error2: ", err2);
-  //     res.json( { error: err2 });
-  //   }
-  // });
+  Palace
+  .find({ _owner: id })
+  .populate('_owner')
+  .exec(function(err2, foundPalaces){
+    if (err2) {
+      console.log("inside of Palace.find, error2: ", err2);
+      res.json( { error: err2 });
+    } else {
+        console.log("inside of Palace.find, foundPalaces is: ", foundPalaces);
+        res.json(foundPalaces);
+      }
+  });
 });
 
 // END ROUTES
