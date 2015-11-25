@@ -5,6 +5,9 @@ var app = angular.module('MemoryPalace', ['ngRoute']);
 app.controller('MainController', ['$http', '$location', function($http, $location){
   var controller = this;
 
+  this.signedIn = false;
+  this.currentUser = null;
+
   this.signup = function() {
     // alert('singup!');
 
@@ -19,6 +22,8 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
       }).then(function(data){
         // console.log("data is: ", data);
         if (data.data.currentUser) {
+          controller.signedIn = true;
+          controller.currentUser = data.data.currentUser;
           $location.path('/' + data.data.currentUser + '/loggedin');
           // console.log("data.data.currentUser: ", data.data.currentUser);
         } else {
