@@ -3,9 +3,11 @@
   <li>
     <p><a href="{{loggedinCtrl.allPalaceUrl + '/' + palace._id}}">Name: {{palace.name}}</a></p>
     <p>Created at: {{palace.created}}</p>
-    <p>Author: {{palace._owner.username}}</p>
+    <!-- don't really have to display the user's name if we can only see the logged in user's own palaces -->
+    <!-- <p>Author: {{palace._owner.username}}</p> -->
     <!-- <p ng-if="palace.facts.question">Facts: </p> -->
-    <ul ng-repeat="fact in palace.facts">Facts:
+    <!-- ng-if wasn't working here, going to use fact # + $index to display all Q/A pairs for a palace -->
+    <ul ng-repeat="fact in palace.facts">Fact #{{$index + 1}}
       <li>
         <p>Question: {{fact.question}}</p>
         <p>Answer: {{fact.answer}}</p>

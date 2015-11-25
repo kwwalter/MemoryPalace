@@ -93,7 +93,7 @@ server.get('/wicked-secret-test', function(req, res){
 // to sign up
 server.post('/signup', function(req, res) {
   var newUser = User(req.body);
-  console.log("newUser in server.post('/signup') is: ", newUser);
+  // console.log("newUser in server.post('/signup') is: ", newUser);
 
   User.findOne( {
     userEmail: req.body.userEmail
@@ -154,7 +154,7 @@ server.post('/login', function(req, res){
 // to show all of a user's memory palaces (and the facts)
 server.get('/:id/palaces', function(req, res){
   var id = req.params.id;
-  console.log("in /:id/palaces, id is: ", id);
+  // console.log("in /:id/palaces, id is: ", id);
 
   Palace
   .find({ _owner: id })
@@ -164,7 +164,7 @@ server.get('/:id/palaces', function(req, res){
       console.log("inside of Palace.find, error2: ", err2);
       res.json( { error: err2 });
     } else {
-        console.log("inside of Palace.find, foundPalaces is: ", foundPalaces);
+        // console.log("inside of Palace.find, foundPalaces is: ", foundPalaces);
         res.json(foundPalaces);
       }
   });
@@ -198,7 +198,7 @@ server.get('/:id/palaces/:palaceID', function(req, res){
       console.log("inside of Palace.find, error: ", err);
       res.json( { error: err });
     } else {
-        console.log("inside of Palace.find, foundPalace is: ", foundPalace);
+        // console.log("inside of Palace.find, foundPalace is: ", foundPalace);
         res.json(foundPalace);
       }
   });

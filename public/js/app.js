@@ -100,6 +100,7 @@ app.controller('LoggedInController', ['$http', '$location', '$routeParams', func
 app.controller('PalaceController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams){
   var controller = this;
 
+  this.allPalaceUrl = '/' + $routeParams.id + '/palaces';
   this.singlePalaceUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID;
   this.editPalaceUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/edit';
   this.name;
@@ -119,6 +120,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', functi
       answer: controller.answer
     }).then(function(data){
       console.log('data from editPalaceUrl put: ', data);
+      $location.path('/' + data.data._owner + '/palaces/' + data.data._id);
     }, function(error){
       console.log("there was an error retrieving the data: ", error);
     });
