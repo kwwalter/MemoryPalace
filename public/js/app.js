@@ -70,13 +70,15 @@ app.controller('LoggedInController', ['$http', '$location', '$routeParams', func
   this.newPalaceUrl = '/' + $routeParams.id + '/palaces/new';
   this.userID = $routeParams.id;
 
-  $http.get(this.allPalaceUrl).then(function(data){
-    // console.log("data after /:id/palaces get request: ", data);
-    controller.palaces = data.data;
-    // console.log("controller.palaces: ", controller.palaces);
-  }, function(error) {
-    console.log("there was an error retrieving the data: ", error);
-  });
+  this.refresh = function() {
+    $http.get(this.allPalaceUrl).then(function(data){
+      // console.log("data after /:id/palaces get request: ", data);
+      controller.palaces = data.data;
+      // console.log("controller.palaces: ", controller.palaces);
+    }, function(error) {
+      console.log("there was an error retrieving the data: ", error);
+    });
+  };
 
   this.createPalace = function() {
     $http.post(this.newPalaceUrl, {
@@ -94,6 +96,20 @@ app.controller('LoggedInController', ['$http', '$location', '$routeParams', func
            }
       );
   };
+
+  this.deletePalace = function(palace) {
+    var deletePalaceUrl = controller.allPalaceUrl + '/' + palace._id;
+
+    $http.delete(deletePalaceUrl, palace).then(function(data){
+      console.log("palace successfully deleted: ", data);
+      controller.refresh(); 
+    }, function(error){
+      console.log("there was an error deleting this palace: ", error);
+      }
+    );
+  };
+
+  this.refresh();
 }]);
 
 // *** PALACE CONTROLLER ***

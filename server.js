@@ -205,7 +205,6 @@ server.get('/:id/palaces/:palaceID', function(req, res){
 });
 
 // edit a palace
-
 server.put('/:id/palaces/:palaceID/edit', function(req, res){
   console.log("in server.js server.put, req.body is: ", req.body);
   Palace.findOneAndUpdate( {
@@ -217,12 +216,32 @@ server.put('/:id/palaces/:palaceID/edit', function(req, res){
      function(err, palace){
        if (err) {
         console.log("Could not update this palace: ", err);
-        res.json( { error: err });
+        res.json( { error: err } );
        } else {
          console.log("successfully updated palace!");
          res.json(palace);
        }
   });
+});
+
+// delete a palace
+server.delete('/:id/palaces/:palaceID', function(req, res) {
+  var palaceToDelete = req.params.palaceID;
+
+  // going to put in this layer of security?
+  // if (req.session.currentUser == req.params.id) {
+    Palace.remove({
+      _id: palaceToDelete
+    }, function(err) {
+      if (err) {
+        console.log("there was an error deleting this palace: ", palaceToDelete);
+        res.json( { error: err } );
+      } else {
+        console.log("successfully deleted palace!");
+        res.json( { deleted: true } );
+      }
+    });
+  // };
 });
 
 // END ROUTES
