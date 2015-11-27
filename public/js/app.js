@@ -1,7 +1,20 @@
 var app = angular.module('MemoryPalace', ['ngRoute']);
 
+// service to contain user data
+app.service('userService', function(){
+  var controller = this;
+
+  this.setUser = function(user) {
+    controller.currentUsername = user;
+  }
+
+  this.getUser = function() {
+    return controller.currentUsername;
+  }
+});
+
 // *** MAIN CONTROLLER ***
-app.controller('MainController', ['$http', '$location', function($http, $location){
+app.controller('MainController', ['$http', '$location', 'userService', function($http, $location, userService){
   var controller = this;
 
   this.signedIn = false;
@@ -24,7 +37,11 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
         if (data.data.currentUser) {
           controller.signedIn = true;
           controller.currentUser = data.data.currentUser;
-          controller.currentUsername = data.data.currentUsername
+
+          // set the current username via the userService
+          userService.setUser(data.data.currentUsername);
+
+          // redirect
           $location.path('/' + data.data.currentUser + '/loggedin');
           // console.log("data.data.currentUser: ", data.data.currentUser);
         } else {
@@ -52,8 +69,10 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
     }).then(function(data){
       // console.log(data);
       if (data.data.currentUser) {
-        controller.currentUsername = data.data.currentUsername
-        console.log("controller.currentUsername: ", controller.currentUsername);
+        // set the current username via the userService
+        userService.setUser(data.data.currentUsername);
+
+        // redirect
         $location.path('/' + data.data.currentUser + '/loggedin');
       } else {
         $('#flashMessage').append('<h2>Sorry, there was an error logging you in: ' + data.data.error + '</h2>');
@@ -66,12 +85,14 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
 
 
 // *** LOGGED IN CONTROLLER ***
-app.controller('LoggedInController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams){
+app.controller('LoggedInController', ['$http', '$location', '$routeParams', 'userService', function($http, $location, $routeParams, userService){
   var controller = this;
 
   this.allPalaceUrl = '/' + $routeParams.id + '/palaces';
   this.newPalaceUrl = '/' + $routeParams.id + '/palaces/new';
   this.userID = $routeParams.id;
+  this.currentUsername = userService.getUser();
+  // console.log("after getUser(), this.currentUsername is: ", this.currentUsername);
 
   this.refresh = function() {
     $http.get(this.allPalaceUrl).then(function(data){
