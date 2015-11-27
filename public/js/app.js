@@ -124,13 +124,15 @@ app.controller('LoggedInController', ['$http', '$location', '$routeParams', 'use
   this.deletePalace = function(palace) {
     var deletePalaceUrl = controller.allPalaceUrl + '/' + palace._id;
 
-    $http.delete(deletePalaceUrl, palace).then(function(data){
-      console.log("palace successfully deleted: ", data);
-      controller.refresh();
-    }, function(error){
-      console.log("there was an error deleting this palace: ", error);
-      }
-    );
+    if(confirm('Are you sure you want to delete this palace and everything that goes with it?')) {
+      $http.delete(deletePalaceUrl, palace).then(function(data){
+        console.log("palace successfully deleted: ", data);
+        controller.refresh();
+      }, function(error){
+        console.log("there was an error deleting this palace: ", error);
+        }
+      );
+    };
   };
 
   // calling this upon instantiation of the controller so that the palace list is loaded
