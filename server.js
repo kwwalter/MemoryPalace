@@ -7,7 +7,10 @@ var express           = require('express'),
     methodOverride    = require('method-override'),
     session           = require('express-session'),
     less              = require('less'),
-    bcrypt            = require('bcrypt');
+    bcrypt            = require('bcrypt'),
+    User              = require('./models/user.js'),
+    Palace            = require('./models/palace.js'),
+    Fact              = require('./models/fact.js');
 
 // server setup
 var PORT    = process.env.PORT || 1111,
@@ -21,35 +24,6 @@ var MONGOURI = process.env.MONGOLAB_URI || "mongodb://localhost:27017",
 
 // SET
 mongoose.set('debug', true);
-
-// creating the User schema..
-var userSchema = new Schema({
-  username: { type: String, required: true, unique: true },
-  userEmail: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  palaces: [{ type: Schema.Types.ObjectId, ref: 'Palace' }],
-  created: { type: Date, default: Date.now }
-});
-var User = mongoose.model('User', userSchema);
-
-// creating the Palace schema..
-var palaceSchema = new Schema({
-  name: { type: String, required: true },
-  // facts: [ { type: Schema.Types.ObjectId, ref: 'Fact' } ],
-  facts: [ { question: String, answer: String } ],
-  _owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  created: { type: Date, default: Date.now }
-});
-var Palace = mongoose.model('Palace', palaceSchema);
-
-// now creating the Fact schema..
-var factSchema = new Schema({
-  _livesIn: { type: Schema.Types.ObjectId, ref: 'Palace', required: true },
-  question: { type: String, required: true },
-  answer: { type: String, required: true },
-  created: { type: Date, default: Date.now }
-});
-var Fact = mongoose.model('Fact', factSchema);
 
 // server.set('views', './views');
 // server.set('view engine', 'ejs');

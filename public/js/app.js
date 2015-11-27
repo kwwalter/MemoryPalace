@@ -6,6 +6,7 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
 
   this.signedIn = false;
   this.currentUser = null;
+  this.currentUsername = null;
 
   this.signup = function() {
     // alert('singup!');
@@ -23,6 +24,7 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
         if (data.data.currentUser) {
           controller.signedIn = true;
           controller.currentUser = data.data.currentUser;
+          controller.currentUsername = data.data.currentUsername
           $location.path('/' + data.data.currentUser + '/loggedin');
           // console.log("data.data.currentUser: ", data.data.currentUser);
         } else {
@@ -50,6 +52,8 @@ app.controller('MainController', ['$http', '$location', function($http, $locatio
     }).then(function(data){
       // console.log(data);
       if (data.data.currentUser) {
+        controller.currentUsername = data.data.currentUsername
+        console.log("controller.currentUsername: ", controller.currentUsername);
         $location.path('/' + data.data.currentUser + '/loggedin');
       } else {
         $('#flashMessage').append('<h2>Sorry, there was an error logging you in: ' + data.data.error + '</h2>');
@@ -157,7 +161,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   };
 
   // function for resizing divs -- NOT WORKING YET
-  this.resize222 = function(evt,ui) {
+  this.resize = function(evt,ui) {
     console.log (evt,ui);
     alert('inside of palaceCtrl.resize() function');
     $scope.w = ui.size.width;
@@ -169,42 +173,42 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   $locationProvider.html5Mode({ enabled: true });
   $routeProvider.
     when('/', {
-      templateUrl: 'partials/welcome.html',
+      templateUrl: '/../views/welcome.html',
       controller: 'MainController',
       controllerAs: 'mainCtrl'
     }).
     when('/signup', {
-      templateUrl: 'partials/signup.html',
+      templateUrl: 'views/signup.html',
       controller: 'MainController',
       controllerAs: 'mainCtrl'
     }).
     when('/login', {
-      templateUrl: 'partials/login.html',
+      templateUrl: 'views/login.html',
       controller: 'MainController',
       controllerAs: 'mainCtrl'
     }).
     when('/:id/loggedin', {
-      templateUrl: 'partials/loggedin.html',
+      templateUrl: 'views/loggedin.html',
       controller: 'LoggedInController',
       controllerAs: 'loggedinCtrl'
     }).
     when('/:id/palaces', {
-      templateUrl: 'partials/palaces.html',
+      templateUrl: 'views/palaces.html',
       controller: 'LoggedInController',
       controllerAs: 'loggedinCtrl'
     }).
     when('/:id/palaces/new', {
-      templateUrl: 'partials/new-palace.html',
+      templateUrl: 'views/new-palace.html',
       controller: 'LoggedInController',
       controllerAs: 'loggedinCtrl'
     }).
     when('/:id/palaces/:palaceID', {
-      templateUrl: 'partials/one-palace.html',
+      templateUrl: 'views/one-palace.html',
       controller: 'PalaceController',
       controllerAs: 'palaceCtrl'
     }).
     when('/:id/palaces/:palaceID/edit', {
-      templateUrl: 'partials/edit-palace.html',
+      templateUrl: 'views/edit-palace.html',
       controller: 'PalaceController',
       controllerAs: 'palaceCtrl'
     }).
