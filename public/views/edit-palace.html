@@ -1,19 +1,29 @@
-<h2>Edit Your palace!</h2>
-<form id="palace-form" ng-submit="palaceCtrl.editPalace()">
+<h1>Edit Your Palace!</h1>
+<h2 ng-hide="palaceCtrl.editBool">{{palaceCtrl.palace.name}}</h2>
+<button ng-click="palaceCtrl.editBool = true" ng-hide="palaceCtrl.editBool">Edit Palace Name</button>
+<!-- inline form for editing palace name -->
+<h2 ng-hide="!palaceCtrl.editBool">
+  <input type="text" ng-model="palaceCtrl.name" value="{{palaceCtrl.palace.name}}">
+  <input type="submit" ng-click="palaceCtrl.editPalaceName()" value="Submit">
+</h2>
+
+<!-- most likely getting rid of this -->
+<!-- <form id="palace-form" ng-submit="palaceCtrl.editPalace()">
   Palace name: <input type="text" ng-model="palaceCtrl.name"></br>
   Question: <input type="text" ng-model="palaceCtrl.question"></br>
   Answer: <input type="text" ng-model="palaceCtrl.answer"></br>
   <input type="submit" value="Submit!">
-</form>
+</form> -->
+
 <div id="image-container">
   <!-- $event is available as a part of ng-click -->
   <img droppable id="palace-img" ng-click="palaceCtrl.addCardToImg($event)" src="http://vitacochran.com/wp-content/uploads/2012/01/objects-3.jpg" alt="object shelf">
 </div>
+
 <!-- resizable directive isn't working, even when i try to use it separately from draggable -->
-<div resizable on-resize="palaceCtrl.resize($evt, $ui)" id="resize-box">
+<!-- <div resizable on-resize="palaceCtrl.resize($evt, $ui)" id="resize-box">
    Resizable Div for testing!
-</div>
-<br>
+</div> -->
 
 <!-- form for image upload. Not working yet.
 <form ng-app="fileUpload" ng-submit="palaceCtrl.submitImage()">

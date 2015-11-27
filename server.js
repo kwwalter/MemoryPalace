@@ -184,8 +184,9 @@ server.put('/:id/palaces/:palaceID/edit', function(req, res){
   Palace.findOneAndUpdate( {
     _id: req.params.palaceID
   }, {
-      name: req.body.name,
-      $push: { facts: { question: req.body.question, answer: req.body.answer } }
+      name: req.body.name
+      // commenting this out for now--it's pushing empty questions into the facts array when simply changing the palace name
+      // $push: { facts: { question: req.body.question, answer: req.body.answer } }
      },
      function(err, palace){
        if (err) {

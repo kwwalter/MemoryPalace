@@ -146,16 +146,28 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.allPalaceUrl = '/' + $routeParams.id + '/palaces';
   this.singlePalaceUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID;
   this.editPalaceUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/edit';
+
+  // can use this to either update Palace or Fact, and associate with the palace in the $routeParams.palaceID if doing the latter
+  this.factUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/fact';
+
   this.name;
 
-  $http.get(this.singlePalaceUrl).then(function(data){
-    // console.log('data from singlePalaceUrl get: ', data);
-    controller.palace = data.data[0];
-    controller.name = data.data[0].name;
-  }, function(error){
-    console.log("there was an error retrieving the data: ", error);
-  });
+  this.factCount = 1;
 
+  // boolean for whether or not to display the edit palace name form (one line form, anyway)
+  this.editBool = false;
+
+  this.displayOnePalace = function() {
+    $http.get(controller.singlePalaceUrl).then(function(data){
+      // console.log('data from singlePalaceUrl get: ', data);
+      controller.palace = data.data[0];
+      controller.name = data.data[0].name;
+    }, function(error){
+      console.log("there was an error retrieving the data: ", error);
+    });
+  }
+
+  // this one might be defunct
   this.editPalace = function() {
     $http.put(controller.editPalaceUrl, {
       name: controller.name,
@@ -166,7 +178,19 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       // maybe instead of redirecting, can just display the palace information below the forms, so the user can see when their questions have been saved..
       $location.path('/' + data.data._owner + '/palaces/' + data.data._id);
     }, function(error){
-      console.log("there was an error retrieving the data: ", error);
+      console.log("there was an error modifying the palace / retrieving the data: ", error);
+    });
+  };
+
+  this.editPalaceName = function() {
+    $http.put(controller.editPalaceUrl, {
+      name: controller.name,
+    }).then(function(data){
+      console.log('data from editPalaceUrl put: ', data);
+      controller.editBool = false;
+      controller.displayOnePalace();
+    }, function(error){
+      console.log("there was an error modifying the palace / retrieving the data: ", error);
     });
   };
 
@@ -174,13 +198,20 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     // get x and y coordinates of where the moust was clicked, through the event (from $event on ng-click). Convert to string values for easier concatenation, too
     var x = event.clientX.toString();
     var y = event.clientY.toString();
+    var currentFactCount = controller.factCount;
 
     // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-    var divString = '<div draggable id="draggable-div" style="position: relative; left:' + x + '; top: ' + y + ';"></div>';
+    var divString = '<div draggable id="draggable-div" style="position: relative; left:' + x + '; top: ' + y + ';">Fact #' + currentFactCount + '<button ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
     console.log("divString is: ", divString);
 
     // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
     $('#image-container').append($compile(divString)($scope));
+
+    controller.factCount += 1;
+  };
+
+  this.addFact = function(currentFactCount){
+    console.log("inside of addFact, currentFactCount is: ", currentFactCount);
   };
 
   // function for resizing divs -- NOT WORKING YET
@@ -189,7 +220,9 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     alert('inside of palaceCtrl.resize() function');
     $scope.w = ui.size.width;
     $scope.h = ui.size.height;
-  }
+  };
+
+  this.displayOnePalace();
 }]);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
