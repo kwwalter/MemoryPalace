@@ -1,6 +1,5 @@
 var app = angular.module('MemoryPalace', ['ngRoute']);
 
-
 // *** MAIN CONTROLLER ***
 app.controller('MainController', ['$http', '$location', function($http, $location){
   var controller = this;
@@ -102,7 +101,7 @@ app.controller('LoggedInController', ['$http', '$location', '$routeParams', func
 
     $http.delete(deletePalaceUrl, palace).then(function(data){
       console.log("palace successfully deleted: ", data);
-      controller.refresh(); 
+      controller.refresh();
     }, function(error){
       console.log("there was an error deleting this palace: ", error);
       }
@@ -113,7 +112,7 @@ app.controller('LoggedInController', ['$http', '$location', '$routeParams', func
 }]);
 
 // *** PALACE CONTROLLER ***
-app.controller('PalaceController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams){
+app.controller('PalaceController', ['$http', '$location', '$routeParams', '$compile', '$scope', function($http, $location, $routeParams, $compile, $scope){
   var controller = this;
 
   this.allPalaceUrl = '/' + $routeParams.id + '/palaces';
@@ -141,6 +140,15 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', functi
     }, function(error){
       console.log("there was an error retrieving the data: ", error);
     });
+  };
+
+  this.addCardToImg = function(event) {
+    // get x and y coordinates of where the moust was clicked, through the event (from $event on ng-click). Convert to string values for easier concatenation, too
+    var x = event.clientX.toString();
+    var y = event.clientY.toString();
+
+    // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
+    $('#image-container').append($compile('<div draggable id="draggable-div" style="position: relative; left:' + x + '; top: ' + y + ';"></div>')($scope));
   };
 }]);
 
@@ -191,3 +199,46 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       redirectTo: '/'
     });
 }]);
+
+// This makes any element draggable
+// Usage: <div draggable>Foobar</div>
+app.directive('draggable', function() {
+  return {
+    // A = attribute, E = Element, C = Class and M = HTML Comment
+    restrict:'A',
+    //The link function is responsible for registering DOM listeners as well as updating the DOM.
+    link: function(scope, element, attrs) {
+      element.draggable({
+        revert:'invalid'
+      });
+    }
+  };
+});
+
+// This makes any element droppable
+// Usage: <div droppable></div>
+app.directive('droppable', function($compile) {
+  return {
+    restrict: 'A',
+    link: function(scope,element,attrs){
+      //This makes an element Droppable
+      element.droppable({
+        drop:function(event,ui) {
+          var dragIndex = angular.element(ui.draggable).data('index'),
+              reject = angular.element(ui.draggable).data('reject'),
+              dragEl = angular.element(ui.draggable).parent(),
+              dropEl = angular.element(this);
+
+          if (dragEl.hasClass('list1') && !dropEl.hasClass('list1') && reject !== true) {
+            scope.list2.push(scope.list1[dragIndex]);
+            scope.list1.splice(dragIndex, 1);
+          } else if (dragEl.hasClass('list2') && !dropEl.hasClass('list2') && reject !== true) {
+            scope.list1.push(scope.list2[dragIndex]);
+            scope.list2.splice(dragIndex, 1);
+          }
+          scope.$apply();
+        }
+      });
+    }
+  };
+});
