@@ -13,6 +13,10 @@ li {
   padding: 1rem;
 }
 
+#image-container {
+  /*background-image: url("http://vitacochran.com/wp-content/uploads/2012/01/objects-3.jpg");*/
+}
+
 #draggable-div {
   background-color: lightgrey;
   opacity: 0.7;
@@ -21,5 +25,16 @@ li {
   color: black;
   font-family: sans-serif;
   font-size: 1rem;
+  text-align: center;
+  vertical-align: middle;
   border: 1px solid black;
+}
+
+#resize-box {
+  width: 75px;
+  height: 75px;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  background-color: red;
 }
