@@ -9,10 +9,10 @@
   <!-- $event is available as a part of ng-click -->
   <img droppable id="palace-img" ng-click="palaceCtrl.addCardToImg($event)" src="http://vitacochran.com/wp-content/uploads/2012/01/objects-3.jpg" alt="object shelf">
 </div>
-<!-- resizable directive isn't working, even when i try to use it separate from draggable -->
-<div resizable
-   on-resize="resize($evt, $ui)"
-   id="resize-box">Resizable Div for testing!</div>
+<!-- resizable directive isn't working, even when i try to use it separately from draggable -->
+<div resizable on-resize="palaceCtrl.resize222($evt, $ui)" id="resize-box">
+   Resizable Div for testing!
+</div>
 <br>
 
 <!-- form for image upload. Not working yet.

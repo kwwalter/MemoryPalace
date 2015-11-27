@@ -148,19 +148,18 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     var x = event.clientX.toString();
     var y = event.clientY.toString();
 
-    // console.log("event is: ", event);
-
     // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-    var divString = '<div draggable resizable on-resize="resize($evt, $ui)" id="draggable-div" style="position: relative; left:' + x + '; top: ' + y + ';"></div>';
+    var divString = '<div draggable id="draggable-div" style="position: relative; left:' + x + '; top: ' + y + ';"></div>';
     console.log("divString is: ", divString);
 
     // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
     $('#image-container').append($compile(divString)($scope));
   };
 
-  // function for resizing divs
-  $scope.resize = function(evt,ui) {
-    //console.log (evt,ui);
+  // function for resizing divs -- NOT WORKING YET
+  this.resize222 = function(evt,ui) {
+    console.log (evt,ui);
+    alert('inside of palaceCtrl.resize() function');
     $scope.w = ui.size.width;
     $scope.h = ui.size.height;
   }
@@ -259,7 +258,7 @@ app.directive('droppable', function($compile) {
   };
 });
 
-// directive to make an element resizable
+// directive to make an element resizable -- NOT WORKING YET
 app.directive('resizable', function () {
   return {
     restrict: 'A',
