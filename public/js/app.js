@@ -163,6 +163,9 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   // boolean for adding questions via card
   this.cardBool = false;
 
+  // boolean for "flipping" the question card
+  this.flipBool = false;
+
   this.displayOnePalace = function() {
     $http.get(controller.singlePalaceUrl).then(function(data){
       // console.log('data from singlePalaceUrl get: ', data);
@@ -173,21 +176,6 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       console.log("there was an error retrieving the data: ", error);
     });
   }
-
-  // this one might be defunct
-  // this.editPalace = function() {
-  //   $http.put(controller.editPalaceUrl, {
-  //     name: controller.name,
-  //     question: controller.question,
-  //     answer: controller.answer
-  //   }).then(function(data){
-  //     console.log('data from editPalaceUrl put: ', data);
-  //     // maybe instead of redirecting, can just display the palace information below the forms, so the user can see when their questions have been saved..
-  //     $location.path('/' + data.data._owner + '/palaces/' + data.data._id);
-  //   }, function(error){
-  //     console.log("there was an error modifying the palace / retrieving the data: ", error);
-  //   });
-  // };
 
   this.editPalaceName = function() {
     $http.put(controller.editPalaceNameUrl, {
@@ -234,11 +222,6 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     var divString = '<div draggable class="draggable-div" id="fact' + currentFactCount + '" style="top: ' + (y - ((4 + currentFactCount) * 100)) + 'px; left: ' + x + 'px;"><h5 class="fact-header' + currentFactCount + '">Fact #' + currentFactCount + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question: <input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + currentFactCount + ')">Submit this fact!"</button></div></div>';
     console.log("divString is: ", divString);
 
-    // listening for drag stop, but not working
-    // $('#fact'+currentFactCount).on( "palaceCtrl.stop", function( event, ui ) {
-    //   console.log("listening for drag stop!");
-    // } );
-
     // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
     $('#image-container').append($compile(divString)($scope));
 
@@ -254,8 +237,8 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     // var top = position.top;
     // var left = position.left;
 
-    var factID = '#fact' + currentFactCount;
-    var factHeader = '.fact-header' + currentFactCount;
+    controller.factID = '#fact' + currentFactCount;
+    controller.factHeader = '.fact-header' + currentFactCount;
 
     // change the value of the cardBool
     controller.cardBool = true;
@@ -265,13 +248,11 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     console.log("inside of addFact, currentFactCount is: ", currentFactCount);
 
     // add the classes to animate the div and to make the image unclickable for the moment
-    $(factID).addClass('fact-clicked show');
+    $(controller.factID).addClass('fact-clicked show');
     $('#palace-img').addClass('cover');
   };
 
   this.submitFact = function(currentFactCount) {
-    var factID = '#fact' + currentFactCount;
-
     $http.post(controller.submitFactUrl, {
       _livesIn: $routeParams.palaceID,
       question: controller.question,
@@ -282,11 +263,17 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       controller.cardBool = false;
 
       // now remove the classes from before to put things back as they were
-      $(factID).removeClass('fact-clicked show');
+      $(controller.factID).removeClass('fact-clicked show');
       $('#palace-img').removeClass('cover');
 
       // hide the form div so it doesn't come up next time
-      $(factID + ' > div').addClass('hidden');
+      $(controller.factID + ' > div').addClass('hidden');
+
+      // hide the add quesiton button too, otherwise the user could click this and the form won't show up.
+      $(controller.factID + ' > button').addClass('hidden');
+
+      // append the question (and not the answer)) to the div so the user can see them. Include button to show the answer (flip the card over).
+      // $(controller.factID).append('<p class="question">Question: ' + controller.question + '</p><br><p class="answer" class="hidden">Answer: ' + controller.answer + '</p><button ng-click="palaceCtrl.flipCard()">Flip over!</button>');
 
       // reset the question and answer values
       controller.question = "";
@@ -294,6 +281,11 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     }, function(error){
       console.log("there was an error modifying the palace / retrieving the data: ", error);
     });
+  };
+
+  this.flipCard = function() {
+    console.log("in the flipCard function");
+    $(controller.factID + ' > .answer').removeClass('hidden');
   };
 
   // function for resizing divs -- NOT WORKING YET

@@ -53,7 +53,12 @@ li {
 }
 
 .hidden {
-  display: none; 
+  display: none;
+}
+
+.question, .answer {
+  font-size: 0.8rem;
+  font-weight: bolder; 
 }
 
 #tag-bank {
