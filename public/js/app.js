@@ -196,21 +196,31 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
   this.addCardToImg = function(event) {
     // get x and y coordinates of where the moust was clicked, through the event (from $event on ng-click). Convert to string values for easier concatenation, too
-    var x = event.clientX.toString();
-    var y = event.clientY.toString();
+    console.log("event is: ", event);
+
+    var x = event.screenX.toString();
+    var y = event.screenY.toString();
     var currentFactCount = controller.factCount;
 
     // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-    var divString = '<div draggable id="draggable-div" style="left:' + x + '; top: ' + y + ';">Fact #' + currentFactCount + '<button ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
+    var divString = '<div draggable on-stop="palaceCtrl.stop($evt, $ui)" class="draggable-div" id="fact' + currentFactCount + '" style="left: ' + x + '; top: ' + y + ';">Fact #' + currentFactCount + '<button ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
     console.log("divString is: ", divString);
+
+    // listening for drag stop, but not working
+    $('#fact'+currentFactCount).on( "palaceCtrl.stop", function( event, ui ) {
+      console.log("listening for drag stop!");
+    } );
 
     // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
     $('#image-container').append($compile(divString)($scope));
 
+    // increase the fact counter for correct numeration
     controller.factCount += 1;
   };
 
   this.addFact = function(currentFactCount){
+    // when a fact is saved, have to make sure to save the top and left values of the div
+
     console.log("inside of addFact, currentFactCount is: ", currentFactCount);
   };
 
@@ -220,6 +230,13 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     alert('inside of palaceCtrl.resize() function');
     $scope.w = ui.size.width;
     $scope.h = ui.size.height;
+  };
+
+  this.stop = function(evt,ui) {
+    console.log (evt,ui);
+    alert('inside of palaceCtrl.stop() function');
+    // $scope.w = ui.size.width;
+    // $scope.h = ui.size.height;
   };
 
   this.displayOnePalace();
@@ -281,10 +298,20 @@ app.directive('draggable', function() {
   return {
     // A = attribute, E = Element, C = Class and M = HTML Comment
     restrict:'A',
+    scope: {
+        callback: '&onStop'
+    },
     //The link function is responsible for registering DOM listeners as well as updating the DOM.
     link: function(scope, element, attrs) {
       element.draggable({
         revert:'invalid'
+      });
+      element.on('stop', function (evt, ui) {
+        scope.$apply(function() {
+          if (scope.callback) {
+            scope.callback({$evt: evt, $ui: ui });
+          }
+        })
       });
     }
   };
