@@ -231,7 +231,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     positionService.setStopPos(position);
 
     // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-    var divString = '<div draggable class="draggable-div" id="fact' + currentFactCount + '" style="top: ' + (y - ((4 + currentFactCount) * 100)) + 'px; left: ' + x + 'px;">Fact #' + currentFactCount + '<button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
+    var divString = '<div draggable class="draggable-div" id="fact' + currentFactCount + '" style="top: ' + (y - ((4 + currentFactCount) * 100)) + 'px; left: ' + x + 'px;"><h5 class="fact-header' + currentFactCount + '">Fact #' + currentFactCount + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question: <input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + currentFactCount + ')">Submit this fact!"</button></div></div>';
     console.log("divString is: ", divString);
 
     // listening for drag stop, but not working
@@ -253,6 +253,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     var top = position.top;
     var left = position.left;
     var factID = '#fact' + currentFactCount;
+    var factHeader = '.fact-header' + currentFactCount;
 
     // change the value of the cardBool
     controller.cardBool = true;
@@ -264,18 +265,19 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     $(factID).addClass('fact-clicked show');
     $('#palace-img').addClass('hide');
 
-    $(factID).append(
-      '<div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question<input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><input type="submit" ng-click="palaceCtrl.submitFact()" value="Submit!"></div>'
-    );
+    // $(factHeader).append(
+    //   '<div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question: <input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + currentFactCount + ')">Submit this fact!"</button></div>'
+    // );
   };
 
-  this.submitFact = function() {
+  this.submitFact = function(currentFactCount) {
     alert("in submitFact function!");
 
     $http.post(controller.submitFactUrl, {
       _livesIn: $routeParams.palaceID,
       question: controller.question,
-      answer: controller.answer
+      answer: controller.answer,
+      number: currentFactCount
     }).then(function(data){
       console.log('data from submitFactUrl post: ', data);
       controller.cardBool = false;
