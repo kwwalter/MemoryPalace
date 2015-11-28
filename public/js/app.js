@@ -257,7 +257,9 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       _livesIn: $routeParams.palaceID,
       question: controller.question,
       answer: controller.answer,
-      number: currentFactCount
+      number: currentFactCount,
+      top: controller.position.top,
+      left: controller.position.left
     }).then(function(data){
       console.log('data from submitFactUrl post: ', data);
       controller.cardBool = false;
@@ -285,20 +287,21 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     });
   };
 
+  // this can be done with ng-hide and ng-click, but will fix that later if time permits
   this.flipCard = function() {
-    console.log("in the flipCard function");
+    // console.log("in the flipCard function");
     $(controller.factID + ' > .answer').toggleClass('hidden');
-    // $(this).html('Hide answer!');
   };
 
   // function for resizing divs -- NOT WORKING YET
-  this.resize = function(evt,ui) {
-    console.log (evt,ui);
-    alert('inside of palaceCtrl.resize() function');
-    $scope.w = ui.size.width;
-    $scope.h = ui.size.height;
-  };
+  // this.resize = function(evt,ui) {
+  //   console.log (evt,ui);
+  //   alert('inside of palaceCtrl.resize() function');
+  //   $scope.w = ui.size.width;
+  //   $scope.h = ui.size.height;
+  // };
 
+  // run once to initialize on controller instantiation
   this.displayOnePalace();
 }]);
 

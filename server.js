@@ -276,10 +276,7 @@ server.delete('/:id/palaces/:palaceID', function(req, res) {
 server.post('/:id/palaces/:palaceID/submit-fact', function(req, res){
   var newFact = Fact(req.body);
 
-  // need this? or can just set it on the other side.
-  // newFact._livesIn = req.params.palaceID;
-
-  console.log("newFact in server.post(submit-fact) is: ", newFact);
+  // console.log("newFact in server.post(submit-fact) is: ", newFact);
 
   newFact.save(function(err){
     if (err) {

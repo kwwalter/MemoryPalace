@@ -11,26 +11,10 @@
 <p ng-hide="palaceCtrl.palace.public">Your palace is currently private and only visible to you. Click <a ng-click="palaceCtrl.goPublicOrPrivate(true)">here</a> to make it public so others can enjoy it too.</p>
 <p ng-hide="!palaceCtrl.palace.public">Your palace is currently public, so everyone can see it and is probably judging you. Click <a ng-click="palaceCtrl.goPublicOrPrivate(false)">here</a> to hide your shame and make this palace a private one.</p>
 
-<!-- most likely getting rid of this -->
-<!-- <form id="palace-form" ng-submit="palaceCtrl.editPalace()">
-  Palace name: <input type="text" ng-model="palaceCtrl.name"></br>
-  Question: <input type="text" ng-model="palaceCtrl.question"></br>
-  Answer: <input type="text" ng-model="palaceCtrl.answer"></br>
-  <input type="submit" value="Submit!">
-</form> -->
-
 <div id="image-container">
   <!-- $event is available as a part of ng-click -->
   <img droppable id="palace-img" ng-click="palaceCtrl.addCardToImg($event)" src="images/objects{{palaceCtrl.palace.imageNumber}}.jpg" alt="object shelf">
 </div>
-
-<!-- <div droppable id="tag-bank">
-  <h4>Drag to where you want the tag to appear!</h4>
-</div> -->
-
-<!-- second version where img is the background of the div -->
-<!-- <div droppable id="image-container" ng-click="palaceCtrl.addCardToImg($event)">
-</div> -->
 
 <!-- resizable directive isn't working, even when i try to use it separately from draggable -->
 <!-- <div resizable on-resize="palaceCtrl.resize($evt, $ui)" id="resize-box">
