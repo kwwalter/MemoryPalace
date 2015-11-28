@@ -273,7 +273,9 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       $(controller.factID + ' > button').addClass('hidden');
 
       // append the question (and not the answer)) to the div so the user can see them. Include button to show the answer (flip the card over).
-      // $(controller.factID).append('<p class="question">Question: ' + controller.question + '</p><br><p class="answer" class="hidden">Answer: ' + controller.answer + '</p><button ng-click="palaceCtrl.flipCard()">Flip over!</button>');
+      var flipString = '<p class="question">Question: ' + controller.question + '</p><br><p class="answer hidden">Answer: ' + controller.answer + '</p><button ng-click="palaceCtrl.flipCard()">Flip over!</button>';
+      console.log("flipString is: ", flipString);
+      $(controller.factID).append($compile(flipString)($scope));
 
       // reset the question and answer values
       controller.question = "";
@@ -285,7 +287,8 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
   this.flipCard = function() {
     console.log("in the flipCard function");
-    $(controller.factID + ' > .answer').removeClass('hidden');
+    $(controller.factID + ' > .answer').toggleClass('hidden');
+    // $(this).html('Hide answer!');
   };
 
   // function for resizing divs -- NOT WORKING YET
