@@ -265,11 +265,30 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.displayOnePalace();
 }]);
 
-app.controller('DragDropController', function($scope) {
-  this.handleDrop = function() {
-    alert('Item has been dropped');
-  }
-});
+// controller for all public palaces
+app.controller('PublicController', ['$http', '$routeParams', '$scope', function($http, $routeParams, $scope){
+  var controller = this;
+
+  this.onePublicPalaceUrl = '/public/palaces/' + $routeParams.palaceID;
+
+  // query the db for all palaces with public boolean of true
+  $http.get('/all-public-palaces').then(function(data){
+    console.log('data from all-public-palaces get: ', data);
+    controller.publicPalaces = data.data;
+  }, function(error){
+    console.log("there was an error retrieving the data: ", error);
+  });
+
+  // query the db for one public palace with a specific id
+  $http.get(controller.onePublicPalaceUrl).then(function(data){
+    console.log('data from onePublicPalaceUrl get: ', data);
+    controller.palace = data.data[0];
+    // controller.name = data.data[0].name;
+    // controller.imageNumber = data.data[0].imageNumber;
+  }, function(error){
+    console.log("there was an error retrieving the data: ", error);
+  });
+}]);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
   $locationProvider.html5Mode({ enabled: true });
@@ -304,6 +323,12 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'LoggedInController',
       controllerAs: 'loggedinCtrl'
     }).
+    // had to move this one ahead of /:id/palaces/:palaceID to avoid incorrect redirect
+    when('/public/palaces/:palaceID', {
+      templateUrl: 'views/one-public-palace.html',
+      controller: 'PublicController',
+      controllerAs: 'publicCtrl'
+    }).
     when('/:id/palaces/:palaceID', {
       templateUrl: 'views/one-palace.html',
       controller: 'PalaceController',
@@ -313,6 +338,11 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       templateUrl: 'views/edit-palace.html',
       controller: 'PalaceController',
       controllerAs: 'palaceCtrl'
+    }).
+    when('/all-public-palaces', {
+      templateUrl: 'views/all-public-palaces.html',
+      controller: 'PublicController',
+      controllerAs: 'publicCtrl'
     }).
     otherwise({
       redirectTo: '/'

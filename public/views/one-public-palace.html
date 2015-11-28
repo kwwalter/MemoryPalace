@@ -1,0 +1,11 @@
+<h1>{{publicCtrl.palace.name}}</h1>
+<h4>Created at: {{publicCtrl.palace.created}}</h4>
+<h4>By: {{publicCtrl.palace._owner.username}}</h4>
+<p ng-if="!publicCtrl.palace.facts">Facts: </p>
+<ul ng-repeat="fact in publicCtrl.palace.facts">
+  <li>
+    <p>Question: {{fact.question}}</p>
+    <p>Answer: {{fact.answer}}</p>
+  </li>
+</ul>
+<img id="palace-img" src="images/objects{{publicCtrl.palace.imageNumber}}.jpg" alt="object shelf">

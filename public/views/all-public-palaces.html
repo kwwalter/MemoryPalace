@@ -1,0 +1,16 @@
+<h2>Here are all of the public palaces: </h2>
+<ul ng-repeat="palace in publicCtrl.publicPalaces">
+  <li>
+    <p><a href="{{'/public/palaces/' + palace._id}}">Name: {{palace.name}}</a></p>
+    <p>Created at: {{palace.created}}</p>
+    <p>Author: {{palace._owner.username}}</p>
+    <!-- <p ng-if="palace.facts.question">Facts: </p> -->
+    <!-- ng-if wasn't working here, going to use fact # + $index to display all Q/A pairs for a palace -->
+    <ul ng-repeat="fact in palace.facts">Fact #{{$index + 1}}
+      <li>
+        <p>Question: {{fact.question}}</p>
+        <p>Answer: {{fact.answer}}</p>
+      </li>
+    </ul>
+  </li>
+</ul>

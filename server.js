@@ -174,7 +174,41 @@ server.get('/:id/palaces/:palaceID', function(req, res){
     } else {
         // console.log("inside of Palace.find, foundPalace is: ", foundPalace);
         res.json(foundPalace);
-      }
+    }
+  });
+});
+
+// retrieve all of the public palaces from the database
+server.get('/all-public-palaces', function(req, res){
+  Palace
+  .find({ public: true })
+  .populate('_owner')
+  .exec(function(err, allPalaces){
+    if (err) {
+      console.log("error insie of Palace.find for all palaces: ", err);
+      res.json( { error: err } );
+    } else {
+      // console.log("allPalaces found is: ", allPalaces);
+      res.json(allPalaces);
+    }
+  });
+});
+
+// retrieve a single public palace from the database
+server.get('/public/palaces/:palaceID', function(req, res){
+  var palaceID = req.params.palaceID;
+
+  Palace
+  .find({ _id: palaceID })
+  .populate('_owner')
+  .exec(function(err, foundPalace){
+    if (err) {
+      console.log("inside of Palace.find (one public), error: ", err);
+      res.json( { error: err });
+    } else {
+      console.log("inside of Palace.find (one public), foundPalace is: ", foundPalace);
+      res.json(foundPalace);
+    }
   });
 });
 
