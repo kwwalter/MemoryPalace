@@ -249,29 +249,28 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.addFact = function(currentFactCount){
     // when a fact is saved, have to make sure to save the top and left values of the div
     // because this positionService stores information about the div that was recently moved, it might be best to remove the "add fact" button from a draggable div as soon as it's clicked the first time
-    var position = positionService.getStopPos();
-    var top = position.top;
-    var left = position.left;
+    controller.position = positionService.getStopPos();
+    console.log("inside of addFact(), position is now: ", controller.position);
+    // var top = position.top;
+    // var left = position.left;
+
     var factID = '#fact' + currentFactCount;
     var factHeader = '.fact-header' + currentFactCount;
 
     // change the value of the cardBool
     controller.cardBool = true;
 
-    console.log("inside of addFact, top and left are, respectively: ", top, left);
+    // console.log("inside of addFact, top and left are, respectively: ", top, left);
 
     console.log("inside of addFact, currentFactCount is: ", currentFactCount);
 
+    // add the classes to animate the div and to make the image unclickable for the moment
     $(factID).addClass('fact-clicked show');
-    $('#palace-img').addClass('hide');
-
-    // $(factHeader).append(
-    //   '<div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question: <input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + currentFactCount + ')">Submit this fact!"</button></div>'
-    // );
+    $('#palace-img').addClass('cover');
   };
 
   this.submitFact = function(currentFactCount) {
-    alert("in submitFact function!");
+    var factID = '#fact' + currentFactCount;
 
     $http.post(controller.submitFactUrl, {
       _livesIn: $routeParams.palaceID,
@@ -281,12 +280,20 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     }).then(function(data){
       console.log('data from submitFactUrl post: ', data);
       controller.cardBool = false;
-      // need this? maybe tries to redirect otherwise?
-      controller.displayOnePalace();
+
+      // now remove the classes from before to put things back as they were
+      $(factID).removeClass('fact-clicked show');
+      $('#palace-img').removeClass('cover');
+
+      // hide the form div so it doesn't come up next time
+      $(factID + ' > div').addClass('hidden');
+
+      // reset the question and answer values
+      controller.question = "";
+      controller.answer = "";
     }, function(error){
       console.log("there was an error modifying the palace / retrieving the data: ", error);
     });
-
   };
 
   // function for resizing divs -- NOT WORKING YET
