@@ -140,7 +140,7 @@ app.controller('LoggedInController', ['$http', '$location', '$routeParams', 'use
 }]);
 
 // *** PALACE CONTROLLER ***
-app.controller('PalaceController', ['$http', '$location', '$routeParams', '$compile', '$scope', function($http, $location, $routeParams, $compile, $scope){
+app.controller('PalaceController', ['$http', '$location', '$routeParams', '$compile', '$scope', 'positionService', function($http, $location, $routeParams, $compile, $scope, positionService){
   var controller = this;
 
   this.allPalaceUrl = '/' + $routeParams.id + '/palaces';
@@ -203,7 +203,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     var currentFactCount = controller.factCount;
 
     // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-    var divString = '<div draggable on-stop="palaceCtrl.stop($evt, $ui)" class="draggable-div" id="fact' + currentFactCount + '" style="left: ' + x + '; top: ' + y + ';">Fact #' + currentFactCount + '<button ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
+    var divString = '<div draggable class="draggable-div" id="fact' + currentFactCount + '" style="left: ' + x + '; top: ' + y + ';">Fact #' + currentFactCount + '<button ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
     console.log("divString is: ", divString);
 
     // listening for drag stop, but not working
@@ -220,6 +220,12 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
   this.addFact = function(currentFactCount){
     // when a fact is saved, have to make sure to save the top and left values of the div
+    // because this positionService stores information about the div that was recently moved, it might be best to remove the "add fact" button from a draggable div as soon as it's clicked the first time
+    var position = positionService.getStopPos();
+    var top = position.top;
+    var left = position.left;
+
+    console.log("inside of addFact, top and left are, respectively: ", top, left);
 
     console.log("inside of addFact, currentFactCount is: ", currentFactCount);
   };
@@ -232,15 +238,14 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     $scope.h = ui.size.height;
   };
 
-  this.stop = function(evt,ui) {
-    console.log (evt,ui);
-    alert('inside of palaceCtrl.stop() function');
-    // $scope.w = ui.size.width;
-    // $scope.h = ui.size.height;
-  };
-
   this.displayOnePalace();
 }]);
+
+app.controller('DragDropController', function($scope) {
+  this.handleDrop = function() {
+    alert('Item has been dropped');
+  }
+});
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
   $locationProvider.html5Mode({ enabled: true });
@@ -290,11 +295,36 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     });
 }]);
 
+// Service for storing position information
+app.service('positionService', function(){
+  var controller = this;
+
+  this.setStartPos = function(startPos) {
+    controller.startPos = startPos;
+    // console.log("in setStartPos function in service, startPos is: ", controller.startPos);
+  }
+
+  this.getStartPos = function() {
+    return controller.startPos;
+  }
+
+  this.setStopPos = function(stopPos) {
+    controller.stopPos = stopPos;
+  }
+
+  this.getStopPos = function() {
+    return controller.stopPos;
+  }
+});
+
 // ***DIRECTIVES for jQuery UI***
 
 // This makes any element draggable
 // Usage: <div draggable>Foobar</div>
-app.directive('draggable', function() {
+app.directive('draggable', ['positionService', function(positionService) {
+  var startPos,
+      stopPos;
+
   return {
     // A = attribute, E = Element, C = Class and M = HTML Comment
     restrict:'A',
@@ -304,18 +334,23 @@ app.directive('draggable', function() {
     //The link function is responsible for registering DOM listeners as well as updating the DOM.
     link: function(scope, element, attrs) {
       element.draggable({
-        revert:'invalid'
-      });
-      element.on('stop', function (evt, ui) {
-        scope.$apply(function() {
-          if (scope.callback) {
-            scope.callback({$evt: evt, $ui: ui });
-          }
-        })
+        revert:'invalid',
+        start: function(evt, ui){
+          startPos = ui.helper.position();
+          console.log("in draggable directive, STARTPos is: ", startPos);
+
+          positionService.setStartPos(startPos);
+        },
+        stop: function(evt, ui){
+          stopPos = ui.helper.position();
+          console.log("in draggable directive, STOPPos is now: ", stopPos);
+
+          positionService.setStopPos(stopPos);
+        }
       });
     }
   };
-});
+}]);
 
 // This makes any element droppable
 // Usage: <div droppable></div>
