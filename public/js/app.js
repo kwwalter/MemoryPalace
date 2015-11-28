@@ -198,12 +198,13 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     // get x and y coordinates of where the moust was clicked, through the event (from $event on ng-click). Convert to string values for easier concatenation, too
     console.log("event is: ", event);
 
-    var x = event.screenX.toString();
-    var y = event.screenY.toString();
+    // subtracting 50 since the click appends the div at the top left corner of the square. This'll get to the center of it. 
+    var x = event.offsetX - 50;
+    var y = event.offsetY - 50;
     var currentFactCount = controller.factCount;
 
     // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-    var divString = '<div draggable class="draggable-div" id="fact' + currentFactCount + '" style="left: ' + x + '; top: ' + y + ';">Fact #' + currentFactCount + '<button ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
+    var divString = '<div draggable class="draggable-div" id="fact' + currentFactCount + '" style="left: ' + x + 'px; top: ' + (y - ((4 + currentFactCount) * 100)) + 'px;">Fact #' + currentFactCount + '<button ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
     console.log("divString is: ", divString);
 
     // listening for drag stop, but not working
