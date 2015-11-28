@@ -148,6 +148,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.singlePalaceUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID;
   this.editPalaceNameUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/edit-name';
   this.editPalacePublicUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/edit-public';
+  this.submitFactUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/submit-fact';
 
   // can use this to either update Palace or Fact, and associate with the palace in the $routeParams.palaceID if doing the latter
   this.factUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/fact';
@@ -158,6 +159,9 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
   // boolean for whether or not to display the edit palace name form (one line form, anyway)
   this.editBool = false;
+
+  // boolean for adding questions via card
+  this.cardBool = false;
 
   this.displayOnePalace = function() {
     $http.get(controller.singlePalaceUrl).then(function(data){
@@ -189,7 +193,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     $http.put(controller.editPalaceNameUrl, {
       name: controller.name
     }).then(function(data){
-      console.log('data from editPalaceNameUrl put (editPalaceName): ', data);
+      // console.log('data from editPalaceNameUrl put (editPalaceName): ', data);
       controller.editBool = false;
       controller.displayOnePalace();
     }, function(error){
@@ -202,7 +206,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       $http.put(controller.editPalacePublicUrl, {
         public: palaceBool,
       }).then(function(data){
-        console.log('data from editPalacePublicUrl put (goPublicOrPrivate): ', data);
+        // console.log('data from editPalacePublicUrl put (goPublicOrPrivate): ', data);
         controller.displayOnePalace();
       }, function(error){
         console.log("there was an error modifying the palace / retrieving the data: ", error);
@@ -227,13 +231,13 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     positionService.setStopPos(position);
 
     // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-    var divString = '<div draggable class="draggable-div" id="fact' + currentFactCount + '" style="top: ' + (y - ((4 + currentFactCount) * 100)) + 'px; left: ' + x + 'px;">Fact #' + currentFactCount + '<button ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
+    var divString = '<div draggable class="draggable-div" id="fact' + currentFactCount + '" style="top: ' + (y - ((4 + currentFactCount) * 100)) + 'px; left: ' + x + 'px;">Fact #' + currentFactCount + '<button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
     console.log("divString is: ", divString);
 
     // listening for drag stop, but not working
-    $('#fact'+currentFactCount).on( "palaceCtrl.stop", function( event, ui ) {
-      console.log("listening for drag stop!");
-    } );
+    // $('#fact'+currentFactCount).on( "palaceCtrl.stop", function( event, ui ) {
+    //   console.log("listening for drag stop!");
+    // } );
 
     // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
     $('#image-container').append($compile(divString)($scope));
@@ -248,10 +252,39 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     var position = positionService.getStopPos();
     var top = position.top;
     var left = position.left;
+    var factID = '#fact' + currentFactCount;
+
+    // change the value of the cardBool
+    controller.cardBool = true;
 
     console.log("inside of addFact, top and left are, respectively: ", top, left);
 
     console.log("inside of addFact, currentFactCount is: ", currentFactCount);
+
+    $(factID).addClass('fact-clicked show');
+    $('#palace-img').addClass('hide');
+
+    $(factID).append(
+      '<div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question<input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><input type="submit" ng-click="palaceCtrl.submitFact()" value="Submit!"></div>'
+    );
+  };
+
+  this.submitFact = function() {
+    alert("in submitFact function!");
+
+    $http.post(controller.submitFactUrl, {
+      _livesIn: $routeParams.palaceID,
+      question: controller.question,
+      answer: controller.answer
+    }).then(function(data){
+      console.log('data from submitFactUrl post: ', data);
+      controller.cardBool = false;
+      // need this? maybe tries to redirect otherwise?
+      controller.displayOnePalace();
+    }, function(error){
+      console.log("there was an error modifying the palace / retrieving the data: ", error);
+    });
+
   };
 
   // function for resizing divs -- NOT WORKING YET
@@ -273,7 +306,7 @@ app.controller('PublicController', ['$http', '$routeParams', '$scope', function(
 
   // query the db for all palaces with public boolean of true
   $http.get('/all-public-palaces').then(function(data){
-    console.log('data from all-public-palaces get: ', data);
+    // console.log('data from all-public-palaces get: ', data);
     controller.publicPalaces = data.data;
   }, function(error){
     console.log("there was an error retrieving the data: ", error);
@@ -281,10 +314,8 @@ app.controller('PublicController', ['$http', '$routeParams', '$scope', function(
 
   // query the db for one public palace with a specific id
   $http.get(controller.onePublicPalaceUrl).then(function(data){
-    console.log('data from onePublicPalaceUrl get: ', data);
+    // console.log('data from onePublicPalaceUrl get: ', data);
     controller.palace = data.data[0];
-    // controller.name = data.data[0].name;
-    // controller.imageNumber = data.data[0].imageNumber;
   }, function(error){
     console.log("there was an error retrieving the data: ", error);
   });

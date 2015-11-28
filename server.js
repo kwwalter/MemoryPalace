@@ -206,7 +206,7 @@ server.get('/public/palaces/:palaceID', function(req, res){
       console.log("inside of Palace.find (one public), error: ", err);
       res.json( { error: err });
     } else {
-      console.log("inside of Palace.find (one public), foundPalace is: ", foundPalace);
+      // console.log("inside of Palace.find (one public), foundPalace is: ", foundPalace);
       res.json(foundPalace);
     }
   });
@@ -270,6 +270,25 @@ server.delete('/:id/palaces/:palaceID', function(req, res) {
       }
     });
   // };
+});
+
+// submit a Fact
+server.post('/:id/palaces/:palaceID/submit-fact', function(req, res){
+  var newFact = Fact(req.body);
+
+  // need this? or can just set it on the other side.
+  // newFact._livesIn = req.params.palaceID;
+
+  console.log("newFact in server.post(submit-fact) is: ", newFact);
+
+  newFact.save(function(err){
+    if (err) {
+      console.log("there was an error saving the new fact: ", err);
+      res.json({ error: err });
+    } else {
+      res.json(newFact);
+    }
+  })
 });
 
 // END ROUTES

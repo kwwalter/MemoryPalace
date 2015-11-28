@@ -35,6 +35,21 @@ li {
   vertical-align: middle;
   border: 1px solid black;
   position: absolute;
+  transition: 0.5s;
+}
+
+.fact-clicked {
+  height: 200px;
+  width: 200px;
+  opacity: 1;
+}
+
+.hide {
+  z-index: -1;
+}
+
+.show {
+  z-index: 10; 
 }
 
 #tag-bank {
@@ -57,4 +72,8 @@ li {
 .radio-image {
   height: 150px;
   border: 1px solid lightgrey;
+}
+
+.fact-form {
+  width: 75px;
 }
