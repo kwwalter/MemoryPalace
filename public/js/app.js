@@ -108,7 +108,8 @@ app.controller('LoggedInController', ['$http', '$location', '$routeParams', 'use
     $http.post(this.newPalaceUrl, {
       name: controller.name,
       imageNumber: controller.imageNumber,
-      _owner: controller.userID
+      _owner: controller.userID,
+      public: controller.public
     }).then(function(data){
         if (data.data._id) {
           $location.path('/' + data.data._owner + '/palaces/' + data.data._id);
@@ -145,7 +146,8 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
   this.allPalaceUrl = '/' + $routeParams.id + '/palaces';
   this.singlePalaceUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID;
-  this.editPalaceUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/edit';
+  this.editPalaceNameUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/edit-name';
+  this.editPalacePublicUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/edit-public';
 
   // can use this to either update Palace or Fact, and associate with the palace in the $routeParams.palaceID if doing the latter
   this.factUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/fact';
@@ -169,30 +171,43 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   }
 
   // this one might be defunct
-  this.editPalace = function() {
-    $http.put(controller.editPalaceUrl, {
-      name: controller.name,
-      question: controller.question,
-      answer: controller.answer
-    }).then(function(data){
-      console.log('data from editPalaceUrl put: ', data);
-      // maybe instead of redirecting, can just display the palace information below the forms, so the user can see when their questions have been saved..
-      $location.path('/' + data.data._owner + '/palaces/' + data.data._id);
-    }, function(error){
-      console.log("there was an error modifying the palace / retrieving the data: ", error);
-    });
-  };
+  // this.editPalace = function() {
+  //   $http.put(controller.editPalaceUrl, {
+  //     name: controller.name,
+  //     question: controller.question,
+  //     answer: controller.answer
+  //   }).then(function(data){
+  //     console.log('data from editPalaceUrl put: ', data);
+  //     // maybe instead of redirecting, can just display the palace information below the forms, so the user can see when their questions have been saved..
+  //     $location.path('/' + data.data._owner + '/palaces/' + data.data._id);
+  //   }, function(error){
+  //     console.log("there was an error modifying the palace / retrieving the data: ", error);
+  //   });
+  // };
 
   this.editPalaceName = function() {
-    $http.put(controller.editPalaceUrl, {
-      name: controller.name,
+    $http.put(controller.editPalaceNameUrl, {
+      name: controller.name
     }).then(function(data){
-      console.log('data from editPalaceUrl put: ', data);
+      console.log('data from editPalaceNameUrl put (editPalaceName): ', data);
       controller.editBool = false;
       controller.displayOnePalace();
     }, function(error){
       console.log("there was an error modifying the palace / retrieving the data: ", error);
     });
+  };
+
+  this.goPublicOrPrivate = function(palaceBool) {
+    if(confirm('Are you sure you want to change the status?')) {
+      $http.put(controller.editPalacePublicUrl, {
+        public: palaceBool,
+      }).then(function(data){
+        console.log('data from editPalacePublicUrl put (goPublicOrPrivate): ', data);
+        controller.displayOnePalace();
+      }, function(error){
+        console.log("there was an error modifying the palace / retrieving the data: ", error);
+      });
+    };
   };
 
   this.addCardToImg = function(event) {
@@ -204,8 +219,15 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     var y = event.offsetY - 50;
     var currentFactCount = controller.factCount;
 
+    // have to store top and left position when the first card is placed, because otherwise can't read top or left of undefined (if this first card isn't dragged, nothing will be stored)
+    var position = {
+      top: (y - ((4 + currentFactCount) * 100)),
+      left: x
+    };
+    positionService.setStopPos(position);
+
     // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-    var divString = '<div draggable class="draggable-div" id="fact' + currentFactCount + '" style="left: ' + x + 'px; top: ' + (y - ((4 + currentFactCount) * 100)) + 'px;">Fact #' + currentFactCount + '<button ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
+    var divString = '<div draggable class="draggable-div" id="fact' + currentFactCount + '" style="top: ' + (y - ((4 + currentFactCount) * 100)) + 'px; left: ' + x + 'px;">Fact #' + currentFactCount + '<button ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
     console.log("divString is: ", divString);
 
     // listening for drag stop, but not working
@@ -223,7 +245,6 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.addFact = function(currentFactCount){
     // when a fact is saved, have to make sure to save the top and left values of the div
     // because this positionService stores information about the div that was recently moved, it might be best to remove the "add fact" button from a draggable div as soon as it's clicked the first time
-    // may also have to store top and left from addCardtoImg() when the first card is placed, because otherwise can't read top or left of undefined (if not dragged, nothing will be stored)
     var position = positionService.getStopPos();
     var top = position.top;
     var left = position.left;

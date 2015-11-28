@@ -7,6 +7,10 @@
   <input type="submit" ng-click="palaceCtrl.editPalaceName()" value="Submit">
 </h2>
 
+<!-- ability to switch between public and private! -->
+<p ng-hide="palaceCtrl.palace.public">Your palace is currently private and only visible to you. Click <a ng-click="palaceCtrl.goPublicOrPrivate(true)">here</a> to make it public so others can enjoy it too.</p>
+<p ng-hide="!palaceCtrl.palace.public">Your palace is currently public, so everyone can see it and is probably judging you. Click <a ng-click="palaceCtrl.goPublicOrPrivate(false)">here</a> to hide your shame and make this palace a private one.</p>
+
 <!-- most likely getting rid of this -->
 <!-- <form id="palace-form" ng-submit="palaceCtrl.editPalace()">
   Palace name: <input type="text" ng-model="palaceCtrl.name"></br>

@@ -178,8 +178,8 @@ server.get('/:id/palaces/:palaceID', function(req, res){
   });
 });
 
-// edit a palace
-server.put('/:id/palaces/:palaceID/edit', function(req, res){
+// edit a palace name
+server.put('/:id/palaces/:palaceID/edit-name', function(req, res){
   console.log("in server.js server.put, req.body is: ", req.body);
   Palace.findOneAndUpdate( {
     _id: req.params.palaceID
@@ -187,6 +187,25 @@ server.put('/:id/palaces/:palaceID/edit', function(req, res){
       name: req.body.name
       // commenting this out for now--it's pushing empty questions into the facts array when simply changing the palace name
       // $push: { facts: { question: req.body.question, answer: req.body.answer } }
+     },
+     function(err, palace){
+       if (err) {
+        console.log("Could not update this palace: ", err);
+        res.json( { error: err } );
+       } else {
+         console.log("successfully updated palace!");
+         res.json(palace);
+       }
+  });
+});
+
+// edit whether or not a palace is public or private
+server.put('/:id/palaces/:palaceID/edit-public', function(req, res){
+  console.log("in server.js server.put, req.body is: ", req.body);
+  Palace.findOneAndUpdate( {
+    _id: req.params.palaceID
+  }, {
+      public: req.body.public
      },
      function(err, palace){
        if (err) {

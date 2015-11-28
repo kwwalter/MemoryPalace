@@ -23,5 +23,10 @@
   <input type="radio" id="img10" value="10" ng-model="loggedinCtrl.imageNumber">
     <label for="img10"><img class="radio-image" src="images/objects10.jpg"</label>
   <br>
+  <h3>Do you want to make this palace viewable to the public?</h3>
+  <input type="radio" id="public-T" value="true" ng-model="loggedinCtrl.public">
+    <label for="public-T">Yeah!</label>
+  <input type="radio" id="public-F" value="false" ng-model="loggedinCtrl.public" checked>
+    <label for="public-F">NO!</label>
   <input type="submit" value="Submit!">
 </form>
