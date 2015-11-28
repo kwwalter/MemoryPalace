@@ -288,6 +288,24 @@ server.post('/:id/palaces/:palaceID/submit-fact', function(req, res){
   })
 });
 
+// return all facts for a given palace
+server.get('/palaces/:palaceID/get-facts', function(req, res){
+  var palaceID = req.params.palaceID;
+
+  Fact
+  .find({ _livesIn: palaceID })
+  .populate('_livesIn')
+  .exec(function(err, foundFacts){
+    if (err) {
+      console.log("inside of Fact.find (all facts), error: ", err);
+      res.json( { error: err });
+    } else {
+      console.log("inside of Fact.find (all facts), foundFacts is: ", foundFacts);
+      res.json(foundFacts);
+    }
+  });
+});
+
 // END ROUTES
 
 // server listen and mongoose connect

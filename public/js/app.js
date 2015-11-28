@@ -149,6 +149,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.editPalaceNameUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/edit-name';
   this.editPalacePublicUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/edit-public';
   this.submitFactUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/submit-fact';
+  this.getFactsUrl = '/palaces/' + $routeParams.palaceID + '/get-facts';
 
   // can use this to either update Palace or Fact, and associate with the palace in the $routeParams.palaceID if doing the latter
   this.factUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/fact';
@@ -172,6 +173,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       controller.palace = data.data[0];
       controller.name = data.data[0].name;
       controller.imageNumber = data.data[0].imageNumber;
+      controller.getFacts();
     }, function(error){
       console.log("there was an error retrieving the data: ", error);
     });
@@ -301,6 +303,16 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   //   $scope.h = ui.size.height;
   // };
 
+  // function to get all the facts for a given palace
+  this.getFacts = function() {
+    $http.get(controller.getFactsUrl).then(function(data){
+      // console.log('data from getFactsUrl get: ', data);
+      controller.facts = data.data;
+    }, function(error){
+      console.log("there was an error retrieving the data: ", error);
+    });
+  };
+
   // run once to initialize on controller instantiation
   this.displayOnePalace();
 }]);
@@ -310,6 +322,17 @@ app.controller('PublicController', ['$http', '$routeParams', '$scope', function(
   var controller = this;
 
   this.onePublicPalaceUrl = '/public/palaces/' + $routeParams.palaceID;
+  this.getFactsUrl = '/palaces/' + $routeParams.palaceID + '/get-facts';
+
+  // since this is separate from the palaces controller, copying this function here so we can get all the facts for a given palace
+  this.getFacts = function() {
+    $http.get(controller.getFactsUrl).then(function(data){
+      console.log('data from getFactsUrl get: ', data);
+      controller.facts = data.data;
+    }, function(error){
+      console.log("there was an error retrieving the data: ", error);
+    });
+  };
 
   // query the db for all palaces with public boolean of true
   $http.get('/all-public-palaces').then(function(data){
@@ -323,6 +346,9 @@ app.controller('PublicController', ['$http', '$routeParams', '$scope', function(
   $http.get(controller.onePublicPalaceUrl).then(function(data){
     // console.log('data from onePublicPalaceUrl get: ', data);
     controller.palace = data.data[0];
+
+    // having it set up this way, the getFacts function is still called when the controller is instantiated (when we get to 'all-public-palaces'), so on the index page, it results in an error..
+    controller.getFacts();
   }, function(error){
     console.log("there was an error retrieving the data: ", error);
   });
