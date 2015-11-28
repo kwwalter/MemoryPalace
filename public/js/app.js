@@ -201,7 +201,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     var currentFactCount = controller.factCount;
 
     // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-    var divString = '<div draggable id="draggable-div" style="position: relative; left:' + x + '; top: ' + y + ';">Fact #' + currentFactCount + '<button ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
+    var divString = '<div draggable id="draggable-div" style="left:' + x + '; top: ' + y + ';">Fact #' + currentFactCount + '<button ng-click="palaceCtrl.addFact(' + currentFactCount + ')">Add a fact</button></div>';
     console.log("divString is: ", divString);
 
     // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
