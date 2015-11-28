@@ -107,9 +107,9 @@ app.controller('LoggedInController', ['$http', '$location', '$routeParams', 'use
   this.createPalace = function() {
     $http.post(this.newPalaceUrl, {
       name: controller.name,
+      imageNumber: controller.imageNumber,
       _owner: controller.userID
     }).then(function(data){
-        // console.log(data);
         if (data.data._id) {
           $location.path('/' + data.data._owner + '/palaces/' + data.data._id);
         } else {
@@ -162,6 +162,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       // console.log('data from singlePalaceUrl get: ', data);
       controller.palace = data.data[0];
       controller.name = data.data[0].name;
+      controller.imageNumber = data.data[0].imageNumber;
     }, function(error){
       console.log("there was an error retrieving the data: ", error);
     });
@@ -198,7 +199,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     // get x and y coordinates of where the moust was clicked, through the event (from $event on ng-click). Convert to string values for easier concatenation, too
     console.log("event is: ", event);
 
-    // subtracting 50 since the click appends the div at the top left corner of the square. This'll get to the center of it. 
+    // subtracting 50 since the click appends the div at the top left corner of the square. This'll get to the center of it.
     var x = event.offsetX - 50;
     var y = event.offsetY - 50;
     var currentFactCount = controller.factCount;
@@ -222,6 +223,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.addFact = function(currentFactCount){
     // when a fact is saved, have to make sure to save the top and left values of the div
     // because this positionService stores information about the div that was recently moved, it might be best to remove the "add fact" button from a draggable div as soon as it's clicked the first time
+    // may also have to store top and left from addCardtoImg() when the first card is placed, because otherwise can't read top or left of undefined (if not dragged, nothing will be stored)
     var position = positionService.getStopPos();
     var top = position.top;
     var left = position.left;
