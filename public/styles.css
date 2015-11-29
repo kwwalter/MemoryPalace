@@ -4,6 +4,24 @@
   box-sizing: border-box;
 }
 
+nav {
+  background-color: #f0f8ff;
+  padding: 1.5rem;
+}
+
+nav > a {
+  font-size: 2rem; 
+}
+
+.jumbotron > h1, .jumbotron > h2, .jumbotron > a {
+  text-align: center;
+}
+
+.jumbotron > a {
+  font-size: 2rem;
+  margin: 0 auto;
+}
+
 li {
   padding: 1rem;
 }
@@ -36,7 +54,7 @@ li {
 }
 
 .draggable-div > button {
-  width: 60%; 
+  width: 60%;
 }
 
 .fact-clicked {
