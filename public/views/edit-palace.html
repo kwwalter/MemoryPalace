@@ -8,15 +8,19 @@
 </h2>
 
 <!-- ability to switch between public and private! -->
-<p ng-hide="palaceCtrl.palace.public">Your palace is currently private and only visible to you. Click <a ng-click="palaceCtrl.goPublicOrPrivate(true)">here</a> to make it public so others can enjoy it too.</p>
-<p ng-hide="!palaceCtrl.palace.public">Your palace is currently public, so everyone can see it and is probably judging you. Click <a ng-click="palaceCtrl.goPublicOrPrivate(false)">here</a> to hide your shame and make this palace a private one.</p>
+<p ng-hide="palaceCtrl.palace.public">Your palace is currently private and only visible to you. Click <a href="" ng-click="palaceCtrl.goPublicOrPrivate(true)">here</a> to make it public so others can enjoy it too.</p>
+<p ng-hide="!palaceCtrl.palace.public">Your palace is currently public, so everyone can see it and is probably judging you. Click <a href="" ng-click="palaceCtrl.goPublicOrPrivate(false)">here</a> to hide your shame and make this palace a private one.</p>
+
+<p>To add a new card to the image below, simply click where you want it to be placed, and drag it to a new location if needed. Then, click the "Add Q/A" button to add a question/answer pair (make sure to click "submit", otherwise it won't be saved).</p>
+<p>You can add as many cards as you like!</p>
+<p>NOTE: When finished, please make sure you click <a href="" ng-click="palaceCtrl.doneEditing()">DONE EDITING</a> (otherwise, your data might not be saved, and you'll have no one to blame but yourself).</p>
 
 <div id="image-container">
   <!-- $event is available as a part of ng-click -->
   <img droppable id="palace-img" ng-click="palaceCtrl.addCardToImg($event)" src="images/objects{{palaceCtrl.palace.imageNumber}}.jpg" alt="object shelf">
 </div>
 
-<a href="" ng-click="palaceCtrl.doneEditing()">Done Editing</a></br>
+<a href="" ng-click="palaceCtrl.doneEditing()">DONE EDITING</a>
 <a href="{{palaceCtrl.allPalaceUrl}}">Back to Full List of My Palaces</a>
 
 <!-- resizable directive isn't working, even when i try to use it separately from draggable -->

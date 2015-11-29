@@ -200,7 +200,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       var appendString;
       for (var i = 1; i <= controller.facts.length; i++){
         // console.log("controller.facts[" + (i-1) + "] is: ", controller.facts[i-1]);
-        appendString = '<div draggable class="draggable-div" id="fact' + i + '" style="top: ' + controller.facts[i-1].top + 'px; left: ' + controller.facts[i-1].left + 'px;"><h5 class="fact-header' + i + '">Fact #' + i + '</h5><p class="question">Question: ' + controller.facts[i-1].question + '</p><br><p class="answer hidden">Answer: ' + controller.facts[i-1].answer + '</p><button ng-click="palaceCtrl.flipCard(' + i + ')">Flip over!</button></div>';
+        appendString = '<div draggable class="draggable-div" id="fact' + i + '" style="top: ' + controller.facts[i-1].top + 'px; left: ' + controller.facts[i-1].left + 'px;"><h5 class="fact-header' + i + '">Card #' + i + '</h5><p class="question">Q: ' + controller.facts[i-1].question + '</p><br><p class="answer hidden">A: ' + controller.facts[i-1].answer + '</p><button ng-click="palaceCtrl.flipCard(' + i + ')">Show/Hide Answer!</button></div>';
         // console.log("appendString is: ", appendString);
 
         // now append it!
@@ -273,7 +273,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       positionService.setStopPos(position);
 
       // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-      var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + (y - ((4 + controller.factCount) * 100)) + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Fact #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add a fact</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question: <input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
+      var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + (y - ((4 + controller.factCount) * 100)) + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Card #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add Q/A</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Q: <input type="text" ng-model="palaceCtrl.question"></br>A: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
       console.log("divString is: ", divString);
 
       // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
@@ -299,7 +299,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       positionService.setStopPos(position);
 
       // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-      var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + newY + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Fact #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add a fact</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question: <input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
+      var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + newY + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Card #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add Q/A</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Q: <input type="text" ng-model="palaceCtrl.question"></br>A: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
       console.log("divString is: ", divString);
 
       // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
@@ -364,7 +364,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       $(controller.factID + ' > button').addClass('hidden');
 
       // append the question (and not the answer)) to the div so the user can see them. Include button to show the answer (flip the card over).
-      var flipString = '<p class="question">Question: ' + controller.question + '</p><br><p class="answer hidden">Answer: ' + controller.answer + '</p><button ng-click="palaceCtrl.flipCard(' + currentFactsLength + ')">Flip over!</button>';
+      var flipString = '<p class="question">Q: ' + controller.question + '</p><br><p class="answer hidden">A: ' + controller.answer + '</p><button ng-click="palaceCtrl.flipCard(' + currentFactsLength + ')">Show/Hide Answer!</button>';
       console.log("flipString is: ", flipString);
       $(controller.factID).append($compile(flipString)($scope));
 

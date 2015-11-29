@@ -35,6 +35,10 @@ li {
   transition: 0.5s;
 }
 
+.draggable-div > button {
+  width: 60%; 
+}
+
 .fact-clicked {
   height: 200px;
   width: 200px;
@@ -63,14 +67,14 @@ li {
   font-weight: bolder;
 }
 
-#resize-box {
+/*#resize-box {
   width: 75px;
   height: 75px;
   color: white;
   text-align: center;
   vertical-align: middle;
   background-color: red;
-}
+}*/
 
 .radio-image {
   height: 150px;
