@@ -313,7 +313,8 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       controller.factsLength += 1;
       console.log("at the end of addCardtoImg(), controller.factsLength is: ", controller.factsLength);
 
-      controller.incrementer += 100; 
+      // to account for the additional 100px worth of space that the last div took up..
+      controller.incrementer += 100;
     }
   };
 
@@ -363,7 +364,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       $(controller.factID + ' > button').addClass('hidden');
 
       // append the question (and not the answer)) to the div so the user can see them. Include button to show the answer (flip the card over).
-      var flipString = '<p class="question">Question: ' + controller.question + '</p><br><p class="answer hidden">Answer: ' + controller.answer + '</p><button ng-click="palaceCtrl.flipCard()">Flip over!</button>';
+      var flipString = '<p class="question">Question: ' + controller.question + '</p><br><p class="answer hidden">Answer: ' + controller.answer + '</p><button ng-click="palaceCtrl.flipCard(' + currentFactsLength + ')">Flip over!</button>';
       console.log("flipString is: ", flipString);
       $(controller.factID).append($compile(flipString)($scope));
 
@@ -376,9 +377,9 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   };
 
   // this can be done with ng-hide and ng-click, but will fix that later if time permits
-  this.flipCard = function() {
+  this.flipCard = function(cardToFlip) {
     // console.log("in the flipCard function");
-    $(controller.factID + ' > .answer').toggleClass('hidden');
+    $('#fact' + cardToFlip + ' > .answer').toggleClass('hidden');
   };
 
   // function for resizing divs -- NOT WORKING YET
@@ -399,6 +400,9 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       // if we're getting all the facts again, we've navigated away from the edit page where user can append divs. Time to set the value back to one:
       controller.factCount = 1;
       console.log("navigated away, so controller.factCount is now: ", controller.factCount);
+
+      // can do the same for controller.incrementer
+      controller.incrementer = 0;
 
       // also, set a controller-wide variable for the length of the facts array..
       if (controller.facts.length > 0) {
