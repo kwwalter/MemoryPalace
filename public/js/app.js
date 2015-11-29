@@ -17,7 +17,7 @@ app.service('userService', function(){
 app.controller('MainController', ['$http', '$location', 'userService', function($http, $location, userService){
   var controller = this;
 
-  // this.signedIn = false;
+  this.signedIn = false;
   this.currentUser = null;
   this.currentUsername = null;
 
@@ -35,7 +35,7 @@ app.controller('MainController', ['$http', '$location', 'userService', function(
       }).then(function(data){
         // console.log("data is: ", data);
         if (data.data.currentUser) {
-          // controller.signedIn = true;
+          controller.signedIn = true;
           controller.currentUser = data.data.currentUser;
 
           // set the current username via the userService
@@ -87,8 +87,6 @@ app.controller('MainController', ['$http', '$location', 'userService', function(
 // *** LOGGED IN CONTROLLER ***
 app.controller('LoggedInController', ['$http', '$location', '$routeParams', 'userService', function($http, $location, $routeParams, userService){
   var controller = this;
-
-  this.signedIn = true; 
 
   this.allPalaceUrl = '/' + $routeParams.id + '/palaces';
   this.newPalaceUrl = '/' + $routeParams.id + '/palaces/new';
