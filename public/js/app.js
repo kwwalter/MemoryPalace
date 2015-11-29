@@ -151,14 +151,6 @@ app.service('truthService', function(){
   this.getTruth = function() {
     return controller.questionsAdded;
   }
-
-  this.setMultipleAdditions = function(bool) {
-    controller.multiples = bool;
-  }
-
-  this.getMultipleAdditions = function() {
-    return controller.multiples;
-  }
 });
 
 // *** PALACE CONTROLLER ***
@@ -190,6 +182,8 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
   // boolean to denote that questions have been added at least once.
   // this.questionsAdded = false;
+
+  this.incrementer = 0;
 
   this.displayOnePalace = function() {
     // console.log("running displayOnePalace..");
@@ -292,38 +286,10 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       // also have to increase the factsLength!!
       controller.factsLength += 1;
       console.log("at the end of addCardtoImg(), controller.factsLength is: ", controller.factsLength);
-    } else if (truthService.getMultipleAdditions()) {
-      console.log("getMultipleAdditions() is true, so the user has added one div in this session already: ", truthService.getMultipleAdditions());
-
-      var newY = (y - ((4 + controller.factCount) * 100)) - ((controller.factsLength) * 100) + 200;
-      console.log("newY is: ", newY);
-
-      var position = {
-        top: newY,
-        left: x
-      };
-      positionService.setStopPos(position);
-
-      truthService.setMultipleAdditions(true);
-
-      // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-      var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + newY + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Fact #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add a fact</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question: <input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
-      console.log("divString is: ", divString);
-
-      // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
-      $('#image-container').append($compile(divString)($scope));
-
-      // increase the fact counter for correct numeration
-      controller.factCount += 1;
-      console.log("at the end of addCardtoImg(), controller.factCount is: ", controller.factCount);
-
-      // also have to increase the factsLength!!
-      controller.factsLength += 1;
-      console.log("at the end of addCardtoImg(), controller.factsLength is: ", controller.factsLength);
     } else {
       console.log("getTruth() is true, so the user has added stuff already: ", truthService.getTruth());
 
-      var newY = (y - ((4 + controller.factCount) * 100)) - ((controller.factsLength - 1) * 100);
+      var newY = (y - ((4 + controller.factCount) * 100)) - ((controller.factsLength - 1) * 100) + controller.incrementer;
       console.log("newY is: ", newY);
 
       var position = {
@@ -331,8 +297,6 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
         left: x
       };
       positionService.setStopPos(position);
-
-      truthService.setMultipleAdditions(true);
 
       // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
       var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + newY + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Fact #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add a fact</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question: <input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
@@ -348,6 +312,8 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       // also have to increase the factsLength!!
       controller.factsLength += 1;
       console.log("at the end of addCardtoImg(), controller.factsLength is: ", controller.factsLength);
+
+      controller.incrementer += 100; 
     }
   };
 
