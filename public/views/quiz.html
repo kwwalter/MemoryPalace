@@ -9,6 +9,12 @@
   <img droppable id="palace-img" src="images/objects{{palaceCtrl.palace.imageNumber}}.jpg" alt="object shelf">
 </div>
 <br>
+<div ng-hide="!palaceCtrl.resultsBool">
+  <h2>Here are your results!</h2>
+  <h3>You got {{palaceCtrl.correctCounter}} out of {{palaceCtrl.facts.length}} right.</h3>
+  <h4>That checks out to about {{((palaceCtrl.correctCounter / palaceCtrl.facts.length) * 100).toFixed(2)}}%. Not bad!
+</div>
+<br>
 <p ng-if="!palaceCtrl.facts">Facts: </p>
 <ul ng-repeat="fact in palaceCtrl.facts">
   <li id="quiz-question{{$index+1}}">

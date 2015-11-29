@@ -450,6 +450,8 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
     controller.resultsBool = true;
 
+    controller.correctCounter = 0;
+
     // first, check to make sure we have the same number of answers from the user and answers in the data..
     // for some reason, controller.quizAnswers comes back as an object first. Might have to just skip this for now.
     // if (controller.quizAnswers.length != controller.facts.length) {
@@ -467,12 +469,14 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
         console.log("answer to question #" + (i+1) + " is correct!");
         $('#quiz-question' + (i + 1) + ' > .incorrect').addClass('hidden');
         // console.log('#quizquestion' + (i + 1) + ' > h4 is: ', '#quizquestion' + (i + 1) + ' > h4');
+
+        controller.correctCounter += 1;
       } else {
         console.log("answer to question #" + (i+1) + " is incorrect!");
         $('#quiz-question' + (i + 1) + ' > .correct').addClass('hidden');
       }
     }
-
+    
     // at the end, set this to false -- is it even working?
     controller.quizMode = false;
     console.log("exiting submitQuiz function, quizMode is now: ", controller.quizMode);
@@ -482,6 +486,8 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     controller.resultsBool = false;
 
     controller.quizAnswers = [];
+
+    controller.correctCounter = 0;
 
     // remove the hidden class from the respective correct/incorrect tags
     for (var i = 0; i < controller.facts.length; i++){
