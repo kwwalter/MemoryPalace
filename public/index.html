@@ -15,12 +15,12 @@
   </head>
   <body>
     <!-- <nav id="header" ng-controller="MainController as mainCtrl"> -->
-    <nav id="header" ng-controller="MainController as mainCtrl">
+    <nav id="header" ng-controller="LoggedInController as loggedinCtrl">
       <a href="/">Home</a>
       <a href="/all-public-palaces">All Public Palaces</a>
       <!-- TO DO: fix header so these links pop up based on whether or not user is logged in -->
-      <a href="{{'/' + mainCtrl.currentUser + '/palaces'}}" ng-show="mainCtrl.signedIn">My Palaces</a>
-      <a href="{{'/' + mainCtrl.currentUser + '/palaces/new'}}" ng-show="mainCtrl.signedIn">Create a New Palace</a>
+      <a href="{{loggedinCtrl.allPalaceUrl}}" ng-hide="loggedinCtrl.signedIn">My Palaces</a>
+      <a href="{{loggedinCtrl.newPalaceUrl}}" ng-hide="loggedinCtrl.signedIn">Create a New Palace</a>
     </nav>
     <div ng-view></div>
     <!-- <footer>FOOTER</footer> -->
