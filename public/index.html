@@ -17,7 +17,7 @@
     <!-- <nav id="header" ng-controller="MainController as mainCtrl"> -->
     <nav id="header" ng-controller="MainController as mainCtrl">
       <a href="/">Home</a>
-      <a href="/all-public-palaces">All Public Palaces</a>
+      <!-- <a href="" ng-click="palaceCtrl.getAllPublics()">All Public Palaces</a> -->
       <!-- TO DO: fix header so these links pop up based on whether or not user is logged in -->
       <a href="{{'/' + mainCtrl.currentUser + '/palaces'}}" ng-hide="!mainCtrl.signedIn">My Palaces</a>
       <a href="{{'/' + mainCtrl.currentUser + '/palaces/new'}}" ng-hide="!mainCtrl.signedIn">Create a New Palace</a>

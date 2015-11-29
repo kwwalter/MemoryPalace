@@ -1,7 +1,7 @@
 <h2>Here are all of the public palaces: </h2>
-<ul ng-repeat="palace in publicCtrl.publicPalaces">
+<ul ng-repeat="palace in palaceCtrl.publicPalaces">
   <li>
-    <p><a href="{{'/public/palaces/' + palace._id}}">Name: {{palace.name}}</a></p>
+    <p><a href="{{'/' + palace._owner._id + '/palaces/' + palace._id}}">Name: {{palace.name}}</a></p>
     <p>Created at: {{palace.created}}</p>
     <p>Author: {{palace._owner.username}}</p>
     <!-- <p ng-if="palace.facts.question">Facts: </p> -->

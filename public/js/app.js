@@ -494,6 +494,22 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     }
   };
 
+  // this.getAllPublics = function() {
+  //   console.log("testing in getAllPublics()");
+  //
+  //   // redirect to /all-public-palaces
+  //   $location.path('/all-public-palaces');
+  //
+  //   // query the db for all palaces with public boolean of true
+  //   $http.get('/all-public-palaces').then(function(data){
+  //     console.log('data from all-public-palaces get: ', data);
+  //     controller.publicPalaces = data.data;
+  //     console.log("publicPalaces is: ", controller.publicPalaces);
+  //   }, function(error){
+  //     console.log("there was an error retrieving the data: ", error);
+  //   });
+  // };
+
   // run once to initialize on controller instantiation
   this.displayOnePalace();
 }]);
@@ -594,6 +610,11 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'PublicController',
       controllerAs: 'publicCtrl'
     }).
+    // when('/all-public-palaces', {
+    //   templateUrl: 'views/all-public-palaces.html',
+    //   controller: 'PalaceController',
+    //   controllerAs: 'palaceCtrl'
+    // }).
     otherwise({
       redirectTo: '/'
     });
