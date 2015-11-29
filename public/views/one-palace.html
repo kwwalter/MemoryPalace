@@ -2,6 +2,10 @@
 <h2>{{palaceCtrl.palace.name}}</h2>
 <h4>Created at: {{palaceCtrl.palace.created}}</h4>
 <h4>By: {{palaceCtrl.palace._owner.username}}</h4>
+<div id="image-container">
+  <img droppable id="palace-img" src="images/objects{{palaceCtrl.palace.imageNumber}}.jpg" alt="object shelf">
+</div>
+<br>
 <p ng-if="!palaceCtrl.facts">Facts: </p>
 <ul ng-repeat="fact in palaceCtrl.facts">
   <li>
@@ -10,7 +14,6 @@
     <p>Answer: {{fact.answer}}</p>
   </li>
 </ul>
-<img id="palace-img" src="images/objects{{palaceCtrl.palace.imageNumber}}.jpg" alt="object shelf">
 <br>
 <a href="{{palaceCtrl.singlePalaceUrl + '/edit'}}">Edit Palace / Add Image and Questions</a></br>
 <a href="{{palaceCtrl.allPalaceUrl}}">Back to My Palaces</a>
