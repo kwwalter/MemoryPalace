@@ -30,6 +30,7 @@ body {
 
 nav {
   background-color: #f0f8ff;
+  /*background-color: #ff666a;*/
   padding: 1.5rem;
   margin-bottom: 1.5rem;
 }
@@ -39,9 +40,117 @@ nav > a {
   padding-right: 2rem;
 }
 
-#welcome-page {
-  
+/* slider for welcome page */
+/*Header*/
+
+#header {
+  padding-top: 1.5rem;
+  text-align: center;
+  height: 100px;
+  /*background-color: rgba(255,255,255, .5)*/
 }
+
+#header h1 {
+  margin-top: 30px;
+  font-weight: 300;
+}
+
+/*Container*/
+
+#container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+input[type="radio"],
+input[type="checkbox"]{
+  display: none;
+}
+
+input[value="frame1"]:checked ~ #slider figure {
+  transition: .2s;
+  left: 0%;
+}
+
+input[value="frame2"]:checked ~ #slider figure {
+  transition: .2s;
+  left: -100%;
+}
+
+input[value="frame3"]:checked ~ #slider figure {
+  transition: .2s;
+  left: -200%;
+}
+
+input[value="frame4"]:checked ~ #slider figure {
+  transition: .2s;
+  left: -300%;
+}
+
+input[value="play"]:checked ~ #slider figure {
+  left: 0%;
+  animation: 10s slidy infinite;
+}
+
+/*Slider*/
+
+#slider {
+  overflow: hidden;
+}
+
+#slider figure img {
+  width: 25%;
+  /*float: left;*/
+}
+
+#slider figure {
+  position: relative;
+  width: 400%;
+  margin: 0;
+  left: 0;
+  text-align: left;
+  font-size: 0;
+}
+
+/*Animation*/
+
+@keyframes slidy {
+0% { left: 0%; }
+20% { left: 0%; }
+25% { left: -100%; }
+45% { left: -100%; }
+50% { left: -200%; }
+70% { left: -200%; }
+75% { left: -300%; }
+95% { left: -300%; }
+}
+
+/*Navigation*/
+
+#navigation {
+  text-align: center;
+}
+
+.button {
+  border-radius: 50%;
+  display: inline-block;
+  width: 20px;
+  background-color: white;
+  border: 1px solid black;
+  height: 20px;
+  transition: .3s;
+}
+
+.button:hover {
+  background-color: #f1f1f1;
+  border: 1px solid #f1f1f1;
+}
+
+.play {
+  vertical-align: top;
+}
+
+/* end slider for homepage */
 
 .jumbotron {
   margin-top: 3rem;
@@ -54,13 +163,13 @@ nav > a {
   text-align: center;
 }
 
-.jumbotron > h2 {
-  text-decoration: underline;
-}
-
 .jumbotron > a {
   font-size: 2rem;
   margin: 0 auto;
+}
+
+.welcome-h {
+  text-align: center;
 }
 
 li {
@@ -80,7 +189,7 @@ li {
 
 .draggable-div {
   z-index: 10;
-  background-color: lightgrey;
+  background-color: #f1f1f1;
   opacity: 0.7;
   height: 100px;
   width: 100px;
@@ -137,7 +246,7 @@ li {
 
 .radio-image {
   height: 150px;
-  border: 1px solid lightgrey;
+  border: 1px solid #f1f1f1;
 }
 
 .fact-form {
