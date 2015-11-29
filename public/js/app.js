@@ -140,8 +140,21 @@ app.controller('LoggedInController', ['$http', '$location', '$routeParams', 'use
   this.refresh();
 }]);
 
+// TRUTH Service
+app.service('truthService', function(){
+  var controller = this;
+
+  this.setTruth = function(bool) {
+    controller.questionsAdded = bool;
+  }
+
+  this.getTruth = function() {
+    return controller.questionsAdded;
+  }
+});
+
 // *** PALACE CONTROLLER ***
-app.controller('PalaceController', ['$http', '$location', '$routeParams', '$compile', '$scope', 'positionService', function($http, $location, $routeParams, $compile, $scope, positionService){
+app.controller('PalaceController', ['$http', '$location', '$routeParams', '$compile', '$scope', 'positionService', 'truthService', function($http, $location, $routeParams, $compile, $scope, positionService, truthService){
   var controller = this;
 
   this.allPalaceUrl = '/' + $routeParams.id + '/palaces';
@@ -168,7 +181,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.flipBool = false;
 
   // boolean to denote that questions have been added at least once.
-  this.questionsAdded = false;
+  // this.questionsAdded = false;
 
   this.displayOnePalace = function() {
     // console.log("running displayOnePalace..");
@@ -211,8 +224,10 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.doneEditing = function() {
     controller.factCount = 1;
 
-    controller.questionsAdded = true;
-    console.log("in doneEditing, controller.questionsAdded is now: ", controller.questionsAdded);
+    // controller.questionsAdded = true;
+    // console.log("in doneEditing, controller.questionsAdded is now: ", controller.questionsAdded);
+
+    truthService.setTruth(true);
 
     // finally, redirect back to the palace view
     $location.path(controller.singlePalaceUrl);
@@ -246,8 +261,8 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     // var currentFactsLength = controller.factsLength;
 
     // going to try doing this based on the controller.questionsAdded function now.. starting with if true..
-    if (!controller.questionsAdded) {
-      console.log("questionsAdded is false, so nothing has been added yet: ", controller.questionsAdded);
+    if (!truthService.getTruth()) {
+      console.log("getTruth() is false, so nothing has been added until the user got to this page: ", truthService.getTruth());
       // have to store top and left position when the first card is placed, because otherwise can't read top or left of undefined (if this first card isn't dragged, nothing will be stored)
       var position = {
         top: (y - ((4 + controller.factCount) * 100)),
@@ -262,16 +277,19 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
       $('#image-container').append($compile(divString)($scope));
     } else {
-      console.log("questionsAdded is true, so the user has added stuff already: ", controller.questionsAdded);
+      console.log("getTruth() is true, so the user has added stuff already: ", truthService.getTruth());
+
+      var newY = (y - ((4 + controller.factCount) * 100)) - ((controller.factsLength - 1) * 100);
+      console.log("newY is: ", newY);
 
       var position = {
-        top: y,
+        top: newY,
         left: x
       };
       positionService.setStopPos(position);
 
       // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-      var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + y + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Fact #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add a fact</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question: <input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
+      var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + newY + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Fact #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add a fact</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question: <input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
       console.log("divString is: ", divString);
 
       // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
