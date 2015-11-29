@@ -57,7 +57,7 @@ nav > a {
 
 /*Container*/
 
-#container {
+#slider-container {
   width: 100%;
   margin: 0 auto;
 }
@@ -172,9 +172,20 @@ input[value="play"]:checked ~ #slider figure {
   text-align: center;
 }
 
-li {
-  padding: 1rem;
+.form-group {
+  width: 75%;
+  margin: 1.5rem auto;
 }
+
+.form-img {
+  display: block;
+  width: 75%;
+  margin: 1rem auto;
+}
+
+/*li {
+  padding: 1rem;
+}*/
 
 #palace-img {
   height: 500px;

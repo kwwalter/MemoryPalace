@@ -1,4 +1,4 @@
-<form ng-submit="mainCtrl.signup()">
+<!-- <form ng-submit="mainCtrl.signup()">
   <input type="text" ng-model="mainCtrl.username" placeholder="Username"/>
   <input type="text" ng-model="mainCtrl.userEmail" placeholder="Your Email"/>
   <input type="password" ng-model="mainCtrl.password" placeholder="Password"/>
@@ -6,4 +6,25 @@
   <input type="submit" value="Sign Up!"/>
 </form>
 
-<a href="/login">Have an account already? Log in here!</a>
+<a href="/login">Have an account already? Log in here!</a> -->
+
+<h2 class="welcome-h">Sign up to start improving your memory, today!</h2>
+
+<form class="form-group" ng-submit="mainCtrl.signup()">
+  <input id="username-input" class="form-control" type="text" ng-model="mainCtrl.username"/>
+  <label for="username-input">Username</label>
+  <br>
+  <input id="email-input" class="form-control" type="text" ng-model="mainCtrl.userEmail"/>
+  <label for="email-input">Your Email</label>
+  <br>
+  <input id="password-input" class="form-control" type="password" ng-model="mainCtrl.password"/>
+  <label for="password-input">Password</label>
+  <br>
+  <input id="passwordConf-input" class="form-control" type="password" ng-model="mainCtrl.passwordConfirm"/>
+  <label for="passwordConf-input">Confirm password</label>
+  <br>
+  <input type="submit" class="btn btn-default" value="Sign me up!"/><br>
+  <a href="/login">Have an account already? Log in here!</a>
+</form>
+
+<img class="form-img" src="images/welcome/img3.jpg">
