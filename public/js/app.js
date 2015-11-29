@@ -438,7 +438,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     console.log("in startQuiz, and controller.quizMode is now: ", controller.quizMode);
 
     // set up the empty array for the quiz answers
-    controller.quizAnswers = [];
+    // controller.quizAnswers = ['test'];
 
     // get the facts for this palace
     // controller.getFacts();
@@ -446,30 +446,49 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
   this.submitQuiz = function() {
     console.log("answers: ", controller.quizAnswers);
-    console.log("controller.palace.facts: ", controller.facts)
+    console.log("controller.facts: ", controller.facts)
+
+    controller.resultsBool = true;
 
     // first, check to make sure we have the same number of answers from the user and answers in the data..
-    if (controller.quizAnswers.length !== controller.facts.length) {
-      // flash message isn't working, just going to use an alert instead
-      // $('#flashMessage').append('<h2>You have to enter an answer for every quesiton, ya dummy! If you don\'t know, take a guess!</h2>');
-      alert('You have to enter an answer for every quesiton, ya dummy! If you don\'t know, take a guess!');
-      return;
-    } else {
-      // clear this out
-      // $('#flashMessage').empty();
-    }
+    // for some reason, controller.quizAnswers comes back as an object first. Might have to just skip this for now.
+    // if (controller.quizAnswers.length != controller.facts.length) {
+    //   // flash message isn't working, just going to use an alert instead
+    //   // $('#flashMessage').append('<h2>You have to enter an answer for every quesiton, ya dummy! If you don\'t know, take a guess!</h2>');
+    //   alert('You have to enter an answer for every quesiton, ya dummy! If you don\'t know, take a guess!');
+    //   return;
+    // } else {
+    //   // clear this out
+    //   // $('#flashMessage').empty();
+    // }
 
     for (var i = 0; i < controller.facts.length; i++){
       if (controller.quizAnswers[i].toLowerCase() === controller.facts[i].answer.toLowerCase()){
         console.log("answer to question #" + (i+1) + " is correct!");
+        $('#quiz-question' + (i + 1) + ' > .incorrect').addClass('hidden');
+        // console.log('#quizquestion' + (i + 1) + ' > h4 is: ', '#quizquestion' + (i + 1) + ' > h4');
       } else {
         console.log("answer to question #" + (i+1) + " is incorrect!");
+        $('#quiz-question' + (i + 1) + ' > .correct').addClass('hidden');
       }
     }
 
-    // at the end, set this to false
+    // at the end, set this to false -- is it even working?
     controller.quizMode = false;
     console.log("exiting submitQuiz function, quizMode is now: ", controller.quizMode);
+  };
+
+  this.tryAgain = function() {
+    controller.resultsBool = false;
+
+    controller.quizAnswers = [];
+
+    // remove the hidden class from the respective correct/incorrect tags
+    for (var i = 0; i < controller.facts.length; i++){
+        $('#quiz-question' + (i + 1) + ' > .incorrect').removeClass('hidden');
+
+        $('#quiz-question' + (i + 1) + ' > .correct').removeClass('hidden');
+    }
   };
 
   // run once to initialize on controller instantiation

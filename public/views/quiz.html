@@ -11,11 +11,14 @@
 <br>
 <p ng-if="!palaceCtrl.facts">Facts: </p>
 <ul ng-repeat="fact in palaceCtrl.facts">
-  <li>
+  <li id="quiz-question{{$index+1}}">
     <h5>Card #{{$index + 1}}</h5>
     <p>Question: {{fact.question}}</p>
     <p>Answer: <input type="text" ng-model="palaceCtrl.quizAnswers[$index]"</p>
+    <h3 class="correct" ng-hide="!palaceCtrl.resultsBool">YOU ARE CORRECT!</h3>
+    <h3 class="incorrect" ng-hide="!palaceCtrl.resultsBool">Sorry, you got it wrong!</h3>
   </li>
 </ul>
-<button ng-click="palaceCtrl.submitQuiz()">Submit Quiz!</button><br>
+<button ng-hide="palaceCtrl.resultsBool" ng-click="palaceCtrl.submitQuiz()">Submit Quiz!</button><br>
+<button ng-hide="!palaceCtrl.resultsBool" ng-click="palaceCtrl.tryAgain()">Try again</button><br>
 <a href="{{palaceCtrl.allPalaceUrl}}">Back to My Palaces</a>
