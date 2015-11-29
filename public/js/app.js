@@ -168,6 +168,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.flipBool = false;
 
   this.displayOnePalace = function() {
+    console.log("running displayOnePalace..");
     // get all the facts first..
     controller.getFacts();
 
@@ -186,9 +187,6 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
         // now append it!
         $('#image-container').append($compile(appendString)($scope));
-
-        // also, set a controller-wide variable for the length of the facts array..
-        controller.factsLength = controller.facts.length;
       };
     }, function(error){
       console.log("there was an error retrieving the data: ", error);
@@ -256,7 +254,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     $('#image-container').append($compile(divString)($scope));
 
     // increase the fact counter for correct numeration
-    controller.factCount += 1;
+    controller.factsLength += 1;
   };
 
   this.addFact = function(currentFactsLength){
@@ -337,6 +335,18 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     $http.get(controller.getFactsUrl).then(function(data){
       console.log('data from getFactsUrl get: ', data);
       controller.facts = data.data;
+
+      // if we're getting all the facts again, we've navigated away from the edit page where user can append divs. Time to set the value back to one:
+      controller.factCount = 1;
+
+      // also, set a controller-wide variable for the length of the facts array..
+      if (controller.facts.length > 0) {
+        controller.factsLength = controller.facts.length + 1;
+        console.log("in if, controller.factsLength is: ", controller.factsLength);
+      } else {
+        controller.factsLength = 1;
+        console.log("in else, controller.factsLength is: ", controller.factsLength);
+      }
     }, function(error){
       console.log("there was an error retrieving the data: ", error);
     });
