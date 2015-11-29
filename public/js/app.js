@@ -167,8 +167,11 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   // boolean for "flipping" the question card
   this.flipBool = false;
 
+  // boolean to denote that questions have been added at least once.
+  this.questionsAdded = false;
+
   this.displayOnePalace = function() {
-    console.log("running displayOnePalace..");
+    // console.log("running displayOnePalace..");
     // get all the facts first..
     controller.getFacts();
 
@@ -183,7 +186,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       for (var i = 1; i <= controller.facts.length; i++){
         // console.log("controller.facts[" + (i-1) + "] is: ", controller.facts[i-1]);
         appendString = '<div draggable class="draggable-div" id="fact' + i + '" style="top: ' + controller.facts[i-1].top + 'px; left: ' + controller.facts[i-1].left + 'px;"><h5 class="fact-header' + i + '">Fact #' + i + '</h5></div>';
-        // console.log("appendString is: ", appendString);
+        console.log("appendString is: ", appendString);
 
         // now append it!
         $('#image-container').append($compile(appendString)($scope));
@@ -208,6 +211,9 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.doneEditing = function() {
     controller.factCount = 1;
 
+    controller.questionsAdded = true;
+    console.log("in doneEditing, controller.questionsAdded is now: ", controller.questionsAdded);
+
     // finally, redirect back to the palace view
     $location.path(controller.singlePalaceUrl);
   };
@@ -227,7 +233,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
   this.addCardToImg = function(event) {
     // get x and y coordinates of where the moust was clicked, through the event (from $event on ng-click)
-    // console.log("event is: ", event);
+    console.log("event is: ", event);
 
     // subtracting 50 since the click appends the div at the top left corner of the square. This'll get to the center of it.
     var x = event.offsetX - 50;
@@ -239,20 +245,38 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     // need to keep track of the fact sequence, too, based on the length of the array. Will make a change in the display one palace thing
     // var currentFactsLength = controller.factsLength;
 
-    // have to store top and left position when the first card is placed, because otherwise can't read top or left of undefined (if this first card isn't dragged, nothing will be stored)
-    var position = {
-      top: (y - ((4 + controller.factCount) * 100)),
-      left: x
-    };
-    positionService.setStopPos(position);
+    // going to try doing this based on the controller.questionsAdded function now.. starting with if true..
+    if (!controller.questionsAdded) {
+      console.log("questionsAdded is false, so nothing has been added yet: ", controller.questionsAdded);
+      // have to store top and left position when the first card is placed, because otherwise can't read top or left of undefined (if this first card isn't dragged, nothing will be stored)
+      var position = {
+        top: (y - ((4 + controller.factCount) * 100)),
+        left: x
+      };
+      positionService.setStopPos(position);
 
-    // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-    var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + (y - ((4 + controller.factCount) * 100)) + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Fact #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact()">Add a fact</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question: <input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact()">Submit this fact!"</button></div></div>';
-    console.log("divString is: ", divString);
+      // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
+      var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + (y - ((4 + controller.factCount) * 100)) + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Fact #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add a fact</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question: <input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
+      console.log("divString is: ", divString);
 
-    // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
-    $('#image-container').append($compile(divString)($scope));
+      // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
+      $('#image-container').append($compile(divString)($scope));
+    } else {
+      console.log("questionsAdded is true, so the user has added stuff already: ", controller.questionsAdded);
 
+      var position = {
+        top: y,
+        left: x
+      };
+      positionService.setStopPos(position);
+
+      // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
+      var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + y + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Fact #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add a fact</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Question: <input type="text" ng-model="palaceCtrl.question"></br>Answer: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
+      console.log("divString is: ", divString);
+
+      // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
+      $('#image-container').append($compile(divString)($scope));
+    }
     // increase the fact counter for correct numeration
     controller.factCount += 1;
     console.log("at the end of addCardtoImg(), controller.factCount is: ", controller.factCount);
@@ -262,7 +286,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     console.log("at the end of addCardtoImg(), controller.factsLength is: ", controller.factsLength);
   };
 
-  this.addFact = function(){
+  this.addFact = function(currentFactsLength){
     // when a fact is saved, have to make sure to save the top and left values of the div
     // because this positionService stores information about the div that was recently moved, it might be best to remove the "add fact" button from a draggable div as soon as it's clicked the first time
     controller.position = positionService.getStopPos();
@@ -270,27 +294,27 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     // var top = position.top;
     // var left = position.left;
 
-    controller.factID = '#fact' + controller.factsLength;
-    controller.factHeader = '.fact-header' + controller.factsLength;
+    controller.factID = '#fact' + currentFactsLength;
+    controller.factHeader = '.fact-header' + currentFactsLength;
 
     // change the value of the cardBool
     controller.cardBool = true;
 
     // console.log("inside of addFact, top and left are, respectively: ", top, left);
 
-    console.log("inside of addFact, controller.factsLength is: ", controller.factsLength);
+    console.log("inside of addFact, currentFactsLength is: ", currentFactsLength);
 
     // add the classes to animate the div and to make the image unclickable for the moment
     $(controller.factID).addClass('fact-clicked show');
     $('#palace-img').addClass('cover');
   };
 
-  this.submitFact = function() {
+  this.submitFact = function(currentFactsLength) {
     $http.post(controller.submitFactUrl, {
       _livesIn: $routeParams.palaceID,
       question: controller.question,
       answer: controller.answer,
-      number: controller.factsLength,
+      number: currentFactsLength,
       top: controller.position.top,
       left: controller.position.left
     }).then(function(data){
@@ -343,14 +367,17 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
       // if we're getting all the facts again, we've navigated away from the edit page where user can append divs. Time to set the value back to one:
       controller.factCount = 1;
+      console.log("navigated away, so controller.factCount is now: ", controller.factCount);
 
       // also, set a controller-wide variable for the length of the facts array..
       if (controller.facts.length > 0) {
         controller.factsLength = controller.facts.length + 1;
-        console.log("in if, controller.factsLength is: ", controller.factsLength);
+        // controller.multipler = 4 - (controller.facts.length + 1);
+        // console.log("in if, controller.factsLength is: ", controller.factsLength);
       } else {
         controller.factsLength = 1;
-        console.log("in else, controller.factsLength is: ", controller.factsLength);
+        // controller.multipler = 4;
+        // console.log("in else, controller.factsLength is: ", controller.factsLength);
       }
     }, function(error){
       console.log("there was an error retrieving the data: ", error);

@@ -16,7 +16,7 @@
   <img droppable id="palace-img" ng-click="palaceCtrl.addCardToImg($event)" src="images/objects{{palaceCtrl.palace.imageNumber}}.jpg" alt="object shelf">
 </div>
 
-<a href="{{palaceCtrl.singlePalaceUrl}}">Done Editing</a></br>
+<a href="" ng-click="palaceCtrl.doneEditing()">Done Editing</a></br>
 <a href="{{palaceCtrl.allPalaceUrl}}">Back to Full List of My Palaces</a>
 
 <!-- resizable directive isn't working, even when i try to use it separately from draggable -->
