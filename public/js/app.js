@@ -181,7 +181,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   // boolean for "flipping" the question card
   this.flipBool = false;
 
-  // boolean for entering 'quiz mode'
+  // for entering quiz mode
   this.quizMode = false;
 
   // this is to account for 100px worth of space that's added each time a new div is appended. It'll be incremented by 100 at the end of each submitFact()
@@ -252,7 +252,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
   this.addCardToImg = function(event) {
     // get x and y coordinates of where the moust was clicked, through the event (from $event on ng-click)
-    console.log("event is: ", event);
+    // console.log("event is: ", event);
 
     // subtracting 50 since the click appends the div at the top left corner of the square. This'll get to the center of it.
     var x = event.offsetX - 50;
@@ -266,7 +266,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
     // going to try doing this based on the controller.questionsAdded function now.. starting with if true..
     if (!truthService.getTruth()) {
-      console.log("getTruth() is false, so nothing has been added until the user got to this page: ", truthService.getTruth());
+      // console.log("getTruth() is false, so nothing has been added until the user got to this page: ", truthService.getTruth());
       // have to store top and left position when the first card is placed, because otherwise can't read top or left of undefined (if this first card isn't dragged, nothing will be stored)
       var position = {
         top: (y - ((4 + controller.factCount) * 100)),
@@ -276,23 +276,23 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
       // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
       var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + (y - ((4 + controller.factCount) * 100)) + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Card #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add Q/A</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Q: <input type="text" ng-model="palaceCtrl.question"></br>A: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
-      console.log("divString is: ", divString);
+      // console.log("divString is: ", divString);
 
       // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
       $('#image-container').append($compile(divString)($scope));
 
       // increase the fact counter for correct numeration
       controller.factCount += 1;
-      console.log("at the end of addCardtoImg(), controller.factCount is: ", controller.factCount);
+      // console.log("at the end of addCardtoImg(), controller.factCount is: ", controller.factCount);
 
       // also have to increase the factsLength!!
       controller.factsLength += 1;
-      console.log("at the end of addCardtoImg(), controller.factsLength is: ", controller.factsLength);
+      // console.log("at the end of addCardtoImg(), controller.factsLength is: ", controller.factsLength);
     } else {
-      console.log("getTruth() is true, so the user has added stuff already: ", truthService.getTruth());
+      // console.log("getTruth() is true, so the user has added stuff already: ", truthService.getTruth());
 
       var newY = (y - ((4 + controller.factCount) * 100)) - ((controller.factsLength - 1) * 100) + controller.incrementer;
-      console.log("newY is: ", newY);
+      // console.log("newY is: ", newY);
 
       var position = {
         top: newY,
@@ -302,18 +302,18 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
       // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
       var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + newY + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Card #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add Q/A</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Q: <input type="text" ng-model="palaceCtrl.question"></br>A: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
-      console.log("divString is: ", divString);
+      // console.log("divString is: ", divString);
 
       // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
       $('#image-container').append($compile(divString)($scope));
 
       // increase the fact counter for correct numeration
       controller.factCount += 1;
-      console.log("at the end of addCardtoImg(), controller.factCount is: ", controller.factCount);
+      // console.log("at the end of addCardtoImg(), controller.factCount is: ", controller.factCount);
 
       // also have to increase the factsLength!!
       controller.factsLength += 1;
-      console.log("at the end of addCardtoImg(), controller.factsLength is: ", controller.factsLength);
+      // console.log("at the end of addCardtoImg(), controller.factsLength is: ", controller.factsLength);
 
       // to account for the additional 100px worth of space that the last div took up..
       controller.incrementer += 100;
@@ -324,7 +324,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     // when a fact is saved, have to make sure to save the top and left values of the div
     // because this positionService stores information about the div that was recently moved, it might be best to remove the "add fact" button from a draggable div as soon as it's clicked the first time
     controller.position = positionService.getStopPos();
-    console.log("inside of addFact(), position is now: ", controller.position);
+    // console.log("inside of addFact(), position is now: ", controller.position);
     // var top = position.top;
     // var left = position.left;
 
@@ -336,7 +336,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
     // console.log("inside of addFact, top and left are, respectively: ", top, left);
 
-    console.log("inside of addFact, currentFactsLength is: ", currentFactsLength);
+    // console.log("inside of addFact, currentFactsLength is: ", currentFactsLength);
 
     // add the classes to animate the div and to make the image unclickable for the moment
     $(controller.factID).addClass('fact-clicked show');
@@ -367,7 +367,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
       // append the question (and not the answer)) to the div so the user can see them. Include button to show the answer (flip the card over).
       var flipString = '<p class="question">Q: ' + controller.question + '</p><br><p class="answer hidden">A: ' + controller.answer + '</p><button ng-if="!palaceCtrl.quizMode" ng-click="palaceCtrl.flipCard(' + currentFactsLength + ')">Show/Hide Answer!</button>';
-      console.log("flipString is: ", flipString);
+      // console.log("flipString is: ", flipString);
       $(controller.factID).append($compile(flipString)($scope));
 
       // reset the question and answer values
@@ -397,12 +397,12 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   // there's an error when a user first creates a palace, when there are no questions..
   this.getFacts = function() {
     $http.get(controller.getFactsUrl).then(function(data){
-      console.log('data from getFactsUrl get: ', data);
+      // console.log('data from getFactsUrl get: ', data);
       controller.facts = data.data;
 
       // if we're getting all the facts again, we've navigated away from the edit page where user can append divs. Time to set the value back to one:
       controller.factCount = 1;
-      console.log("navigated away, so controller.factCount is now: ", controller.factCount);
+      // console.log("navigated away, so controller.factCount is now: ", controller.factCount);
 
       // can do the same for controller.incrementer
       controller.incrementer = 0;
@@ -429,24 +429,20 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   };
 
   this.startQuiz = function() {
-    // first, specify that we're entering quiz mode
+    // first, specify that we're entering quiz mode.. might not even be working
     controller.quizMode = true;
+    // console.log("in startQuiz, and controller.quizMode is now: ", controller.quizMode);
 
     // redirect to quiz
     $location.path(controller.quizUrl);
 
-    console.log("in startQuiz, and controller.quizMode is now: ", controller.quizMode);
-
-    // set up the empty array for the quiz answers
-    // controller.quizAnswers = ['test'];
-
-    // get the facts for this palace
-    // controller.getFacts();
+    // set up the empty array for the quiz answers. Oddly, upon first quiz submission, it saves as an associative array. Not sure why.
+    // controller.quizAnswers = [];
   };
 
   this.submitQuiz = function() {
-    console.log("answers: ", controller.quizAnswers);
-    console.log("controller.facts: ", controller.facts)
+    // console.log("answers: ", controller.quizAnswers);
+    // console.log("controller.facts: ", controller.facts)
 
     controller.resultsBool = true;
 
@@ -466,23 +462,24 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
     for (var i = 0; i < controller.facts.length; i++){
       if (controller.quizAnswers[i].toLowerCase() === controller.facts[i].answer.toLowerCase()){
-        console.log("answer to question #" + (i+1) + " is correct!");
+        // console.log("answer to question #" + (i+1) + " is correct!");
         $('#quiz-question' + (i + 1) + ' > .incorrect').addClass('hidden');
         // console.log('#quizquestion' + (i + 1) + ' > h4 is: ', '#quizquestion' + (i + 1) + ' > h4');
 
         controller.correctCounter += 1;
       } else {
-        console.log("answer to question #" + (i+1) + " is incorrect!");
+        // console.log("answer to question #" + (i+1) + " is incorrect!");
         $('#quiz-question' + (i + 1) + ' > .correct').addClass('hidden');
       }
     }
-    
+
     // at the end, set this to false -- is it even working?
     controller.quizMode = false;
-    console.log("exiting submitQuiz function, quizMode is now: ", controller.quizMode);
+    // console.log("exiting submitQuiz function, quizMode is now: ", controller.quizMode);
   };
 
   this.tryAgain = function() {
+    // reset these values
     controller.resultsBool = false;
 
     controller.quizAnswers = [];
@@ -511,7 +508,7 @@ app.controller('PublicController', ['$http', '$routeParams', '$scope', function(
   // since this is separate from the palaces controller, copying this function here so we can get all the facts for a given palace
   this.getFacts = function() {
     $http.get(controller.getFactsUrl).then(function(data){
-      console.log('data from getFactsUrl get: ', data);
+      // console.log('data from getFactsUrl get: ', data);
       controller.facts = data.data;
     }, function(error){
       console.log("there was an error retrieving the data: ", error);
@@ -644,13 +641,13 @@ app.directive('draggable', ['positionService', function(positionService) {
         revert:'invalid',
         start: function(evt, ui){
           startPos = ui.helper.position();
-          console.log("in draggable directive, STARTPos is: ", startPos);
+          // console.log("in draggable directive, STARTPos is: ", startPos);
 
           positionService.setStartPos(startPos);
         },
         stop: function(evt, ui){
           stopPos = ui.helper.position();
-          console.log("in draggable directive, STOPPos is now: ", stopPos);
+          // console.log("in draggable directive, STOPPos is now: ", stopPos);
 
           positionService.setStopPos(stopPos);
         }
