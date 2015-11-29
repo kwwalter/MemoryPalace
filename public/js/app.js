@@ -200,8 +200,8 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       var appendString;
       for (var i = 1; i <= controller.facts.length; i++){
         // console.log("controller.facts[" + (i-1) + "] is: ", controller.facts[i-1]);
-        appendString = '<div draggable class="draggable-div" id="fact' + i + '" style="top: ' + controller.facts[i-1].top + 'px; left: ' + controller.facts[i-1].left + 'px;"><h5 class="fact-header' + i + '">Fact #' + i + '</h5></div>';
-        console.log("appendString is: ", appendString);
+        appendString = '<div draggable class="draggable-div" id="fact' + i + '" style="top: ' + controller.facts[i-1].top + 'px; left: ' + controller.facts[i-1].left + 'px;"><h5 class="fact-header' + i + '">Fact #' + i + '</h5><p class="question">Question: ' + controller.facts[i-1].question + '</p><br><p class="answer hidden">Answer: ' + controller.facts[i-1].answer + '</p><button ng-click="palaceCtrl.flipCard(' + i + ')">Flip over!</button></div>';
+        // console.log("appendString is: ", appendString);
 
         // now append it!
         $('#image-container').append($compile(appendString)($scope));
@@ -380,6 +380,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.flipCard = function(cardToFlip) {
     // console.log("in the flipCard function");
     $('#fact' + cardToFlip + ' > .answer').toggleClass('hidden');
+    $('#fact' + cardToFlip + ' > .answer').parent().toggleClass('fact-clicked embiggen');
   };
 
   // function for resizing divs -- NOT WORKING YET
@@ -407,11 +408,17 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       // also, set a controller-wide variable for the length of the facts array..
       if (controller.facts.length > 0) {
         controller.factsLength = controller.facts.length + 1;
-        // controller.multipler = 4 - (controller.facts.length + 1);
+
+        // if the palace has any facts, then have to set the setTruth to true (so that, if someone logs in and goes to a palace where they have a bunch of facts already saved, they can add one and the top value will be correct)
+        truthService.setTruth(true);
+
         // console.log("in if, controller.factsLength is: ", controller.factsLength);
       } else {
         controller.factsLength = 1;
-        // controller.multipler = 4;
+
+        // if there are no facts, this should be false
+        truthService.setTruth(false);
+
         // console.log("in else, controller.factsLength is: ", controller.factsLength);
       }
     }, function(error){
@@ -464,7 +471,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   $locationProvider.html5Mode({ enabled: true });
   $routeProvider.
     when('/', {
-      templateUrl: '/../views/welcome.html',
+      templateUrl: 'views/welcome.html',
       controller: 'MainController',
       controllerAs: 'mainCtrl'
     }).

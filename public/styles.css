@@ -41,6 +41,10 @@ li {
   opacity: 1;
 }
 
+.embiggen {
+  font-size: 2rem; 
+}
+
 .cover {
   z-index: -1;
 }
