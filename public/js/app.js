@@ -163,6 +163,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.editPalacePublicUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/edit-public';
   this.submitFactUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/submit-fact';
   this.getFactsUrl = '/palaces/' + $routeParams.palaceID + '/get-facts';
+  this.quizUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/quiz';
 
   // can use this to either update Palace or Fact, and associate with the palace in the $routeParams.palaceID if doing the latter
   this.factUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/fact';
@@ -180,9 +181,10 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   // boolean for "flipping" the question card
   this.flipBool = false;
 
-  // boolean to denote that questions have been added at least once.
-  // this.questionsAdded = false;
+  // boolean for entering 'quiz mode'
+  this.quizMode = false;
 
+  // this is to account for 100px worth of space that's added each time a new div is appended. It'll be incremented by 100 at the end of each submitFact()
   this.incrementer = 0;
 
   this.displayOnePalace = function() {
@@ -200,7 +202,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       var appendString;
       for (var i = 1; i <= controller.facts.length; i++){
         // console.log("controller.facts[" + (i-1) + "] is: ", controller.facts[i-1]);
-        appendString = '<div draggable class="draggable-div" id="fact' + i + '" style="top: ' + controller.facts[i-1].top + 'px; left: ' + controller.facts[i-1].left + 'px;"><h5 class="fact-header' + i + '">Card #' + i + '</h5><p class="question">Q: ' + controller.facts[i-1].question + '</p><br><p class="answer hidden">A: ' + controller.facts[i-1].answer + '</p><button ng-click="palaceCtrl.flipCard(' + i + ')">Show/Hide Answer!</button></div>';
+        appendString = '<div draggable class="draggable-div" id="fact' + i + '" style="top: ' + controller.facts[i-1].top + 'px; left: ' + controller.facts[i-1].left + 'px;"><h5 class="fact-header' + i + '">Card #' + i + '</h5><p class="question">Q: ' + controller.facts[i-1].question + '</p><br><p class="answer hidden">A: ' + controller.facts[i-1].answer + '</p><button ng-if="!palaceCtrl.quizMode" ng-click="palaceCtrl.flipCard(' + i + ')">Show/Hide Answer!</button></div>';
         // console.log("appendString is: ", appendString);
 
         // now append it!
@@ -364,7 +366,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       $(controller.factID + ' > button').addClass('hidden');
 
       // append the question (and not the answer)) to the div so the user can see them. Include button to show the answer (flip the card over).
-      var flipString = '<p class="question">Q: ' + controller.question + '</p><br><p class="answer hidden">A: ' + controller.answer + '</p><button ng-click="palaceCtrl.flipCard(' + currentFactsLength + ')">Show/Hide Answer!</button>';
+      var flipString = '<p class="question">Q: ' + controller.question + '</p><br><p class="answer hidden">A: ' + controller.answer + '</p><button ng-if="!palaceCtrl.quizMode" ng-click="palaceCtrl.flipCard(' + currentFactsLength + ')">Show/Hide Answer!</button>';
       console.log("flipString is: ", flipString);
       $(controller.factID).append($compile(flipString)($scope));
 
@@ -424,6 +426,50 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     }, function(error){
       console.log("there was an error retrieving the data: ", error);
     });
+  };
+
+  this.startQuiz = function() {
+    // first, specify that we're entering quiz mode
+    controller.quizMode = true;
+
+    // redirect to quiz
+    $location.path(controller.quizUrl);
+
+    console.log("in startQuiz, and controller.quizMode is now: ", controller.quizMode);
+
+    // set up the empty array for the quiz answers
+    controller.quizAnswers = [];
+
+    // get the facts for this palace
+    // controller.getFacts();
+  };
+
+  this.submitQuiz = function() {
+    console.log("answers: ", controller.quizAnswers);
+    console.log("controller.palace.facts: ", controller.facts)
+
+    // first, check to make sure we have the same number of answers from the user and answers in the data..
+    if (controller.quizAnswers.length !== controller.facts.length) {
+      // flash message isn't working, just going to use an alert instead
+      // $('#flashMessage').append('<h2>You have to enter an answer for every quesiton, ya dummy! If you don\'t know, take a guess!</h2>');
+      alert('You have to enter an answer for every quesiton, ya dummy! If you don\'t know, take a guess!');
+      return;
+    } else {
+      // clear this out
+      // $('#flashMessage').empty();
+    }
+
+    for (var i = 0; i < controller.facts.length; i++){
+      if (controller.quizAnswers[i].toLowerCase() === controller.facts[i].answer.toLowerCase()){
+        console.log("answer to question #" + (i+1) + " is correct!");
+      } else {
+        console.log("answer to question #" + (i+1) + " is incorrect!");
+      }
+    }
+
+    // at the end, set this to false
+    controller.quizMode = false;
+    console.log("exiting submitQuiz function, quizMode is now: ", controller.quizMode);
   };
 
   // run once to initialize on controller instantiation
@@ -513,6 +559,11 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     }).
     when('/:id/palaces/:palaceID/edit', {
       templateUrl: 'views/edit-palace.html',
+      controller: 'PalaceController',
+      controllerAs: 'palaceCtrl'
+    }).
+    when('/:id/palaces/:palaceID/quiz', {
+      templateUrl: 'views/quiz.html',
       controller: 'PalaceController',
       controllerAs: 'palaceCtrl'
     }).

@@ -5,8 +5,8 @@
 
 <p>You can study your flashcards here! Read the questions on the cards below, and click the Show/Hide button to reveal or conceal the answer.</p>
 <p>You can also see a full list of the question and answer pairs below.</p>
-<p>When you're ready to take the quiz, <a href="{{palaceCtrl.singlePalaceUrl + '/quiz'}}">go for it</a>!</p>
-<p>Finally, if you need to add Question/Answer flashcards to this palace, or change the palace's name, click <a href="{{palaceCtrl.singlePalaceUrl + '/edit'}}">here</a>.</p>
+<p>When you're ready to take the quiz, <a ng-click="palaceCtrl.startQuiz()" href="">go for it</a>!</p>
+<p>Finally, if you need to add Question/Answer flashcards to this palace, change the palace's name, or switch between the public and private settings, click <a href="{{palaceCtrl.singlePalaceUrl + '/edit'}}">here</a>.</p>
 
 <div id="image-container">
   <img droppable id="palace-img" src="images/objects{{palaceCtrl.palace.imageNumber}}.jpg" alt="object shelf">

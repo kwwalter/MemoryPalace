@@ -1,0 +1,21 @@
+<h1>{{palaceCtrl.palace.name}}</h1>
+<h4>Created at: {{palaceCtrl.palace.created}}</h4>
+<h4>By: {{palaceCtrl.palace._owner.username}}</h4>
+
+<p>Take your quiz here! And if you peek, remember: you're only cheating yourself.</p>
+<p>When you're finished, click submit to see how you did.</p>
+
+<div id="image-container">
+  <img droppable id="palace-img" src="images/objects{{palaceCtrl.palace.imageNumber}}.jpg" alt="object shelf">
+</div>
+<br>
+<p ng-if="!palaceCtrl.facts">Facts: </p>
+<ul ng-repeat="fact in palaceCtrl.facts">
+  <li>
+    <h5>Card #{{$index + 1}}</h5>
+    <p>Question: {{fact.question}}</p>
+    <p>Answer: <input type="text" ng-model="palaceCtrl.quizAnswers[$index]"</p>
+  </li>
+</ul>
+<button ng-click="palaceCtrl.submitQuiz()">Submit Quiz!</button><br>
+<a href="{{palaceCtrl.allPalaceUrl}}">Back to My Palaces</a>
