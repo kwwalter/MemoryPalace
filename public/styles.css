@@ -1,20 +1,61 @@
+@font-face {
+	font-family: Fredericka;
+  src: url('fonts/Fredericka_the_Great/FrederickatheGreat-Regular.ttf');
+}
+
+@font-face {
+	font-family: Quicksand;
+  src: url('fonts/Quicksand/Quicksand-Regular.ttf');
+}
+
+@font-face {
+	font-family: Sanchez;
+  src: url('fonts/Sanchez/Sanchez-Regular.ttf');
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+body {
+  font-family: Sanchez, sans-serif;
+}
+
+#site-logo {
+  font-family: Fredericka, serif;
+  padding-left: 0.75rem;
+}
+
 nav {
   background-color: #f0f8ff;
   padding: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 nav > a {
-  font-size: 2rem; 
+  font-size: 2rem;
+  padding-right: 2rem;
+}
+
+#welcome-page {
+  
+}
+
+.jumbotron {
+  margin-top: 3rem;
+  max-width: 80%;
+  margin: 0 auto;
+  border-radius: 25px;
 }
 
 .jumbotron > h1, .jumbotron > h2, .jumbotron > a {
   text-align: center;
+}
+
+.jumbotron > h2 {
+  text-decoration: underline;
 }
 
 .jumbotron > a {
