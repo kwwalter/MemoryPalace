@@ -230,6 +230,20 @@ h4 span a:hover{
   color: #e62e00;
 }
 
+.listed-palace {
+  display: inline-table;
+  float: left;
+  margin: 1.5rem auto;
+  /*border: 1px solid black;*/
+  width: 33%;
+  padding-left: 1rem;
+}
+
+.listed-palace img {
+  max-height: 100px;
+  margin-bottom: 1rem;
+}
+
 #palace-img {
   height: 500px;
   margin: 0 auto;

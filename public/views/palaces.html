@@ -1,19 +1,9 @@
-<h2>Here are all of your palaces: </h2>
+<h1 class="welcome-h">Your Palaces</h1>
 <ul ng-repeat="palace in loggedinCtrl.palaces">
-  <li>
-    <p><a href="{{loggedinCtrl.allPalaceUrl + '/' + palace._id}}">Name: {{palace.name}}</a></p>
+  <li class="listed-palace">
+    <h3><a href="{{loggedinCtrl.allPalaceUrl + '/' + palace._id}}">{{palace.name}}</a></h3>
     <p>Created at: {{palace.created}}</p>
-    <!-- don't really have to display the user's name if we can only see the logged in user's own palaces -->
-    <!-- <p>Author: {{palace._owner.username}}</p> -->
-    <!-- <p ng-if="palace.facts.question">Facts: </p> -->
-    <!-- ng-if wasn't working here, going to use fact # + $index to display all Q/A pairs for a palace -->
-    <ul ng-repeat="fact in palace.facts">Fact #{{$index + 1}}
-      <li>
-        <p>Question: {{fact.question}}</p>
-        <p>Answer: {{fact.answer}}</p>
-      </li>
-    </ul>
-    <!-- have to get this palace's id to delete it from the database. is this the best way? -->
+    <img src="images/objects{{palace.imageNumber}}.jpg" alt=""><br>
     <button ng-click="loggedinCtrl.deletePalace(palace)">Delete this Palace</button>
   </li>
 </ul>
