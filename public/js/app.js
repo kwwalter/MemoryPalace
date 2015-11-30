@@ -154,7 +154,7 @@ app.service('truthService', function(){
 });
 
 // *** PALACE CONTROLLER ***
-app.controller('PalaceController', ['$http', '$location', '$routeParams', '$compile', '$scope', 'positionService', 'truthService', function($http, $location, $routeParams, $compile, $scope, positionService, truthService){
+app.controller('PalaceController', ['$http', '$location', '$routeParams', '$compile', '$scope', 'positionService', 'truthService', 'factsLengthService', function($http, $location, $routeParams, $compile, $scope, positionService, truthService, factsLengthService){
   var controller = this;
 
   this.allPalaceUrl = '/' + $routeParams.id + '/palaces';
@@ -193,6 +193,8 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     // get all the facts first..
     controller.getFacts();
 
+    factsLengthService.getFactsLength();
+
     $http.get(controller.singlePalaceUrl).then(function(data){
       // console.log('data from singlePalaceUrl get: ', data);
       controller.palace = data.data[0];
@@ -201,7 +203,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
       // now that we have the facts, need to append a div to the image based on the top and left values of each..
       var appendString;
-      for (var i = 1; i <= controller.facts.length; i++){
+      for (var i = 1; i <= controller.correctFactsLength; i++){
         // console.log("controller.facts[" + (i-1) + "] is: ", controller.facts[i-1]);
         appendString = '<div draggable class="draggable-div" id="fact' + i + '" style="top: ' + controller.facts[i-1].top + 'px; left: ' + controller.facts[i-1].left + 'px;"><h5 class="fact-header' + i + '">Card #' + i + '</h5><p class="question">Q: ' + controller.facts[i-1].question + '</p><br><p class="answer hidden">A: ' + controller.facts[i-1].answer + '</p><button ng-if="!palaceCtrl.quizMode" ng-click="palaceCtrl.flipCard(' + i + ')">Show/Hide Answer!</button></div>';
         // console.log("appendString is: ", appendString);
@@ -401,6 +403,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     $http.get(controller.getFactsUrl).then(function(data){
       // console.log('data from getFactsUrl get: ', data);
       controller.facts = data.data;
+      factsLengthService.setFactsLength(controller.facts.length);
 
       // if we're getting all the facts again, we've navigated away from the edit page where user can append divs. Time to set the value back to one:
       controller.factCount = 1;
@@ -641,6 +644,19 @@ app.service('positionService', function(){
 
   this.getStopPos = function() {
     return controller.stopPos;
+  }
+});
+
+// Service for storing facts.length information
+app.service('factsLengthService', function(){
+  var controller = this;
+
+  this.setFactsLength = function(length) {
+    controller.correctFactsLength = length;
+  }
+
+  this.getFactsLength = function() {
+    return controller.correctFactsLength;
   }
 });
 
