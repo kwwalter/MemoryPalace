@@ -369,7 +369,12 @@ input[type=radio]:checked + label {
 /* for adding a new q-a pair to a card */
 
 .fact-form {
-  width: 75px;
+  width: 75%;
+  margin: 1.5rem;
+}
+
+.fact-form > button {
+  margin-top: 1rem;
 }
 
 /* maybe i'll resurrect this someday.. */

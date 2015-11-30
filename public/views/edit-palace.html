@@ -1,27 +1,32 @@
+<div id="one-palace">
 <h1>Edit Your Palace!</h1>
 <h2 ng-hide="palaceCtrl.editBool">{{palaceCtrl.palace.name}}</h2>
-<button ng-click="palaceCtrl.editBool = true" ng-hide="palaceCtrl.editBool">Edit Palace Name</button>
+<button class="btn btn-default" ng-click="palaceCtrl.editBool = true" ng-hide="palaceCtrl.editBool">Edit Palace Name</button>
 <!-- inline form for editing palace name -->
 <h2 ng-hide="!palaceCtrl.editBool">
   <input type="text" ng-model="palaceCtrl.name" value="{{palaceCtrl.palace.name}}">
   <input type="submit" ng-click="palaceCtrl.editPalaceName()" value="Submit">
 </h2>
 
-<!-- ability to switch between public and private! -->
-<p ng-hide="palaceCtrl.palace.public">Your palace is currently private and only visible to you. Click <a href="" ng-click="palaceCtrl.goPublicOrPrivate(true)">here</a> to make it public so others can enjoy it too.</p>
-<p ng-hide="!palaceCtrl.palace.public">Your palace is currently public, so everyone can see it and is probably judging you. Click <a href="" ng-click="palaceCtrl.goPublicOrPrivate(false)">here</a> to hide your shame and make this palace a private one.</p>
+<!-- ability to switch between public and private! on hold for now -->
+<!-- <p ng-hide="palaceCtrl.palace.public">Your palace is currently private and only visible to you. Click <a href="" ng-click="palaceCtrl.goPublicOrPrivate(true)">here</a> to make it public so others can enjoy it too.</p>
+<p ng-hide="!palaceCtrl.palace.public">Your palace is currently public, so everyone can see it and is probably judging you. Click <a href="" ng-click="palaceCtrl.goPublicOrPrivate(false)">here</a> to hide your shame and make this palace a private one.</p> -->
 
-<p>To add a new card to the image below, simply click where you want it to be placed, and drag it to a new location if needed. Then, click the "Add Q/A" button to add a question/answer pair (make sure to click "submit", otherwise it won't be saved).</p>
-<p>You can add as many cards as you like!</p>
-<p>NOTE: When finished, please make sure you click <a href="" ng-click="palaceCtrl.doneEditing()">DONE EDITING</a> (otherwise, your data might not be saved, and you'll have no one to blame but yourself).</p>
+<div class="jumbotron palace-instrux">
+  <p>Ready to add a flashcard to the image below? Simply click where you want it placed (and drag to a new location if needed). Then, click ADD Q&A  to add a question/answer pair, and click SUBMIT to save it.</p>
+  <p>You can add as many cards as you like!</p>
+  <p>NOTE: When finished, please make sure you click <a href="" ng-click="palaceCtrl.doneEditing()">DONE EDITING</a>, or else your data might not be saved.</p>
+</div>
 
 <div id="image-container">
   <!-- $event is available as a part of ng-click -->
   <img droppable id="palace-img" ng-click="palaceCtrl.addCardToImg($event)" src="images/objects{{palaceCtrl.palace.imageNumber}}.jpg" alt="object shelf">
 </div>
 
-<a href="" ng-click="palaceCtrl.doneEditing()">DONE EDITING</a><br>
-<a href="{{palaceCtrl.allPalaceUrl}}">Back to Full List of My Palaces</a>
+<h3><a href="" ng-click="palaceCtrl.doneEditing()">DONE EDITING</a></h3>
+<h3><a href="{{palaceCtrl.allPalaceUrl}}">Back to My Palaces (WITHOUT SAVING)</a></h3>
+<h3><a href="{{palaceCtrl.createPalaceUrl}}">Create a New Palace</a></h3>
+</div>
 
 <!-- resizable directive isn't working, even when i try to use it separately from draggable -->
 <!-- <div resizable on-resize="palaceCtrl.resize($evt, $ui)" id="resize-box">

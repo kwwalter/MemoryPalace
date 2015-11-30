@@ -276,7 +276,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       positionService.setStopPos(position);
 
       // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-      var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + (y - ((4 + controller.factCount) * 100)) + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Card #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add Q/A</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Q: <input type="text" ng-model="palaceCtrl.question"></br>A: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
+      var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + (y - ((4 + controller.factCount) * 100)) + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Card #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add Q/A</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Q: <input type="text" ng-model="palaceCtrl.question"></br>A: <input type="text" ng-model="palaceCtrl.answer"></br><button class="btn btn-default" ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!</button></div></div>';
       // console.log("divString is: ", divString);
 
       // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
@@ -302,7 +302,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       positionService.setStopPos(position);
 
       // position is correct for the click, but not appending to the right place in the div--maybe have to set the image as a background of the container div, then set these coords in relation to that?
-      var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + newY + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Card #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add Q/A</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Q: <input type="text" ng-model="palaceCtrl.question"></br>A: <input type="text" ng-model="palaceCtrl.answer"></br><button ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!"</button></div></div>';
+      var divString = '<div draggable class="draggable-div" id="fact' + controller.factsLength + '" style="top: ' + newY + 'px; left: ' + x + 'px;"><h5 class="fact-header' + controller.factsLength + '">Card #' + controller.factsLength + '</h5><button ng-hide="palaceCtrl.cardBool" ng-click="palaceCtrl.addFact(' + controller.factsLength + ')">Add Q/A</button><div class="fact-form" ng-hide="!palaceCtrl.cardBool">Q: <input type="text" ng-model="palaceCtrl.question"></br>A: <input type="text" ng-model="palaceCtrl.answer"></br><button class="btn btn-default" ng-click="palaceCtrl.submitFact(' + controller.factsLength + ')">Submit this fact!</button></div></div>';
       // console.log("divString is: ", divString);
 
       // append a div to the img, using the draggable directive. And using $compile and $scope to apply the directive to the div, since it's being added after document ready
@@ -384,7 +384,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     // console.log("in the flipCard function");
     $('#fact' + cardToFlip + ' > .answer').toggleClass('hidden');
     $('#fact' + cardToFlip + ' > .answer').parent().toggleClass('fact-clicked');
-    $('#fact' + cardToFlip + ' > p').toggleClass('embiggen'); 
+    $('#fact' + cardToFlip + ' > p').toggleClass('embiggen');
   };
 
   // function for resizing divs -- NOT WORKING YET
