@@ -1,9 +1,12 @@
+<div id="one-palace">
 <h1>{{palaceCtrl.palace.name}}</h1>
-<h4>Created at: {{palaceCtrl.palace.created}}</h4>
-<h4>By: {{palaceCtrl.palace._owner.username}}</h4>
+<!-- <h4>Created at: {{palaceCtrl.palace.created}}</h4>
+<h4>By: {{palaceCtrl.palace._owner.username}}</h4> -->
 
-<p>Take your quiz here! And if you peek, remember: you're only cheating yourself.</p>
-<p>When you're finished, click submit to see how you did.</p>
+<div class="jumbotron palace-instrux">
+  <p>Take your quiz here! And if you peek, remember: you're only cheating yourself.</p>
+  <p>When you're finished, click submit to see how you did.</p>
+</div>
 
 <div id="image-container">
   <img droppable id="palace-img" src="images/objects{{palaceCtrl.palace.imageNumber}}.jpg" alt="object shelf">
@@ -12,7 +15,7 @@
 <div ng-hide="!palaceCtrl.resultsBool">
   <h2>Here are your results!</h2>
   <h3>You got {{palaceCtrl.correctCounter}} out of {{palaceCtrl.facts.length}} right.</h3>
-  <h4>That checks out to about {{((palaceCtrl.correctCounter / palaceCtrl.facts.length) * 100).toFixed(2)}}%. Not bad!
+  <h4>That checks out to about {{((palaceCtrl.correctCounter / palaceCtrl.facts.length) * 100).toFixed(2)}}%
 </div>
 <br>
 <p ng-if="!palaceCtrl.facts">Facts: </p>
@@ -25,6 +28,8 @@
     <h3 class="incorrect" ng-hide="!palaceCtrl.resultsBool">Sorry, you got it wrong!</h3>
   </li>
 </ul>
-<button ng-hide="palaceCtrl.resultsBool" ng-click="palaceCtrl.submitQuiz()">Submit Quiz!</button><br>
-<button ng-hide="!palaceCtrl.resultsBool" ng-click="palaceCtrl.tryAgain()">Try again</button><br>
-<a href="{{palaceCtrl.allPalaceUrl}}">Back to My Palaces</a>
+<button class="btn btn-default" ng-hide="palaceCtrl.resultsBool" ng-click="palaceCtrl.submitQuiz()">Submit Quiz!</button><br>
+<button class="btn btn-default" ng-hide="!palaceCtrl.resultsBool" ng-click="palaceCtrl.tryAgain()">Try again</button><br>
+<h3><a href="{{palaceCtrl.allPalaceUrl}}">Back to My Palaces</a></h3>
+<h3><a href="{{palaceCtrl.createPalaceUrl}}">Create a New Palace</a></h3>
+</div>

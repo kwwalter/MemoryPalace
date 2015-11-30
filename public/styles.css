@@ -354,6 +354,20 @@ input[type=radio]:checked + label {
   font-weight: bolder;
 }
 
+/* for quiz view */
+
+*[id^='quiz-question'] {
+  list-style: none;
+  margin-bottom: 4rem;
+}
+
+*[id^='quiz-question'] > h5 {
+  font-weight: bolder;
+  font-size: 2rem;
+}
+
+/* for adding a new q-a pair to a card */
+
 .fact-form {
   width: 75px;
 }
