@@ -1,17 +1,19 @@
+<div id="one-palace">
 <h1>{{palaceCtrl.palace.name}}</h1>
 <!-- <h4>Created at: {{palaceCtrl.palace.created}}</h4> -->
 <!-- <h4>By: {{palaceCtrl.palace._owner.username}}</h4> -->
-
-<p>Study your flashcards here! Click the SHOW/HIDE button to reveal or conceal the answers.</p>
-<p>You can also see a full list of the question-and-answer pairs below.</p>
-<p>When you're ready to take the quiz, <a ng-click="palaceCtrl.startQuiz()" href="">go for it</a>!</p>
-<p>To add flashcards to this palace, or to change the palace's name, click <a href="{{palaceCtrl.singlePalaceUrl + '/edit'}}">here</a>.</p>
+<div class="jumbotron palace-instrux">
+  <p>Study your flashcards here! Click the SHOW/HIDE button to reveal or conceal the answers.</p>
+  <!-- <p>You can also see a full list of the question-and-answer pairs below.</p> -->
+  <p>When you're ready to take the quiz, <a ng-click="palaceCtrl.startQuiz()" href="">go for it</a>!</p>
+  <p>To add flashcards to this palace, or to change the palace's name, click <a href="{{palaceCtrl.singlePalaceUrl + '/edit'}}">here</a>.</p>
+</div>
 
 <div id="image-container">
   <img droppable id="palace-img" src="images/objects{{palaceCtrl.palace.imageNumber}}.jpg" alt="object shelf">
 </div>
 <br>
-<p ng-if="!palaceCtrl.facts">Facts: </p>
+<!-- <p ng-if="!palaceCtrl.facts">Facts: </p>
 <ul ng-repeat="fact in palaceCtrl.facts">
   <li>
     <h5>Card #{{$index + 1}}</h5>
@@ -19,5 +21,7 @@
     <p>Answer: {{fact.answer}}</p>
   </li>
 </ul>
-<br>
-<a href="{{palaceCtrl.allPalaceUrl}}">Back to My Palaces</a>
+<br> -->
+<h3><a href="{{palaceCtrl.allPalaceUrl}}">Back to My Palaces</a></h3>
+<h3><a href="{{palaceCtrl.createPalaceUrl}}">Create a New Palace</a></h3>
+</div>

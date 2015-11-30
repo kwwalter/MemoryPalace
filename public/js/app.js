@@ -164,6 +164,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.submitFactUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/submit-fact';
   this.getFactsUrl = '/palaces/' + $routeParams.palaceID + '/get-facts';
   this.quizUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/quiz';
+  this.createPalaceUrl = '/' + $routeParams.id + '/palaces/new';
 
   // can use this to either update Palace or Fact, and associate with the palace in the $routeParams.palaceID if doing the latter
   this.factUrl = '/' + $routeParams.id + '/palaces/' + $routeParams.palaceID + '/fact';
@@ -382,7 +383,8 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   this.flipCard = function(cardToFlip) {
     // console.log("in the flipCard function");
     $('#fact' + cardToFlip + ' > .answer').toggleClass('hidden');
-    $('#fact' + cardToFlip + ' > .answer').parent().toggleClass('fact-clicked embiggen');
+    $('#fact' + cardToFlip + ' > .answer').parent().toggleClass('fact-clicked');
+    $('#fact' + cardToFlip + ' > p').toggleClass('embiggen'); 
   };
 
   // function for resizing divs -- NOT WORKING YET
