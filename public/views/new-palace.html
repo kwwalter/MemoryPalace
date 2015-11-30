@@ -1,32 +1,35 @@
-<h2>Create a New Palace!</h2>
-<form id="palace-form" ng-submit="loggedinCtrl.createPalace()">
-  <input type="text" placeholder="Give it a name!" ng-model="loggedinCtrl.name">
+<h1 class="welcome-h">Create a New Palace!</h1>
+<form class="form-group" ng-submit="loggedinCtrl.createPalace()">
+  <input class="form-control" type="text" id="newpalace-name" ng-model="loggedinCtrl.name">
+    <label for="newpalace-name">Name</label>
   <br>
-  <input type="radio" id="img1" value="1" ng-model="loggedinCtrl.imageNumber">
-    <label for="img1"><img class="radio-image" src="images/objects1.jpg"</label>
-  <input type="radio" id="img2" value="2" ng-model="loggedinCtrl.imageNumber">
-    <label for="img2"><img class="radio-image" src="images/objects2.jpg"</label>
-  <input type="radio" id="img3" value="3" ng-model="loggedinCtrl.imageNumber">
-    <label for="img3"><img class="radio-image" src="images/objects3.jpg"</label>
-  <input type="radio" id="img4" value="4" ng-model="loggedinCtrl.imageNumber">
-    <label for="img4"><img class="radio-image" src="images/objects4.jpg"</label>
-  <input type="radio" id="img5" value="5" ng-model="loggedinCtrl.imageNumber">
-    <label for="img5"><img class="radio-image" src="images/objects5.jpg"</label>
-  <input type="radio" id="img6" value="6" ng-model="loggedinCtrl.imageNumber">
-    <label for="img6"><img class="radio-image" src="images/objects6.jpg"</label>
-  <input type="radio" id="img7" value="7" ng-model="loggedinCtrl.imageNumber">
-    <label for="img7"><img class="radio-image" src="images/objects7.jpg"</label>
-  <input type="radio" id="img8" value="8" ng-model="loggedinCtrl.imageNumber">
-    <label for="img8"><img class="radio-image" src="images/objects8.jpg"</label>
-  <input type="radio" id="img9" value="9" ng-model="loggedinCtrl.imageNumber">
-    <label for="img9"><img class="radio-image" src="images/objects9.jpg"</label>
-  <input type="radio" id="img10" value="10" ng-model="loggedinCtrl.imageNumber">
-    <label for="img10"><img class="radio-image" src="images/objects10.jpg"</label>
+  <h3>Select an image to work with!</h3>
+  <input class="form-control" type="radio" id="img1" value="1" ng-model="loggedinCtrl.imageNumber">
+    <label class="radio-inline" for="img1"><img class="radio-image" src="images/objects1.jpg"></label>
+  <input class="form-control" type="radio" id="img2" value="2" ng-model="loggedinCtrl.imageNumber">
+    <label class="radio-inline" for="img2"><img class="radio-image" src="images/objects2.jpg"></label>
+  <input class="form-control" type="radio" id="img3" value="3" ng-model="loggedinCtrl.imageNumber">
+    <label class="radio-inline" for="img3"><img class="radio-image" src="images/objects3.jpg"></label>
+  <input class="form-control" type="radio" id="img4" value="4" ng-model="loggedinCtrl.imageNumber">
+    <label class="radio-inline" for="img4"><img class="radio-image" src="images/objects4.jpg"></label>
+  <input class="form-control" type="radio" id="img5" value="5" ng-model="loggedinCtrl.imageNumber">
+    <label class="radio-inline" for="img5"><img class="radio-image" src="images/objects5.jpg"></label>
+  <input class="form-control" type="radio" id="img6" value="6" ng-model="loggedinCtrl.imageNumber">
+    <label class="radio-inline" for="img6"><img class="radio-image" src="images/objects6.jpg"></label>
+  <input class="form-control" type="radio" id="img7" value="7" ng-model="loggedinCtrl.imageNumber">
+    <label class="radio-inline" for="img7"><img class="radio-image" src="images/objects7.jpg"></label>
+  <input class="form-control" type="radio" id="img8" value="8" ng-model="loggedinCtrl.imageNumber">
+    <label class="radio-inline" for="img8"><img class="radio-image" src="images/objects8.jpg"></label>
+  <input class="form-control" type="radio" id="img9" value="9" ng-model="loggedinCtrl.imageNumber">
+    <label class="radio-inline" for="img9"><img class="radio-image" src="images/objects9.jpg"></label>
+  <!-- <input class="form-control" type="radio" id="img10" value="10" ng-model="loggedinCtrl.imageNumber">
+    <label class="radio-inline" for="img10"><img class="radio-image" src="images/objects10.jpg"></label> -->
   <br>
-  <h3>Do you want to make this palace viewable to the public?</h3>
+  <!-- no public/private for now -->
+  <!-- <h3>Do you want to make this palace viewable to the public?</h3>
   <input type="radio" id="public-T" value="true" ng-model="loggedinCtrl.public">
     <label for="public-T">Yeah!</label>
   <input type="radio" id="public-F" value="false" ng-model="loggedinCtrl.public" checked>
-    <label for="public-F">NO!</label>
-  <input type="submit" value="Submit!">
+    <label for="public-F">NO!</label> -->
+  <input id="new-palace-submit" type="submit" class="btn btn-default" value="Submit!">
 </form>

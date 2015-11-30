@@ -23,6 +23,8 @@ body {
   font-family: Sanchez, sans-serif;
 }
 
+/* for landing page / nav bar */
+
 #site-logo {
   font-family: Fredericka, serif;
   padding-left: 0.75rem;
@@ -125,7 +127,7 @@ input[value="play"]:checked ~ #slider figure {
 95% { left: -300%; }
 }
 
-/*Navigation*/
+/* Slider navigation */
 
 #navigation {
   text-align: center;
@@ -168,6 +170,8 @@ input[value="play"]:checked ~ #slider figure {
   margin: 0 auto;
 }
 
+/* for login / signup pages */
+
 .welcome-h {
   text-align: center;
 }
@@ -183,9 +187,7 @@ input[value="play"]:checked ~ #slider figure {
   margin: 1rem auto;
 }
 
-/*li {
-  padding: 1rem;
-}*/
+/* for logged in landing page */
 
 #logged-in > h4 {
   text-align: center;
@@ -196,7 +198,6 @@ input[value="play"]:checked ~ #slider figure {
   width: 50%;
 }
 
-/* not working */
 .image:hover {
   opacity: 0.75;
 }
@@ -230,11 +231,12 @@ h4 span a:hover{
   color: #e62e00;
 }
 
+/* for list of all user's palaces */
+
 .listed-palace {
   display: inline-table;
   float: left;
   margin: 1.5rem auto;
-  /*border: 1px solid black;*/
   width: 33%;
   padding-left: 1rem;
 }
@@ -243,6 +245,24 @@ h4 span a:hover{
   max-height: 100px;
   margin-bottom: 1rem;
 }
+
+/* for new palace page */
+.radio-image {
+  max-height: 150px;
+  margin-bottom: 1.5rem;
+  border: 1px solid black;
+}
+
+input[type=radio]:checked + label {
+  opacity: 0.4;
+}
+
+#new-palace-submit {
+  /*display: block;
+  margin: 0 auto;*/
+}
+
+/* for edit image / add flashcards stuff */
 
 #palace-img {
   height: 500px;
@@ -275,6 +295,8 @@ h4 span a:hover{
   width: 60%;
 }
 
+/* classes for cards once placed on img */
+
 .fact-clicked {
   height: 200px;
   width: 200px;
@@ -303,6 +325,11 @@ h4 span a:hover{
   font-weight: bolder;
 }
 
+.fact-form {
+  width: 75px;
+}
+
+/* maybe i'll resurrect this someday.. */
 /*#resize-box {
   width: 75px;
   height: 75px;
@@ -311,12 +338,3 @@ h4 span a:hover{
   vertical-align: middle;
   background-color: red;
 }*/
-
-.radio-image {
-  height: 150px;
-  border: 1px solid #f1f1f1;
-}
-
-.fact-form {
-  width: 75px;
-}
