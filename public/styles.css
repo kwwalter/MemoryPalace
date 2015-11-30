@@ -371,7 +371,7 @@ input[type=radio]:checked + label {
 .fact-form {
   width: 75%;
   margin: 0 auto;
-	padding-top: 15rem;
+	padding-top: 12rem;
 	font-size: 3rem;
 }
 
