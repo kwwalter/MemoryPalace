@@ -1,5 +1,13 @@
-<h2>You are logged in as {{loggedinCtrl.currentUsername}}. Hooray!</h2>
+<h2 class="welcome-h">You are logged in as {{loggedinCtrl.currentUsername}}. Hooray!</h2>
 
-<h3>What do you want to do?</h3>
-<a href="{{loggedinCtrl.allPalaceUrl}}">Show my current palaces</a>
-<a href="{{loggedinCtrl.newPalaceUrl}}">Create a new palace</a>
+<h3 class="welcome-h">What do you want to do?</h3><br>
+<div id="logged-in" class="row">
+  <div class="col-md-6 image">
+    <img src="images/welcome/img2.jpg" alt="" />
+    <h4><span><a href="{{loggedinCtrl.allPalaceUrl}}">Show my current palaces</a></span></h4>
+  </div>
+  <div class="col-md-6 image">
+    <img src="images/welcome/img4.jpg" alt="" />
+    <h4><span><a href="{{loggedinCtrl.newPalaceUrl}}">Create a new palace</a></span></h4>
+  </div>
+</div>

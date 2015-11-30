@@ -187,6 +187,49 @@ input[value="play"]:checked ~ #slider figure {
   padding: 1rem;
 }*/
 
+#logged-in > h4 {
+  text-align: center;
+}
+
+.image {
+  position: relative;
+  width: 50%;
+}
+
+/* not working */
+.image:hover {
+  opacity: 0.75;
+}
+
+.image > h4 {
+  position: absolute;
+  top: 50px;
+  left: 200px;
+  width: 100%;
+}
+
+.image > img {
+  display: block;
+  width: 80%;
+  margin: 1rem auto;
+}
+
+h4 span {
+   font: bold 24px/45px Sanchez, Sans-Serif;
+   letter-spacing: -1px;
+   background: rgb(0, 0, 0); /* fallback color */
+   background: rgba(0, 0, 0, 0.7);
+   padding: 10px;
+}
+
+h4 span a {
+  color: #ffffff;
+}
+
+h4 span a:hover{
+  color: #e62e00;
+}
+
 #palace-img {
   height: 500px;
   margin: 0 auto;
