@@ -133,6 +133,7 @@ server.get('/:id/palaces', function(req, res){
   Palace
   .find({ _owner: id })
   .populate('_owner')
+  .populate('facts')
   .exec(function(err2, foundPalaces){
     if (err2) {
       console.log("inside of Palace.find, error2: ", err2);
@@ -167,6 +168,7 @@ server.get('/:id/palaces/:palaceID', function(req, res){
   Palace
   .find({ _id: palaceID })
   .populate('_owner')
+  .populate('facts')
   .exec(function(err, foundPalace){
     if (err) {
       console.log("inside of Palace.find, error: ", err);
@@ -183,6 +185,7 @@ server.get('/all-public-palaces', function(req, res){
   Palace
   .find({ public: true })
   .populate('_owner')
+  .populate('facts')
   .exec(function(err, allPalaces){
     if (err) {
       console.log("error insie of Palace.find for all palaces: ", err);
@@ -201,6 +204,7 @@ server.get('/public/palaces/:palaceID', function(req, res){
   Palace
   .find({ _id: palaceID })
   .populate('_owner')
+  .populate('facts')
   .exec(function(err, foundPalace){
     if (err) {
       console.log("inside of Palace.find (one public), error: ", err);
@@ -262,11 +266,21 @@ server.delete('/:id/palaces/:palaceID', function(req, res) {
       _id: palaceToDelete
     }, function(err) {
       if (err) {
-        console.log("there was an error deleting this palace: ", palaceToDelete);
+        console.log("there was an error deleting this palace: ", err);
         res.json( { error: err } );
       } else {
-        console.log("successfully deleted palace!");
-        res.json( { deleted: true } );
+        console.log("successfully deleted palace! now deleting facts..");
+        Fact.remove({
+          _livesIn: palaceToDelete
+        }, function(err2) {
+          if (err2) {
+            console.log("there was an error deleting these facts: ", err2);
+            res.json( { error: err } );
+          } else {
+            console.log("facts successfully deleted!");
+            res.json( { deleted: true } );
+          }
+        });
       }
     });
   // };
@@ -283,7 +297,20 @@ server.post('/:id/palaces/:palaceID/submit-fact', function(req, res){
       console.log("there was an error saving the new fact: ", err);
       res.json({ error: err });
     } else {
-      res.json(newFact);
+      var palaceID = req.params.palaceID;
+      Palace.findOneAndUpdate( {
+        _id: palaceID
+      }, {
+        $push: { facts: newFact._id }
+      }, function(err, updatedUser){
+        if (err) {
+          console.log("there was an error pushing this fact into the palace's fact array: ", err);
+          res.json({error: err})
+        } else {
+          console.log("successfully added fact to palace array");
+          res.json(newFact);
+        }
+      });
     }
   })
 });

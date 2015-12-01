@@ -154,7 +154,7 @@ app.service('truthService', function(){
 });
 
 // *** PALACE CONTROLLER ***
-app.controller('PalaceController', ['$http', '$location', '$routeParams', '$compile', '$scope', 'positionService', 'truthService', 'factsLengthService', function($http, $location, $routeParams, $compile, $scope, positionService, truthService, factsLengthService){
+app.controller('PalaceController', ['$http', '$location', '$routeParams', '$compile', '$scope', 'positionService', 'truthService', function($http, $location, $routeParams, $compile, $scope, positionService, truthService){
   var controller = this;
 
   this.allPalaceUrl = '/' + $routeParams.id + '/palaces';
@@ -188,19 +188,41 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   // this is to account for 100px worth of space that's added each time a new div is appended. It'll be incremented by 100 at the end of each submitFact()
   this.incrementer = 0;
 
-  // temporary fix--will find a way to store this in the db better
-  // this.FL = factsLengthService.getFactsLength();
-  // console.log("FL is now: ", this.FL);
-
   this.displayOnePalace = function() {
-    // get all the facts first.. maybe this should be run at the same time as this.displayOnePalace at the end of the controller?
-    controller.getFacts();
+    // get all the facts first
+    // controller.getFacts(); <-- might not need if all the facts are in the palace facts array now
 
     $http.get(controller.singlePalaceUrl).then(function(data){
-      // console.log('data from singlePalaceUrl get: ', data);
+      console.log('data from singlePalaceUrl get: ', data);
       controller.palace = data.data[0];
       controller.name = data.data[0].name;
       controller.imageNumber = data.data[0].imageNumber;
+
+      // functionality carried over from old getFacts() function..
+      controller.facts = data.data[0].facts;
+      console.log("now at the beginning of $http.get in displayOnePalace, controller.facts is: ", controller.facts);
+
+      // if we're getting all the facts again, we've navigated away from the edit page where user can append divs. Time to set the value back to one:
+      controller.factCount = 1;
+      // console.log("navigated away, so controller.factCount is now: ", controller.factCount);
+
+      // can do the same for controller.incrementer
+      controller.incrementer = 0;
+
+      // also, set a controller-wide variable for the length of the facts array..
+      if (controller.facts.length > 0) {
+        controller.factsLength = controller.facts.length + 1;
+
+        // if the palace has any facts, then have to set the setTruth to true (so that, if someone logs in and goes to a palace where they have a bunch of facts already saved, they can add one and the top value will be correct)
+        truthService.setTruth(true);
+
+        // console.log("in if, controller.factsLength is: ", controller.factsLength);
+      } else {
+        controller.factsLength = 1;
+
+        // if there are no facts, this should be false
+        truthService.setTruth(false);
+      }
 
       // now that we have the facts, need to append a div to the image based on the top and left values of each..
       // trying to use controller.facts.length again
@@ -401,11 +423,13 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
   // function to get all the facts for a given palace
   // there's an error when a user first creates a palace, when there are no questions..
+
+  /* UPDATE: might not need to call this in displayOnePalace anymore since the facts should now be contained within the palace object. Going to take this functionality and move it into the display function
+
   this.getFacts = function() {
     $http.get(controller.getFactsUrl).then(function(data){
       // console.log('data from getFactsUrl get: ', data);
       controller.facts = data.data;
-      factsLengthService.setFactsLength(controller.facts.length);
 
       // if we're getting all the facts again, we've navigated away from the edit page where user can append divs. Time to set the value back to one:
       controller.factCount = 1;
@@ -434,6 +458,7 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
       console.log("there was an error retrieving the data: ", error);
     });
   };
+  */
 
   this.startQuiz = function() {
     // first, specify that we're entering quiz mode.. might not even be working
@@ -649,19 +674,6 @@ app.service('positionService', function(){
 
   this.getStopPos = function() {
     return controller.stopPos;
-  }
-});
-
-// Service for storing facts.length information
-app.service('factsLengthService', function(){
-  var controller = this;
-
-  this.setFactsLength = function(length) {
-    controller.correctFactsLength = length;
-  }
-
-  this.getFactsLength = function() {
-    return controller.correctFactsLength;
   }
 });
 
