@@ -193,14 +193,14 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
     // controller.getFacts(); <-- might not need if all the facts are in the palace facts array now
 
     $http.get(controller.singlePalaceUrl).then(function(data){
-      console.log('data from singlePalaceUrl get: ', data);
+      // console.log('data from singlePalaceUrl get: ', data);
       controller.palace = data.data[0];
       controller.name = data.data[0].name;
       controller.imageNumber = data.data[0].imageNumber;
 
       // functionality carried over from old getFacts() function..
       controller.facts = data.data[0].facts;
-      console.log("now at the beginning of $http.get in displayOnePalace, controller.facts is: ", controller.facts);
+      // console.log("now at the beginning of $http.get in displayOnePalace, controller.facts is: ", controller.facts);
 
       // if we're getting all the facts again, we've navigated away from the edit page where user can append divs. Time to set the value back to one:
       controller.factCount = 1;
