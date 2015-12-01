@@ -188,12 +188,13 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
   // this is to account for 100px worth of space that's added each time a new div is appended. It'll be incremented by 100 at the end of each submitFact()
   this.incrementer = 0;
 
-  this.displayOnePalace = function() {
-    // console.log("running displayOnePalace..");
-    // get all the facts first..
-    controller.getFacts();
+  // temporary fix--will find a way to store this in the db better
+  // this.FL = factsLengthService.getFactsLength();
+  // console.log("FL is now: ", this.FL);
 
-    // factsLengthService.getFactsLength();
+  this.displayOnePalace = function() {
+    // get all the facts first.. maybe this should be run at the same time as this.displayOnePalace at the end of the controller?
+    controller.getFacts();
 
     $http.get(controller.singlePalaceUrl).then(function(data){
       // console.log('data from singlePalaceUrl get: ', data);
@@ -518,6 +519,9 @@ app.controller('PalaceController', ['$http', '$location', '$routeParams', '$comp
 
   // run once to initialize on controller instantiation
   this.displayOnePalace();
+
+  // running this to get all of the facts as well
+  // this.getFacts();
 }]);
 
 // controller for all public palaces
