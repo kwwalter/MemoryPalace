@@ -2,12 +2,16 @@
 
 <h3 class="welcome-h">What do you want to do?</h3><br>
 <div id="logged-in" class="row">
-  <div class="col-md-6 image">
+  <a href="{{loggedinCtrl.allPalaceUrl}}">
+    <div class="col-md-6 image">
     <img src="images/welcome/img2.jpg" alt="" />
-    <h4><span><a href="{{loggedinCtrl.allPalaceUrl}}">Show my current palaces</a></span></h4>
-  </div>
-  <div class="col-md-6 image">
+    <h4><span>Show my current palaces</span></h4>
+    </div>
+  </a>
+  <a href="{{loggedinCtrl.newPalaceUrl}}">
+    <div class="col-md-6 image">
     <img src="images/welcome/img4.jpg" alt="" />
-    <h4><span><a href="{{loggedinCtrl.newPalaceUrl}}">Create a new palace</a></span></h4>
-  </div>
+    <h4><span>Create a new palace</span></h4>
+    </div>
+  </a>
 </div>

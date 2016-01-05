@@ -189,12 +189,7 @@ input[value="play"]:checked ~ #slider figure {
 
 /* for logged in landing page */
 
-#logged-in > h4 {
-  text-align: center;
-}
-
 .image {
-  position: relative;
   width: 50%;
 }
 
@@ -203,10 +198,7 @@ input[value="play"]:checked ~ #slider figure {
 }
 
 .image > h4 {
-  position: absolute;
-  top: 50px;
-  left: 200px;
-  width: 100%;
+	text-align: center;
 }
 
 .image > img {
@@ -216,19 +208,24 @@ input[value="play"]:checked ~ #slider figure {
 }
 
 h4 span {
-   font: bold 24px/45px Sanchez, Sans-Serif;
-   letter-spacing: -1px;
-   background: rgb(0, 0, 0); /* fallback color */
-   background: rgba(0, 0, 0, 0.7);
-   padding: 10px;
+	border-radius: 20px;
+  font: bold 24px/45px Sanchez, Sans-Serif;
+  letter-spacing: -1px;
+  background: rgb(0, 0, 0); /* fallback color */
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px;
 }
 
-h4 span a {
+#logged-in > a {
   color: #ffffff;
 }
 
-h4 span a:hover{
+#logged-in > a:hover{
   color: #e62e00;
+}
+
+#logged-in > a:hover h4 span {
+	text-decoration: underline;
 }
 
 /* for list of all user's palaces */
