@@ -2,8 +2,6 @@
 var express           = require('express'),
     morgan            = require('morgan'),
     bodyParser        = require('body-parser'),
-    // ejs               = require('ejs'),
-    // expressEjsLayouts = require('express-ejs-layouts'),
     methodOverride    = require('method-override'),
     session           = require('express-session'),
     less              = require('less'),
@@ -28,9 +26,6 @@ var MONGOURI = process.env.MONGOLAB_URI || "mongodb://localhost:27017",
 
 // SET
 mongoose.set('debug', true);
-
-// server.set('views', './views');
-// server.set('view engine', 'ejs');
 
 // USE
 server.use(session({
