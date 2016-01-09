@@ -8,9 +8,13 @@ var express           = require('express'),
     session           = require('express-session'),
     less              = require('less'),
     bcrypt            = require('bcrypt'),
+    StatsD            = require('node-dogstatsd').StatsD,
     User              = require('./models/user.js'),
     Palace            = require('./models/palace.js'),
     Fact              = require('./models/fact.js');
+
+// node-dogstatsd setup
+var dogstatsd = new StatsD();
 
 // server setup
 var PORT    = process.env.PORT || 1111,
@@ -60,6 +64,7 @@ server.use(function(req, res, next){
 
 // specific routes--starting with a test one
 server.get('/wicked-secret-test', function(req, res){
+  dogstatsd.increment('secret-page.views');
   res.write("welcome to my craptastic app!");
   res.end();
 });
