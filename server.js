@@ -66,6 +66,7 @@ server.get('/wicked-secret-test', function(req, res){
 
 // to sign up
 server.post('/signup', function(req, res) {
+  dogstatsd.increment('loci-signup.views');
   var newUser = User(req.body);
   // console.log("newUser in server.post('/signup') is: ", newUser);
 
@@ -101,6 +102,7 @@ server.post('/signup', function(req, res) {
 
 // to check for user login
 server.post('/login', function(req, res){
+  dogstatsd.increment('loci-login.views');
   var attemptedLogin = req.body;
   console.log("user trying to log in as: \n", attemptedLogin);
 
@@ -127,6 +129,7 @@ server.post('/login', function(req, res){
 
 // to show all of a user's memory palaces (and the facts)
 server.get('/:id/palaces', function(req, res){
+  dogstatsd.increment('loci-all-palaces.views');
   var id = req.params.id;
   // console.log("in /:id/palaces, id is: ", id);
 
@@ -147,6 +150,7 @@ server.get('/:id/palaces', function(req, res){
 
 // create a new palace
 server.post('/:id/palaces/new', function(req, res){
+  dogstatsd.increment('loci-new-palace.views');
   var newPalace = Palace(req.body);
   console.log("newPalace in server.post('/:id/palaces/new') is: ", newPalace);
 
@@ -162,6 +166,7 @@ server.post('/:id/palaces/new', function(req, res){
 
 // retrieve a single palace from the database
 server.get('/:id/palaces/:palaceID', function(req, res){
+  dogstatsd.increment('loci-single-palace.views');
   // var id = req.params.id;
   var palaceID = req.params.palaceID;
 
@@ -182,6 +187,7 @@ server.get('/:id/palaces/:palaceID', function(req, res){
 
 // retrieve all of the public palaces from the database
 server.get('/all-public-palaces', function(req, res){
+  dogstatsd.increment('loci-all-public-palaces.views');
   Palace
   .find({ public: true })
   .populate('_owner')
@@ -199,6 +205,8 @@ server.get('/all-public-palaces', function(req, res){
 
 // retrieve a single public palace from the database
 server.get('/public/palaces/:palaceID', function(req, res){
+  dogstatsd.increment('loci-single-public-palace.views');
+
   var palaceID = req.params.palaceID;
 
   Palace
@@ -218,6 +226,7 @@ server.get('/public/palaces/:palaceID', function(req, res){
 
 // edit a palace name
 server.put('/:id/palaces/:palaceID/edit-name', function(req, res){
+  dogstatsd.increment('loci-edit-palace-name.views');
   console.log("in server.js server.put, req.body is: ", req.body);
   Palace.findOneAndUpdate( {
     _id: req.params.palaceID
@@ -239,6 +248,7 @@ server.put('/:id/palaces/:palaceID/edit-name', function(req, res){
 
 // edit whether or not a palace is public or private
 server.put('/:id/palaces/:palaceID/edit-public', function(req, res){
+  dogstatsd.increment('loci-edit-palace-public.views');
   console.log("in server.js server.put, req.body is: ", req.body);
   Palace.findOneAndUpdate( {
     _id: req.params.palaceID
@@ -258,6 +268,7 @@ server.put('/:id/palaces/:palaceID/edit-public', function(req, res){
 
 // delete a palace
 server.delete('/:id/palaces/:palaceID', function(req, res) {
+  dogstatsd.increment('loci-delete-palace.views');
   var palaceToDelete = req.params.palaceID;
 
   // going to put in this layer of security?
@@ -288,6 +299,7 @@ server.delete('/:id/palaces/:palaceID', function(req, res) {
 
 // submit a Fact
 server.post('/:id/palaces/:palaceID/submit-fact', function(req, res){
+  dogstatsd.increment('loci-submit-fact.views');
   var newFact = Fact(req.body);
 
   // console.log("newFact in server.post(submit-fact) is: ", newFact);
@@ -317,6 +329,7 @@ server.post('/:id/palaces/:palaceID/submit-fact', function(req, res){
 
 // return all facts for a given palace
 server.get('/palaces/:palaceID/get-facts', function(req, res){
+  dogstatsd.increment('loci-all-facts.views');
   var palaceID = req.params.palaceID;
 
   Fact
