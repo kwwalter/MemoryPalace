@@ -7,12 +7,23 @@ var express           = require('express'),
     less              = require('less'),
     bcrypt            = require('bcrypt'),
     StatsD            = require('node-dogstatsd').StatsD,
+    dogapi            = require('dogapi'),
     User              = require('./models/user.js'),
     Palace            = require('./models/palace.js'),
     Fact              = require('./models/fact.js');
 
 // node-dogstatsd setup
 var dogstatsd = new StatsD();
+
+// dogapi configuration
+var options = {
+  api_key: process.env.DD_API_KEY,
+  app_key: process.env.DD_APP_KEY
+};
+
+console.log(options);
+
+dogapi.initialize(options);
 
 // server setup
 var PORT    = process.env.PORT || 1111,
