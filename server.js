@@ -23,15 +23,23 @@ var options = {
 
 dogapi.initialize(options);
 
-// dummy submission via API
+// dummy event submission via API
 
 var title = "It works!",
     text  = "Loci app successfully accessed through Heroku!",
-    priority = "low",
-    tags = ["loci", "heroku"],
-    alert_type = "info";
+    properties = {
+      priority: "low",
+      tags: ["loci", "heroku"],
+      alert_type: "info"
+    };
 
-dogapi.Event.create(title = title, text = text, priority = priority, tags = tags, alert_type = alert_type);
+dogapi.event.create(title, text, properties, function(err, res){
+  if (err) {
+    console.log("error posting dummy event to dogapi: ", err);
+  } else {
+    console.log("here's the response: ", res);
+  }
+});
 
 // server setup
 var PORT    = process.env.PORT || 1111,
