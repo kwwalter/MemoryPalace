@@ -21,9 +21,17 @@ var options = {
   app_key: process.env.DD_APP_KEY
 };
 
-console.log(options);
-
 dogapi.initialize(options);
+
+// dummy submission via API
+
+var title = "It works!",
+    text  = "Loci app successfully accessed through Heroku!",
+    priority = "low",
+    tags = ["loci", "heroku"],
+    alert_type = "info";
+
+dogapi.Event.create(title = title, text = text, priority = priority, tags = tags, alert_type = alert_type);
 
 // server setup
 var PORT    = process.env.PORT || 1111,
