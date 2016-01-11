@@ -1,3 +1,8 @@
+var StatsD = require('node-dogstatsd').StatsD;
+
+// node-dogstatsd setup
+var dogstatsd = new StatsD();
+
 var app = angular.module('MemoryPalace', ['ngRoute']);
 
 // service to contain user data
@@ -15,6 +20,9 @@ app.service('userService', function(){
 
 // *** MAIN CONTROLLER ***
 app.controller('MainController', ['$http', '$location', 'userService', function($http, $location, userService){
+  // testing this out: every time the controller is instantiated, the page_views will increase by one. 
+  dogstatsd.increment('loci.page_views');
+
   var controller = this;
 
   this.signedIn = false;
