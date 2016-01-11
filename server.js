@@ -91,6 +91,12 @@ server.get('/wicked-secret-test', function(req, res){
   res.end();
 });
 
+// for datadog load testing
+server.get('/increment', function(req, res) {
+  dogstatsd.increment('loci.page_views');
+  res.json( { success: "page count successfully incremented!" } ); 
+});
+
 // to sign up
 server.post('/signup', function(req, res) {
   dogstatsd.increment('loci.page_views');
